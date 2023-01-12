@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <optional>
+
+// Define a Container class to represent a container
+class Container {
+public:
+  Container(const std::string& name) : name_(name) {}
+  
+  // Define a method to add a compartment to the container
+  void AddCompartment(const std::string& compartment_name) {
+    compartments_.emplace_back(compartment_name);
+  }
+  
+  // Define a method to add an item to a compartment
+  void AddItemToCompartment(const std::string& item, const std::string& compartment_name) {
+    // Find the compartment with the given name
+    auto it = std::find_if(compartments_.begin(), compartments_.end(), [&](const Compartment& compartment) {
+      return compartment.name == compartment_name;
+    });
+    if (it != compartments_.end()) {
+      // If the compartment was found, add the item to it
+      it->items.emplace_back(item);
+    }
+  }
+  
+  // Define a method to print the contents of the container
+  void PrintContents() const {
+    for (const auto& compartment : compartments_) {
+      std::cout << "Compartment " << compartment.name << ": ";
+      for (const auto& item : compartment.items) {
+        std::cout << item << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
+  
+  // Define a method to save the contents of the container to a file
+  void SaveToFile(const std::string& filename) const {
+    std::ofstream file(filename);
+    if (file.is_open()) {
+      // Write the name of the container to the file
+      file << name_ << std::endl;
+      // Write the number of compartments to the file
+      file << compartments_.size() << std::endl;
+      // Write the name and items of each compartment to the file
+      for (const auto& compartment : compartments_) {
+        file << compartment.name << std::endl;
+        file << compartment.items.size() << std::endl;
+        for (const auto& item : compartment.items) {
+          file << item << std::endl;
+        }
+      }
+    }
+  }
+  
+  // Define a method to load the contents of the container from a file
+  void LoadFromFile(const std::string& filename) {
+    std::ifstream file(filename);
+    if (file.is_open()) {
+      // Read the name of the container from the file
+      std::getline(file, name_);
+      // Read the number of compartments from the file
+      std::string line;
+      std::getline(file, line);
+      int num_compartments = std::stoi(line);
+      // Read the name and items of each compartment from the file
