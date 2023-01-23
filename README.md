@@ -15,7 +15,7 @@ Possible SQL for handling database of people’s furniture and items
 If we need more features to add, we could have options to add expiration date to items inside the fridge with maybe a countdown to when they expire
 
 ## Members:
-#### **Front End:** Adrienne Brady
+#### Front End: Adrienne Brady
 #### Front End: Sara Winner
 #### Back End: Tana Desir
 #### Back End: Israel Solano
