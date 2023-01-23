@@ -1,8 +1,8 @@
 # Cen3031Project
 
-## Project name:
+## Project Name:
 
-## Project description:
+## Project Description:
 
 Personal inventory tracker that allows users to create virtual furniture, like a cabinet or fridge, and create containers inside, such as shelves. Once the container is created, the user simply adds their items inside. From here, finding items is simple. The user can quickly search the name of the item they wish to find and they are brought right to the exact location. The inventory tracker stores user’s items using their usernames and passwords as identifiers.
 If the containers could be recursive that would be ideal, ie letting you create containers inside containers for cabinets with dividers in shelves for example.  Another possible feature: give the option to put tags on an item, which would be searched if no names match. 
