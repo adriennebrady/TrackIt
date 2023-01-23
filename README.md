@@ -1,6 +1,6 @@
 # CEN3031 Project
 
-## Project Name:
+## Project Name: TrackIt
 
 ## Project Description:
 
