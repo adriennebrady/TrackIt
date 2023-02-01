@@ -1,9 +1,9 @@
 <mat-toolbar class="navbar">
     <span class="logo">TRACKIT</span>
     <span class="spacer"></span>
-    <button mat-button>About</button>
-    <button mat-button>Login</button>
-    <button mat-flat-button color="primary" class="signUpButton">Sign Up</button>
+    <button mat-button routerLink="/about">About</button>
+    <button mat-button routerLink="/login">Login</button>
+    <button mat-flat-button routerLink="/signup" color="primary" class="signUpButton">Sign Up</button>
 </mat-toolbar>
  
 <div class="content">
@@ -14,5 +14,5 @@
 </div>
 
 <div class="content">
-    <button mat-flat-button color="primary" class="centerButton">Get Started</button>
+    <button mat-flat-button routerLink="/signup" color="primary" class="centerButton">Get Started</button>
 </div>
