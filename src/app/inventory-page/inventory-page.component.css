@@ -37,3 +37,7 @@
 .inventoryGrid mat-grid-tile {
     background: lightblue;
 }
+
+app-container {
+    width: 90%;
+}
