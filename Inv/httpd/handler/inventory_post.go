@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"Inv/platform/inventory"
+	"Trackit/Inv/platform/inventory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

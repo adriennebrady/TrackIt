@@ -1,8 +1,8 @@
 package main
 
 import (
-	"Inv/httpd/handler"
-	"Inv/platform/inventory"
+	"Trackit/Inv/httpd/handler"
+	"Trackit/Inv/platform/inventory"
 
 	"github.com/gin-gonic/gin"
 )
