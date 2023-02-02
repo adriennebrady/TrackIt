@@ -1,8 +1,8 @@
 package main
 
 import (
-	"backend/httpd/handler"
-	"backend/platform/inventory"
+	"Inv/httpd/handler"
+	"Inv/platform/inventory"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,7 +15,6 @@ func main() {
 	r.GET("/ping", handler.PingGet())
 	r.GET("/inventory", handler.InventoryGet(inv))
 	r.POST("/inventory", handler.InventoryPost(inv))
-	r.DELETE("/inventory", handler.InventoryPost(inv))
 
 	r.Run()
 

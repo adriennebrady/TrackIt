@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"backend/platform/inventory"
+	"Inv/platform/inventory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
