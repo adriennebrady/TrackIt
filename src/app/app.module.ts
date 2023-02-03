@@ -17,13 +17,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InventoryPageComponent } from './inventory-page/inventory-page.component';
 import { ContainerComponent } from './container/container.component';
 import { DialogComponent } from './inventory-page/dialog/dialog.component';
+import { ConfirmDialogComponent } from './inventory-page/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     InventoryPageComponent,
     ContainerComponent,
-    DialogComponent
+    DialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

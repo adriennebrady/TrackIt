@@ -24,8 +24,8 @@
 
   <div class="inventoryGrid">
       <mat-grid-list cols="4" rowHeight="1:1">
-          <mat-grid-tile *ngFor="let container of containers">
-            <app-container [name]="container.name" [description]="container.description"></app-container>
+          <mat-grid-tile *ngFor="let container of containers; index as i">
+            <app-container [container]="container" [index]="i"></app-container>
           </mat-grid-tile>
           <mat-grid-tile>1</mat-grid-tile>
           <mat-grid-tile>2</mat-grid-tile>

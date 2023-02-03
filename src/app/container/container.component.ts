@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { InventoryPageComponent } from '../inventory-page/inventory-page.component';
 
 @Component({
   selector: 'app-container',
@@ -6,17 +7,16 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./container.component.css']
 })
 export class ContainerComponent {
-  @Input()
-  get name(): string { return this._name; }
-  set name(name: string) {
-    this._name = (name && name.trim()) || '<no name set>';
-  }
-  private _name = '';
+  @Input() container: {
+    name: string,
+    description: string
+  } = { name: '', description: '' };
 
-  @Input()
-  get description(): string { return this._description; }
-  set description(description: string) {
-    this._description = description;
+  @Input() index: number = -1;
+
+  constructor(private inventoryPage: InventoryPageComponent) {}
+
+  deleteContainer(index: number) {
+    this.inventoryPage.openConfirmDialog(index);
   }
-  private _description = '';
 }
