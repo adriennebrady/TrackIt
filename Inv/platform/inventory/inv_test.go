@@ -31,3 +31,14 @@ func TestRename(t *testing.T) {
 	}
 
 }
+
+func TestRelocate(t *testing.T) {
+	inv := New()
+	inv.Add(InvItem{"ac", "de"})
+	inv.Relocate(&inv.InvItems[0], "newdfsdf")
+
+	if inv.InvItems[0].Location != "newdfsdf" {
+		t.Errorf("Item was not relocated")
+	}
+
+}

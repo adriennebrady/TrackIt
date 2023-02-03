@@ -9,6 +9,9 @@ type Adder interface {
 type Renamer interface {
 	Rename(invItem InvItem, name string)
 }
+type Relocater interface {
+	Rename(invItem InvItem, name string)
+}
 
 type InvItem struct {
 	Name     string `json:"Item Name"`
@@ -37,4 +40,8 @@ func (r *Container) GetAll() []InvItem {
 
 func (r *Container) Rename(invItem *InvItem, name string) {
 	invItem.Name = name
+}
+
+func (r *Container) Relocate(invItem *InvItem, location string) {
+	invItem.Location = location
 }
