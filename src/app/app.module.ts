@@ -8,18 +8,22 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InventoryPageComponent } from './inventory-page/inventory-page.component';
 import { ContainerComponent } from './container/container.component';
+import { DialogComponent } from './inventory-page/dialog/dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     InventoryPageComponent,
-    ContainerComponent
+    ContainerComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,9 @@ import { ContainerComponent } from './container/container.component';
     MatCardModule,
     MatDividerModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    FormsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
