@@ -6,6 +6,9 @@ type Getter interface {
 type Adder interface {
 	Add(invItem InvItem)
 }
+type Renamer interface {
+	rename(invItem InvItem)
+}
 
 type InvItem struct {
 	Name     string `json:"Item Name"`
@@ -20,7 +23,7 @@ type Container struct {
 
 func New() *Container {
 	return &Container{
-		InvItems: []InvItem{},
+		InvItems: []InvItem{},///////////maybe add container initialization
 	}
 }
 
@@ -30,4 +33,8 @@ func (r *Container) Add(invItem InvItem) {
 
 func (r *Container) GetAll() []InvItem {
 	return r.InvItems
+}
+
+func (r *Container) rename(invItem InvItemn name string) {
+	invItem.Name = name
 }
