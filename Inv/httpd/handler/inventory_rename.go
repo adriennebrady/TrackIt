@@ -1,18 +1,13 @@
 package handler
 
 import (
-	"backend/platform/inventory"
+	"Trackit/Inv/platform/inventory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type InvRequest struct {
-	Name     string `json:"Item Name"`
-	Location string `json:"Location"`
-}
-
-func InventoryDel(inv inventory.Deleter) gin.HandlerFunc {
+func InventoryRenamer(inv inventory.Renamer) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestBody := InvRequest{}
 		c.Bind(&requestBody)
@@ -21,7 +16,7 @@ func InventoryDel(inv inventory.Deleter) gin.HandlerFunc {
 			Name:     requestBody.Name,
 			Location: requestBody.Location,
 		}
-		inv.delete(invItem)
+		inv.Rename(invItem, "fsdf") /////////////////////////////////
 		c.Status(http.StatusNoContent)
 
 	}

@@ -11,6 +11,5 @@ func PingGet() gin.HandlerFunc {
 		c.JSON(http.StatusOK, map[string]string{
 			"hello": "Found me",
 		})
-
 	}
 }

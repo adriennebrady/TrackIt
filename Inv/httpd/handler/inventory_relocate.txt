@@ -1,18 +1,13 @@
 package handler
 
 import (
-	"backend/platform/inventory"
+	"Trackit/Inv/platform/inventory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type InvRequest struct {
-	Name     string `json:"Item Name"`
-	Location string `json:"Location"`
-}
-
-func InventoryRelocate(inv inventory.relocater) gin.HandlerFunc {
+func InventoryRelocate(inv inventory.Relocater) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestBody := InvRequest{}
 		c.Bind(&requestBody)

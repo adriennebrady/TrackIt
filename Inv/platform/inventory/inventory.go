@@ -7,7 +7,7 @@ type Adder interface {
 	Add(invItem InvItem)
 }
 type Renamer interface {
-	rename(invItem InvItem)
+	Rename(invItem InvItem, name string)
 }
 
 type InvItem struct {
@@ -23,7 +23,7 @@ type Container struct {
 
 func New() *Container {
 	return &Container{
-		InvItems: []InvItem{},///////////maybe add container initialization
+		InvItems: []InvItem{}, ///////////maybe add container initialization
 	}
 }
 
@@ -35,6 +35,6 @@ func (r *Container) GetAll() []InvItem {
 	return r.InvItems
 }
 
-func (r *Container) rename(invItem InvItemn name string) {
+func (r *Container) Rename(invItem *InvItem, name string) {
 	invItem.Name = name
 }
