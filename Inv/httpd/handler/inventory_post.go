@@ -8,7 +8,7 @@ import (
 )
 
 type InvRequest struct {
-	Name     string `json:"Item Name"`
+	Name     string `json:"Name"`
 	Location string `json:"Location"`
 }
 

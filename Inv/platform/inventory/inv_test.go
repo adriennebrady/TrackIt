@@ -24,20 +24,26 @@ func TestGetAll(t *testing.T) {
 func TestRename(t *testing.T) {
 	inv := New()
 	inv.Add(InvItem{"ac", "de"})
-	inv.Rename(&inv.InvItems[0], "newdfsdf")
+	inv.Rename("ac", "newdfsdf")
 
-	if inv.InvItems[0].Name != "newdfsdf" {
+	if inv.InvItems["newdfsdf"].Name != "newdfsdf" {
 		t.Errorf("Item was not renamed")
 	}
 
+	if inv.InvItems["newdfsdf"].Name == "newdfsdf" {
+		t.Errorf("Item was renamed")
+	}
+	
+
 }
+
 
 func TestRelocate(t *testing.T) {
 	inv := New()
 	inv.Add(InvItem{"ac", "de"})
-	inv.Relocate(&inv.InvItems[0], "newdfsdf")
+	inv.Relocate("ac", "newdfsdf")
 
-	if inv.InvItems[0].Location != "newdfsdf" {
+	if inv.InvItems["ac"].Location != "newdfsdf" {
 		t.Errorf("Item was not relocated")
 	}
 
