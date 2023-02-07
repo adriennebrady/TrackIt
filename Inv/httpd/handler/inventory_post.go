@@ -8,7 +8,7 @@ import (
 )
 
 type InvRequest struct {
-	Name     string `json:"Item Name"`
+	Name     string `json:"Name"`
 	Location string `json:"Location"`
 }
 
@@ -26,3 +26,14 @@ func InventoryPost(inv inventory.Adder) gin.HandlerFunc {
 
 	}
 }
+
+/*
+await fetch('/inventory', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+        Name: 'brush',
+        Location: 'dresser'
+    })
+})
+*/

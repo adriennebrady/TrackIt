@@ -16,7 +16,7 @@ func InventoryRelocate(inv inventory.Relocater) gin.HandlerFunc {
 			Name:     requestBody.Name,
 			Location: requestBody.Location,
 		}
-		inv.relocate(invItem)
+		inv.Relocate(invItem, "example")
 		c.Status(http.StatusNoContent)
 
 	}

@@ -10,11 +10,11 @@ type Renamer interface {
 	Rename(invItem InvItem, name string)
 }
 type Relocater interface {
-	Rename(invItem InvItem, name string)
+	Relocate(invItem InvItem, name string)
 }
 
 type InvItem struct {
-	Name     string `json:"Item Name"`
+	Name     string `json:"Name"`
 	Location string `json:"Location"`
 }
 
