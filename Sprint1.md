@@ -10,3 +10,15 @@ Insert here
 
 ## Which ones didn't and why?
 Insert here
+
+
+
+
+
+
+
+
+Front End:
+Record a video with both members demoing your frontend work. Use a mocked up backend, if necessary.
+Backend:
+Record a video with both members demoing your backend work. Use the command line or Postman.
