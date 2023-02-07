@@ -14,7 +14,7 @@ type Relocater interface {
 }
 
 type InvItem struct {
-	Name     string `json:"Item Name"`
+	Name     string `json:"Name"`
 	Location string `json:"Location"`
 }
 

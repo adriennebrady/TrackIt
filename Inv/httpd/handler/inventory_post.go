@@ -26,3 +26,14 @@ func InventoryPost(inv inventory.Adder) gin.HandlerFunc {
 
 	}
 }
+
+/*
+await fetch('/inventory', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+        Name: 'brush',
+        Location: 'dresser'
+    })
+})
+*/
