@@ -3,14 +3,10 @@ package inventory
 type Getter interface {
 	GetAll() map[string]*InvItem
 }
-type Adder interface {
+type Poster interface {
 	Add(invItem *InvItem)
-}
-type Renamer interface {
 	Rename(invItem *InvItem, newName string)
-}
-type Relocater interface {
-	Relocate(invItem *InvItem, newLocation string)
+	Relocate(itemName string, newLocation string)
 }
 type Deleter interface {
 	Delete(name string)
@@ -54,11 +50,10 @@ func (r *Container) Rename(invItem *InvItem, newName string) {
 
 }
 
-func (r *Container) Relocate(invItem *InvItem, newLocation string) {
-	_, ok := r.InvItems[invItem.Name]
+func (r *Container) Relocate(itemName string, newLocation string) {
+	_, ok := r.InvItems[itemName]
 	if ok {
-		r.InvItems[invItem.Name].Location = newLocation
-
+		r.InvItems[itemName].Location = newLocation
 	}
 }
 

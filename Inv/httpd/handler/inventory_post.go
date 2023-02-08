@@ -10,9 +10,10 @@ import (
 type InvRequest struct {
 	Name     string `json:"Name"`
 	Location string `json:"Location"`
+	Type     string `json:"Type"`
 }
 
-func InventoryPost(inv inventory.Adder) gin.HandlerFunc {
+func InventoryPost(inv inventory.Poster) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestBody := InvRequest{}
 		c.Bind(&requestBody)
@@ -21,7 +22,15 @@ func InventoryPost(inv inventory.Adder) gin.HandlerFunc {
 			Name:     requestBody.Name,
 			Location: requestBody.Location,
 		}
-		inv.Add(&invItem)
+		if requestBody.Type == "Add" {
+			inv.Add(&invItem)
+		}
+		if requestBody.Type == "Rename" {
+			inv.Rename(&invItem, invItem.Location)
+		}
+		if requestBody.Type == "Relocate" {
+			inv.Relocate(invItem.Name, invItem.Location)
+		}
 		c.Status(http.StatusNoContent)
 
 	}
