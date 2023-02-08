@@ -18,12 +18,24 @@
 * Create the "Home" page for a non-logged in user
 * Create the "Home" page for a logged-in user -- "My Inventory" page
 * Create the "Container Card" page
+* Create the "Inventory"
+* Add items to "Inventory"
+* Delete items to "Inventory"
+* Relocate items to different "Inventory"
+* Rename items in "Inventory"
 
 ## Which ones were successfully completed
-Insert here
+### Front-End
+### Back-End
+* Create the "Inventory" (with http request)
+* Add items to "Inventory" (with http request)
+* Delete items to "Inventory" (with http request)
+* Relocate items to different "Inventory" (Only Functionality)
+* Rename items in "Inventory" (Only Functionality)
 
 ## Which ones didn't and why?
-Insert here
+### Back-End
+* Relocate items to different "Inventory" (with http request) and Rename items in "Inventory"  (with http request). These did not work because we are still working on a way to implement these functionalities using http request
 
 ## Front-End and Back-End Demo Links:  
 Front End:  
