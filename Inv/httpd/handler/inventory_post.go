@@ -26,7 +26,7 @@ func InventoryPost(inv inventory.Poster) gin.HandlerFunc {
 			inv.Add(&invItem)
 		}
 		if requestBody.Type == "Rename" {
-			inv.Rename(&invItem, invItem.Location)
+			inv.Rename(invItem.Name, invItem.Location)
 		}
 		if requestBody.Type == "Relocate" {
 			inv.Relocate(invItem.Name, invItem.Location)

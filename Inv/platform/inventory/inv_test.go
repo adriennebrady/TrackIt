@@ -24,7 +24,7 @@ func TestGetAll(t *testing.T) {
 func TestRename(t *testing.T) {
 	inv := New() ////////////////////////////////////
 	inv.Add(&InvItem{"ac", "de"})
-	inv.Rename(inv.InvItems["ac"], "newdfsdf")
+	inv.Rename("ac", "newdfsdf")
 
 	if inv.InvItems["newdfsdf"].Name != "newdfsdf" {
 		t.Errorf("Item was not renamed")

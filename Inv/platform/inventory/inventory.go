@@ -5,7 +5,7 @@ type Getter interface {
 }
 type Poster interface {
 	Add(invItem *InvItem)
-	Rename(invItem *InvItem, newName string)
+	Rename(itemName string, newName string)
 	Relocate(itemName string, newLocation string)
 }
 type Deleter interface {
@@ -39,11 +39,12 @@ func (r *Container) GetAll() map[string]*InvItem {
 	return r.InvItems
 }
 
-func (r *Container) Rename(invItem *InvItem, newName string) {
-	_, ok := r.InvItems[invItem.Name]
+func (r *Container) Rename(itemName string, newName string) {
+	_, ok := r.InvItems[itemName]
 	if ok {
-		r.InvItems[newName] = invItem
-		delete(r.InvItems, invItem.Name)
+		checker := r.InvItems[itemName]
+		r.InvItems[newName] = checker
+		delete(r.InvItems, itemName)
 		r.InvItems[newName].Name = newName //////////////////////////check if this deletes and ruins everything
 
 	}
