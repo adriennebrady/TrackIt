@@ -15,9 +15,11 @@
 * As an overthinker, I want to be able to restore deleted items to my inventory, so that I don't accidentally lose my information permanently.
 
 ## What issues we planned to address
+### Front-End
 * Create the "Home" page for a non-logged in user
 * Create the "Home" page for a logged-in user -- "My Inventory" page
 * Create the "Container Card" page
+### Back-End
 * Create the "Inventory"
 * Add items to "Inventory"
 * Delete items to "Inventory"
