@@ -54,20 +54,10 @@ func (r *Container) Rename(invItem *InvItem, newName string) {
 
 }
 
-<<<<<<< HEAD
-func (r *Container) Relocate(invItem InvItem, newLocation string) {
-	ab := invItem.Name
-	_, ok := r.InvItems[invItem.Name]
-	if ok {
-		delete(r.InvItems, invItem.Name)
-		r.Add(InvItem{ab, newLocation})
-	}
-=======
 func (r *Container) Relocate(invItem *InvItem, newLocation string) {
 	_, ok := r.InvItems[invItem.Name]
 	if ok {
 		r.InvItems[invItem.Name].Location = newLocation
->>>>>>> 3633c480fb87736b730805e786a80be45c88b236
 
 	}
 }
