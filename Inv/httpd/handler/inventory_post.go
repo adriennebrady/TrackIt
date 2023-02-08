@@ -21,7 +21,7 @@ func InventoryPost(inv inventory.Adder) gin.HandlerFunc {
 			Name:     requestBody.Name,
 			Location: requestBody.Location,
 		}
-		inv.Add(invItem)
+		inv.Add(&invItem)
 		c.Status(http.StatusNoContent)
 
 	}
