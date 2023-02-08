@@ -42,3 +42,15 @@ func TestRelocate(t *testing.T) {
 	}
 
 }
+
+func TestDelete(t *testing.T) {
+	inv := New()
+	inv.Add(&InvItem{"ac", "de"})
+	if len(inv.InvItems) != 1 {
+		t.Errorf("Item was not added")
+	}
+	inv.Delete("ac")
+	if len(inv.InvItems) != 0 {
+		t.Errorf("Item was not removed")
+	}
+}

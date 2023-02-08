@@ -12,7 +12,9 @@ type Renamer interface {
 type Relocater interface {
 	Relocate(invItem *InvItem, newLocation string)
 }
-
+type Deleter interface {
+	Delete(name string)
+}
 type InvItem struct {
 	Name     string `json:"Name"`
 	Location string `json:"Location"`
@@ -58,5 +60,11 @@ func (r *Container) Relocate(invItem *InvItem, newLocation string) {
 		r.InvItems[invItem.Name].Location = newLocation
 
 	}
+}
 
+func (r *Container) Delete(name string) {
+	_, ok := r.InvItems[name]
+	if ok {
+		delete(r.InvItems, name)
+	}
 }
