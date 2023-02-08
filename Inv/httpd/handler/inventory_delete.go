@@ -7,16 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InventoryDel(inv inventory.Deleter) gin.HandlerFunc {
+func InventoryDelete(inv inventory.Deleter) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestBody := InvRequest{}
 		c.Bind(&requestBody)
 
-		invItem := inventory.InvItem{
-			Name:     requestBody.Name,
-			Location: requestBody.Location,
-		}
-		inv.delete(invItem)
+		inv.Delete(requestBody.Name)
 		c.Status(http.StatusNoContent)
 
 	}

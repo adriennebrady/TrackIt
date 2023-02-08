@@ -18,6 +18,11 @@ import { InventoryPageComponent } from './inventory-page/inventory-page.componen
 import { ContainerComponent } from './container/container.component';
 import { DialogComponent } from './inventory-page/dialog/dialog.component';
 import { ConfirmDialogComponent } from './inventory-page/confirm-dialog/confirm-dialog.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +30,11 @@ import { ConfirmDialogComponent } from './inventory-page/confirm-dialog/confirm-
     InventoryPageComponent,
     ContainerComponent,
     DialogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    HomeComponent,
+    AboutComponent,
+    LoginPageComponent,
+    SignUpPageComponent
   ],
   imports: [
     BrowserModule,

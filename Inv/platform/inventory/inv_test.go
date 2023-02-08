@@ -4,7 +4,7 @@ import "testing"
 
 func TestAdd(t *testing.T) {
 	inv := New()
-	inv.Add(InvItem{"check", "dfj"})
+	inv.Add(&InvItem{"check", "dfj"})
 
 	if len(inv.InvItems) != 1 {
 		t.Errorf("Item was not added")
@@ -14,7 +14,7 @@ func TestAdd(t *testing.T) {
 func TestGetAll(t *testing.T) {
 
 	inv := New()
-	inv.Add(InvItem{})
+	inv.Add(&InvItem{})
 	results := inv.GetAll()
 	if len(results) != 1 {
 		t.Errorf("Item was not added")
@@ -23,10 +23,10 @@ func TestGetAll(t *testing.T) {
 
 func TestRename(t *testing.T) {
 	inv := New()
-	inv.Add(InvItem{"ac", "de"})
-	inv.Rename(&inv.InvItems[0], "newdfsdf")
+	inv.Add(&InvItem{"ac", "de"})
+	inv.Rename(inv.InvItems["ac"], "newdfsdf")
 
-	if inv.InvItems[0].Name != "newdfsdf" {
+	if inv.InvItems["newdfsdf"].Name != "newdfsdf" {
 		t.Errorf("Item was not renamed")
 	}
 
@@ -34,11 +34,23 @@ func TestRename(t *testing.T) {
 
 func TestRelocate(t *testing.T) {
 	inv := New()
-	inv.Add(InvItem{"ac", "de"})
-	inv.Relocate(&inv.InvItems[0], "newdfsdf")
+	inv.Add(&InvItem{"ac", "de"})
+	inv.Relocate(inv.InvItems["ac"], "newdfsdf")
 
-	if inv.InvItems[0].Location != "newdfsdf" {
+	if inv.InvItems["ac"].Location != "newdfsdf" {
 		t.Errorf("Item was not relocated")
 	}
 
+}
+
+func TestDelete(t *testing.T) {
+	inv := New()
+	inv.Add(&InvItem{"ac", "de"})
+	if len(inv.InvItems) != 1 {
+		t.Errorf("Item was not added")
+	}
+	inv.Delete("ac")
+	if len(inv.InvItems) != 0 {
+		t.Errorf("Item was not removed")
+	}
 }

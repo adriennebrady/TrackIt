@@ -1,47 +1,70 @@
 package inventory
 
 type Getter interface {
-	GetAll() []InvItem
+	GetAll() map[string]*InvItem
 }
 type Adder interface {
-	Add(invItem InvItem)
+	Add(invItem *InvItem)
 }
 type Renamer interface {
-	Rename(invItem InvItem, name string)
+	Rename(invItem *InvItem, newName string)
 }
 type Relocater interface {
-	Rename(invItem InvItem, name string)
+	Relocate(invItem *InvItem, newLocation string)
 }
-
+type Deleter interface {
+	Delete(name string)
+}
 type InvItem struct {
-	Name     string `json:"Item Name"`
+	Name     string `json:"Name"`
 	Location string `json:"Location"`
 }
 
 type Container struct {
 	Name       string `json:"Cont Name"`
-	InvItems   []InvItem
-	Containers []Container
+	InvItems   map[string]*InvItem
+	Containers map[string]Container
 }
 
 func New() *Container {
 	return &Container{
-		InvItems: []InvItem{}, ///////////maybe add container initialization
+		InvItems: map[string]*InvItem{}, ///////////maybe add container initialization
 	}
 }
 
-func (r *Container) Add(invItem InvItem) {
-	r.InvItems = append(r.InvItems, invItem)
+func (r *Container) Add(invItem *InvItem) {
+	_, ok := r.InvItems[invItem.Name]
+	if !ok {
+		r.InvItems[invItem.Name] = invItem
+	}
 }
 
-func (r *Container) GetAll() []InvItem {
+func (r *Container) GetAll() map[string]*InvItem {
 	return r.InvItems
 }
 
-func (r *Container) Rename(invItem *InvItem, name string) {
-	invItem.Name = name
+func (r *Container) Rename(invItem *InvItem, newName string) {
+	_, ok := r.InvItems[invItem.Name]
+	if ok {
+		r.InvItems[newName] = invItem
+		delete(r.InvItems, invItem.Name)
+		r.InvItems[newName].Name = newName //////////////////////////check if this deletes and ruins everything
+
+	}
+
 }
 
-func (r *Container) Relocate(invItem *InvItem, location string) {
-	invItem.Location = location
+func (r *Container) Relocate(invItem *InvItem, newLocation string) {
+	_, ok := r.InvItems[invItem.Name]
+	if ok {
+		r.InvItems[invItem.Name].Location = newLocation
+
+	}
+}
+
+func (r *Container) Delete(name string) {
+	_, ok := r.InvItems[name]
+	if ok {
+		delete(r.InvItems, name)
+	}
 }
