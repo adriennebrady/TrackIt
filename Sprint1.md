@@ -30,8 +30,8 @@
 * Create the "Inventory" (with http request)
 * Add items to "Inventory" (with http request)
 * Delete items to "Inventory" (with http request)
-* Relocate items to different "Inventory" (Only Functionality)
-* Rename items in "Inventory" (Only Functionality)
+* Relocate items to different "Inventory" (Functionality Only)
+* Rename items in "Inventory" (Functionality Only)
 
 ## Which ones didn't and why?
 ### Back-End
