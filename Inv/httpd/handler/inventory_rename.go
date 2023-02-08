@@ -16,7 +16,7 @@ func InventoryRenamer(inv inventory.Renamer) gin.HandlerFunc {
 			Name:     requestBody.Name,
 			Location: requestBody.Location,
 		}
-		inv.Rename(invItem, "fsdf") /////////////////////////////////
+		inv.Rename(&invItem, "fsdf") /////////////////////////////////
 		c.Status(http.StatusNoContent)
 
 	}
