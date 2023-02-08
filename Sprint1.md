@@ -27,7 +27,18 @@
 * Rename items in "Inventory"
 
 ## Which ones were successfully completed
-### Front-End
+### Front-End  
+* Create the "Home" page for a non-logged in user 
+    * Created Home, About, Login, Sign Up Components
+    * Added Router Links from the home page
+* Create the "Home" page for a logged-in user -- "My Inventory" page 
+    * Created inventory and container components 
+    * Added functionality to create/display containers 
+    * Added delete functionality/warning dialog for containers
+* Create the "Container Card" page
+    * Created container page and container components 
+    * Added functionality to create/display containers 
+    * Added delete functionality/warning dialog for containers
 ### Back-End
 * Create the "Inventory" (with http request)
 * Add items to "Inventory" (with http request)
@@ -36,6 +47,10 @@
 * Rename items in "Inventory" (Functionality Only)
 
 ## Which ones didn't and why?
+### Front-End
+* "Rename" and "Move" buttons have been created in the container components, however they do not have functionality yet as we are working on a way to update container data, such as name and location.
+* "See Inside" and "Back" buttons have been created in the container and container-page components, however they do not have functionality yet as we are working on a way to create unique IDs for each container to be able to pass this ID to the container-page to display the selected container on its own page.
+
 ### Back-End
 * Relocate items to different "Inventory" (with http request) and Rename items in "Inventory"  (with http request). These did not work because we are still working on a way to implement these functionalities using http request
 
