@@ -52,10 +52,11 @@ func (r *Container) Rename(invItem InvItem, newName string) {
 }
 
 func (r *Container) Relocate(invItem InvItem, newLocation string) {
+	ab := invItem.Name
 	_, ok := r.InvItems[invItem.Name]
 	if ok {
-		r.Add(InvItem{invItem.Name, newLocation})
 		delete(r.InvItems, invItem.Name)
+		r.Add(InvItem{ab, newLocation})
 	}
 
 }
