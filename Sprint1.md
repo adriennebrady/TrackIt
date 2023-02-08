@@ -22,7 +22,7 @@
 ### Back-End
 * Create the "Inventory"
 * Add items to "Inventory"
-* Delete items to "Inventory"
+* Delete items from "Inventory"
 * Relocate items to different "Inventory"
 * Rename items in "Inventory"
 
