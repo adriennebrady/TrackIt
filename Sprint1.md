@@ -55,8 +55,8 @@
 * Relocate items to different "Inventory" (with http request) and Rename items in "Inventory"  (with http request). These did not work because we are still working on a way to implement these functionalities using http request
 
 ## Front-End and Back-End Demo Links:  
-Front End: https://drive.google.com/file/d/1QvPKT_SI78Bd_i55tlwHwln-wusRxHeb/view?usp=sharing
+**Front End:** https://drive.google.com/file/d/1QvPKT_SI78Bd_i55tlwHwln-wusRxHeb/view?usp=sharing  
 Record a video with both members demoing your frontend work. Use a mocked up backend, if necessary.
     
-Back End:  
+**Back End:**  
 Record a video with both members demoing your backend work. Use the command line or Postman.
