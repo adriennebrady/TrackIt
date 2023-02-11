@@ -48,7 +48,6 @@ func (r *Container) Rename(itemName string, newName string) {
 		r.InvItems[newName].Name = newName //////////////////////////check if this deletes and ruins everything
 
 	}
-
 }
 
 func (r *Container) Relocate(itemName string, newLocation string) {
