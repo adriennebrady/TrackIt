@@ -1,0 +1,36 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+.signUpButton {
+    margin-left: 5px;
+}
+
+.navbar {
+    background-color: white;
+}
+
+.logo {
+    font-weight: bold;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    text-align: center;
+    font-weight: 500;
+    font-size: calc(35px + 0.390625vw);
+    line-height: 100%;
+    padding-top: 10%;
+    max-width: 70%;
+}
+
+.description {
+    padding-top: 2%;
+    text-align: center;
+    max-width: 45%;
+    margin: 0  auto;
+}
