@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from './dialog/dialog.component';
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { DialogComponent } from '../inventory-page/dialog/dialog.component';
+import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm-dialog.component';
 
 
 @Component({
