@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../inventory-page/dialog/dialog.component';
 import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -10,6 +11,8 @@ import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm
   styleUrls: ['./container-card-page.component.css']
 })
 export class ContainerCardPageComponent implements OnInit {
+  containerId: number = -1;
+
   items = [ 
     {
       name: 'Milk',
@@ -24,9 +27,14 @@ export class ContainerCardPageComponent implements OnInit {
       description: "Expiration date: 3/13/2023"
     }];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private route: ActivatedRoute) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.containerId = +id;
+    }
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {

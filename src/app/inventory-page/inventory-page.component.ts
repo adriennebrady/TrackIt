@@ -11,14 +11,17 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 export class InventoryPageComponent implements OnInit {
   containers = [ 
     {
+      id: 1,
       name: 'Fridge',
       description: "All my food is kept in here."
     }, 
     { 
+      id: 2,
       name: 'Workbench',
       description: "All my tools are kept in here."
     }, 
     {
+      id: 3,
       name: 'Dresser',
       description: "All my clothes are kept in here."
     }];
@@ -34,7 +37,7 @@ export class InventoryPageComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          this.containers.push({name: result.name, description: result.description});
+          this.containers.push({id: this.containers[this.containers.length - 1].id + 1, name: result.name, description: result.description});
         }
       });
     }

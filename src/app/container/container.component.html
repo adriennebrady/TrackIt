@@ -24,7 +24,7 @@
       <br>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-stroked-button color="primary">See Inside ></button>
+      <button mat-stroked-button color="primary" (click)="seeInside(container.id)">See Inside ></button>
       <span class="spacer"></span>
       <button mat-icon-button color="primary" (click)="deleteContainer(index)">
         <mat-icon>delete</mat-icon>

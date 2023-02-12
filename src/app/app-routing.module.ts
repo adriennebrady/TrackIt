@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'login', component: LoginPageComponent, title: "TrackIt | Login"},
   {path: 'signup', component: SignUpPageComponent, title: "TrackIt | Sign Up"},
   {path: 'inventory', component: InventoryPageComponent, title: "TrackIt | Inventory"},
-  {path: 'containers', component: ContainerCardPageComponent, title: "TrackIt | Containers"},
+  {path: 'containers/:id', component: ContainerCardPageComponent, title: "TrackIt | Containers"},
   {path: '', redirectTo: '/home', pathMatch: 'full'}
 ];
 
