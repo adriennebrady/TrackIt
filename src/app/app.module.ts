@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 import { ItemComponent } from './container/item.component';
 import { ContainerCardPageComponent } from './container-card-page/container-card-page.component';
@@ -53,7 +54,8 @@ import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
     MatIconModule,
     MatMenuModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
