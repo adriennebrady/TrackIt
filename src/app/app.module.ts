@@ -15,7 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ContainerComponent } from './container/container.component';
+import { ItemComponent } from './container/item.component';
 import { ContainerCardPageComponent } from './container-card-page/container-card-page.component';
 import { ConfirmDialogComponent } from './container-card-page/confirm-dialog/confirm-dialog.component';
 import { DialogComponent } from './container-card-page/dialog/dialog.component';
@@ -23,7 +23,7 @@ import { DialogComponent } from './container-card-page/dialog/dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ContainerComponent,
+    ItemComponent,
     ContainerCardPageComponent,
     ConfirmDialogComponent,
     DialogComponent

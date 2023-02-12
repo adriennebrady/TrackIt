@@ -10,7 +10,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
   styleUrls: ['./container-card-page.component.css']
 })
 export class ContainerCardPageComponent implements OnInit {
-  containers = [ 
+  items = [ 
     {
       name: 'Milk',
       description: "Expiration date: 1/13/2023"
@@ -35,24 +35,24 @@ export class ContainerCardPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.containers.push({name: result.name, description: result.description});
+        this.items.push({name: result.name, description: result.description});
       }
     });
   }
 
-  removeContainer(index: number) {
-    this.containers.splice(index, 1);
+  removeItem(index: number) {
+    this.items.splice(index, 1);
   }
 
   openConfirmDialog(index: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
-      data: { name: this.containers[index].name }
+      data: { name: this.items[index].name }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.removeContainer(index);
+        this.removeItem(index);
       }
     });
   }

@@ -2,12 +2,12 @@ import { Component, Input } from '@angular/core';
 import { ContainerCardPageComponent } from '../container-card-page/container-card-page.component';
 
 @Component({
-  selector: 'app-container',
-  templateUrl: './container.component.html',
-  styleUrls: ['./container.component.css']
+  selector: 'app-item',
+  templateUrl: './item.component.html',
+  styleUrls: ['./item.component.css']
 })
-export class ContainerComponent {
-  @Input() container: {
+export class ItemComponent {
+  @Input() item: {
     name: string,
     description: string
   } = { name: '', description: '' };
@@ -16,7 +16,7 @@ export class ContainerComponent {
 
   constructor(private ContainerCardPage: ContainerCardPageComponent) {}
 
-  deleteContainer(index: number) {
+  deleteItem(index: number) {
     this.ContainerCardPage.openConfirmDialog(index);
   }
 }
