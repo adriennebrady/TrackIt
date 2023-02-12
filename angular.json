@@ -61,10 +61,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "cen3031-project:build:production"
+              "browserTarget": "cen3031-project:build:production",
+              "proxyConfig": "src/proxy.conf.json"
             },
             "development": {
-              "browserTarget": "cen3031-project:build:development"
+              "browserTarget": "cen3031-project:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

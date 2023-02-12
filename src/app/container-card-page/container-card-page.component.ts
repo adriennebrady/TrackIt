@@ -3,7 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../inventory-page/dialog/dialog.component';
 import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef } from '@angular/core';
 
+interface InvItem {
+  Name: string;
+  Location: string;
+}
 
 @Component({
   selector: 'app-container-card-page',
@@ -12,24 +18,34 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ContainerCardPageComponent implements OnInit {
   containerId: number = -1;
+  items: InvItem[] = [];
+  
+  constructor(public dialog: MatDialog, private http: HttpClient, private cdRef: ChangeDetectorRef, private route: ActivatedRoute) {}
 
-  items = [ 
-    {
-      name: 'Milk',
-      description: "Expiration date: 1/13/2023"
-    }, 
-    { 
-      name: 'Juice',
-      description: "Expiration date: 2/13/2023"
-    }, 
-    {
-      name: 'Soda',
-      description: "Expiration date: 3/13/2023"
-    }];
+  getInventory() {
+    this.http.get<{ [key: string]: InvItem }>('/api/inventory').subscribe(items => {
+      this.items = Object.values(items);
+      this.cdRef.detectChanges();
+    });
+  }
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute) {}
+  createItem(name: string) {
+    const newItem = {
+      name,
+      location: "top shelf",
+      type: "Add"
+    };
+
+    this.http.post('/api/inventory', newItem).subscribe(response => {
+      console.log(response);
+    });
+
+    this.getInventory();
+  }
 
   ngOnInit() {
+    this.getInventory();
+    
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.containerId = +id;
@@ -38,24 +54,32 @@ export class ContainerCardPageComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
-      data: {name: '', description: ''}
+      data: Object.entries({name: '', description: ''})
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.items.push({name: result.name, description: result.description});
+        this.createItem(result.name);
       }
     });
   }
 
   removeItem(index: number) {
-    this.items.splice(index, 1);
-  }
+    const itemName = {
+      name: this.items[index].Name
+    };
+    this.http.delete('/api/inventory', {body: itemName}).subscribe(response => {
+      console.log(response);
+      this.items.splice(index, 1);
+    });
+
+    this.getInventory();
+}
 
   openConfirmDialog(index: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
-      data: { name: this.items[index].name }
+      data: { name: this.items[index].Name }
     });
 
     dialogRef.afterClosed().subscribe(result => {

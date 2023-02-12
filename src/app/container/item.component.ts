@@ -8,9 +8,9 @@ import { ContainerCardPageComponent } from '../container-card-page/container-car
 })
 export class ItemComponent {
   @Input() item: {
-    name: string,
-    description: string
-  } = { name: '', description: '' };
+    Name: string,
+    Location: string
+  } = { Name: '', Location: '' };
 
   @Input() index: number = -1;
 

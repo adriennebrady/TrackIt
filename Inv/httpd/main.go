@@ -12,10 +12,13 @@ func main() {
 
 	r := gin.Default()
 
-	r.GET("/ping", handler.PingGet())
-	r.GET("/inventory", handler.InventoryGet(inv))
-	r.POST("/inventory", handler.InventoryPost(inv))
-	r.DELETE("/inventory", handler.InventoryDelete(inv))
+	api := r.Group("/api")
+	{
+		api.GET("/ping", handler.PingGet())
+		api.GET("/inventory", handler.InventoryGet(inv))
+		api.POST("/inventory", handler.InventoryPost(inv))
+		api.DELETE("/inventory", handler.InventoryDelete(inv))
+	}
 
 	r.Run()
 
