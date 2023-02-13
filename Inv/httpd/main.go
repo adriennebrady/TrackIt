@@ -9,6 +9,9 @@ import (
 
 func main() {
 	inv := inventory.New()
+	//fmt.Println(inv)
+	//inv.Add(1, 2, 3)
+	//fmt.Println(inv)
 
 	r := gin.Default()
 
@@ -21,9 +24,4 @@ func main() {
 	}
 
 	r.Run()
-
-	// feed := newsfeed.New()
-	// fmt.Println(feed)
-	// feed.Add(newsfeed.Item{"Hello", "How ya' doing mate?"})
-	// fmt.Println(feed)
 }
