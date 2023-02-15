@@ -20,6 +20,8 @@ type Container struct {
 	Name       string `json:"Cont Name"`
 	InvItems   map[string]*InvItem
 	Containers map[string]Container
+	Parent     *Container
+	Previous   *Container
 }
 
 func New() *Container {
