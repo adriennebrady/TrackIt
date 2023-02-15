@@ -19,7 +19,7 @@ type Account struct {
 func main() {
 	inv := inventory.New()
 
-	db, err := gorm.Open(sqlite.Open("Inv/httpd/AllTracks.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("Inv/AllTracks.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
