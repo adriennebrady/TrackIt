@@ -5,6 +5,8 @@ TrackIt Sprint 2
 ## Front-End
 
 ## Back-End
+* Create database using sqlite
+* Create Create/Login
 
 # List unit tests and Cypress tests for frontend
 
