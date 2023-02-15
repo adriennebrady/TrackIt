@@ -25,20 +25,20 @@ func main() {
 	}
 	db.AutoMigrate(&Account{})
 
-	//newAccount := Account{Username: "ampleuser", Password: "amplepassword", Token: "ampletoken"}
-	//result := db.Create(&newAccount)
+	newAccount := Account{Username: "user", Password: "password", Token: "token"}
+	result := db.Create(&newAccount)
+	if result.Error != nil {
+		panic(result.Error)
+	}
 
-	// if result.Error != nil {
-	// 	panic(result.Error)
-	// }
+	var account Account
+	db.First(&account, "username =?", "user")
 
-	var user Account
-	db.First(&user, 1)
+	//db.Model(&account).Update("username", "Bob")
+	db.Model(&account).Updates(Account{Username: "Genius", Token: "sampletoken"})
+	db.Delete(&account, "username =?", "Genius")
 
-	db.Model(&user).Update("Username", "Bob")
 	db.Commit()
-
-	//db.Delete(&user, 1)
 
 	// Create a new user
 	//fmt.Println(inv)
@@ -57,3 +57,5 @@ func main() {
 
 	r.Run()
 }
+
+//https://gorm.io/docs/index.html GORM site
