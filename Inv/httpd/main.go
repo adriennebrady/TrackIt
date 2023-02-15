@@ -25,19 +25,18 @@ func main() {
 	}
 	db.AutoMigrate(&Account{})
 
-	newAccount := Account{Username: "ampleuser", Password: "amplepassword", Token: "ampletoken"}
+	//newAccount := Account{Username: "ampleuser", Password: "amplepassword", Token: "ampletoken"}
+	//result := db.Create(&newAccount)
 
-	result := db.Create(&newAccount)
-
-	if result.Error != nil {
-		panic(result.Error)
-	}
-	db.Commit()
+	// if result.Error != nil {
+	// 	panic(result.Error)
+	// }
 
 	var user Account
 	db.First(&user, 1)
 
 	db.Model(&user).Update("Username", "Bob")
+	db.Commit()
 
 	//db.Delete(&user, 1)
 
