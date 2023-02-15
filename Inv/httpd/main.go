@@ -10,28 +10,34 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type User struct {
-	gorm.Model
-	Name  string
-	Email string
+type Account struct {
+	Username string `gorm:"primaryKey"`
+	Password string
+	Token    string
 }
 
 func main() {
 	inv := inventory.New()
 
-	db, err := gorm.Open(sqlite.Open("AllTracks.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("Inv/httpd/AllTracks.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
+	db.AutoMigrate(&Account{})
 
-	db.AutoMigrate(&User{})
+	newAccount := Account{Username: "ampleuser", Password: "amplepassword", Token: "ampletoken"}
 
-	db.Create(&User{Name: "Alice", Email: "alice@example.com"})
+	result := db.Create(&newAccount)
 
-	var user User
+	if result.Error != nil {
+		panic(result.Error)
+	}
+	db.Commit()
+
+	var user Account
 	db.First(&user, 1)
 
-	db.Model(&user).Update("Name", "Bob")
+	db.Model(&user).Update("Username", "Bob")
 
 	//db.Delete(&user, 1)
 
