@@ -26,7 +26,7 @@ type Container struct {
 
 func New() *Container {
 	return &Container{
-		InvItems: map[string]*InvItem{}, ///////////maybe add container initialization
+		InvItems: map[string]*InvItem{}, ////TODO maybe add container initialization
 	}
 }
 
@@ -47,7 +47,7 @@ func (r *Container) Rename(itemName string, newName string) {
 		checker := r.InvItems[itemName]
 		r.InvItems[newName] = checker
 		delete(r.InvItems, itemName)
-		r.InvItems[newName].Name = newName //////////////////////////check if this deletes and ruins everything
+		r.InvItems[newName].Name = newName ////TODO check if this deletes and ruins everything
 
 	}
 }
