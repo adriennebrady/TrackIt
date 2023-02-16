@@ -19,4 +19,8 @@ export class ItemComponent {
   deleteItem(index: number) {
     this.ContainerCardPage.openConfirmDialog(index);
   }
+
+  renameItem(index: number) {
+    this.ContainerCardPage.openRenameDialog(index);
+  }
 }
