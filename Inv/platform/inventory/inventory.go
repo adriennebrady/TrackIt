@@ -22,7 +22,6 @@ type Container struct {
 	InvItems   map[string]*InvItem
 	Containers map[string]Container
 	Parent     *Container
-	Previous   *Container
 }
 
 func New() *Container {
