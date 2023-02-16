@@ -7,9 +7,9 @@ type Poster interface {
 	Add(invItem *InvItem)
 	Rename(itemName string, newName string)
 	Relocate(itemName string, newLocation string)
-	AddContainer(invItem *InvItem)
-	RenameContainer(itemName string, newName string)
-	RelocateContainer(itemName string, newLocation string)
+	AddContainer(cont *Container)
+	RenameContainer(containerName string, newContainerName string)
+	RelocateContainer(containerName string, newContainerLocation string)
 }
 type Deleter interface {
 	Delete(name string)
@@ -24,18 +24,20 @@ type Container struct {
 	Name       string `json:"Cont Name"`
 	Location   string `json:"Cont Location"`
 	InvItems   map[string]*InvItem
-	Containers map[string]Container
+	Containers map[string]*Container
 	Parent     *Container
+	Poster
 }
 
-//main storage for all containers
+// main storage for all containers
 type ContainerStorage struct {
 	ContainersHolder map[string]*Container
 }
 
 func New() *Container {
 	return &Container{
-		InvItems: map[string]*InvItem{}, ////TODO maybe add container initialization
+		InvItems:   map[string]*InvItem{},
+		Containers: map[string]*Container{}, ////TODO maybe add container initialization
 	}
 }
 
@@ -75,11 +77,21 @@ func (r *Container) Delete(name string) {
 	}
 }
 
-
-func (r *ContainerStorage) AddContainer(cont *Container) { ///////////
-	_, ok := r.ContainersHolder[cont.Name]
+func (r *ContainerStorage) AddContainer(cont *Container, parentName string) {
+	parent, ok := r.ContainersHolder[parentName]
 	if !ok {
-		r.ContainersHolder[cont.Name] = cont
+		// Parent container doesn't exist, handle error as appropriate
+		return
+	}
+
+	if parent.Containers == nil {
+		parent.Containers = make(map[string]*Container)
+	}
+
+	_, ok = parent.Containers[cont.Name]
+	if !ok {
+		cont.Parent = parent
+		parent.Containers[cont.Name] = cont
 	}
 }
 
@@ -90,10 +102,10 @@ func (r *ContainerStorage) AddContainer(cont *Container) { ///////////
 func (r *ContainerStorage) RenameContainer(containerName string, newContainerName string) {
 	_, ok := r.ContainersHolder[containerName]
 	if ok {
-		checker := r.ContainersHolder [containerName]
-		r.ContainersHolder [newContainerName ] = checker
-		delete(r.ContainersHolder , containerName)
-		r.ContainersHolder [newContainerName].Name = newContainerName  //////////////////////////check if this deletes and ruins everything
+		checker := r.ContainersHolder[containerName]
+		r.ContainersHolder[newContainerName] = checker
+		delete(r.ContainersHolder, containerName)
+		r.ContainersHolder[newContainerName].Name = newContainerName //////////////////////////check if this deletes and ruins everything
 
 	}
 }
