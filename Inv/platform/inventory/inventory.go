@@ -7,7 +7,6 @@ type Poster interface {
 	Add(invItem *InvItem)
 	Rename(itemName string, newName string)
 	Relocate(itemName string, newLocation string)
-	AddContainer(invContainer *Container)
 	AddContainer(cont *Container)
 	RenameContainer(containerName string, newContainerName string)
 	RelocateContainer(containerName string, newContainerLocation string)
