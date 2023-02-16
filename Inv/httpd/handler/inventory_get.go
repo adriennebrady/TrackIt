@@ -15,12 +15,12 @@ func InventoryGet(inv inventory.Getter) gin.HandlerFunc {
 	}
 }
 
+//TODO add backend accounts  to assign inventories to
+//////////////TODO lock inventories behind username they must have access for
+//////////////TODO allow users to delete accounts
+
 //TODO add containers/traversing them
 //TODO parse urls to figure what container we're in
 
 //TODO bonus:be able to search for an item
 //TODO bonus::connect to angular///////////////////////////////////////////////////////////
-
-//TODO add backend accounts  to assign inventories to
-//////////////TODO lock inventories behind username they must have access for
-//////////////TODO allow users to delete accounts
