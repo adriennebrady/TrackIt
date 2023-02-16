@@ -85,6 +85,7 @@ func (r *ContainerStorage) AddContainer(cont *Container, parentName string) {
 	if parent.Containers == nil {
 		parent.Containers = make(map[string]*Container)
 	}
+}
 
 func (r *Container) AddContainer(cont *Container) { ///////////
 	_, ok := r.Containers[cont.Name]
@@ -92,9 +93,10 @@ func (r *Container) AddContainer(cont *Container) { ///////////
 		r.Containers[cont.Name] = cont
 
 	_, ok = parent.Containers[cont.Name]
-	if !ok {
-		cont.Parent = parent
-		parent.Containers[cont.Name] = cont
+		if !ok {
+			cont.Parent = parent
+			parent.Containers[cont.Name] = cont
+		}
 	}
 }
 
@@ -111,6 +113,8 @@ func (r *Container) RenameContainer(containerName string, newContainerName strin
 		delete(r.Containers, containerName)
 		r.Containers[newContainerName].Name = newContainerName  //////////////////////////check if this deletes and ruins everything
 
+	}
+}
 
 func (r *ContainerStorage) RenameContainer(containerName string, newContainerName string) {
 	checker, ok := r.ContainersHolder[containerName]
