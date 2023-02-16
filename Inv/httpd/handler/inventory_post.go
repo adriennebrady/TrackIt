@@ -8,19 +8,32 @@ import (
 )
 
 type InvRequest struct {
-	Kind 	 string `json:"Kind"` // container or item?
-	Name     string `json:"Name"`
-	Location string `json:"Location"`
-	Type     string `json:"Type"`
+	Authorization string `json:"Authorization"`
+	Kind          string `json:"Kind"` // container or item?
+	Name          string `json:"Name"`
+	Location      string `json:"Location"`
+	Type          string `json:"Type"`
 }
 
 
 func InventoryPost(inv inventory.Poster) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		token := c.GetHeader("Authorization")
+		if token == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
+			return
+		}
+
+		// Verify that the token is valid.
+		if !isValidToken(token) {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			return
+		}
+
 		requestBody := InvRequest{}
 		c.Bind(&requestBody)
 
-		if  requestBody.Kind == "Container" {
+		if requestBody.Kind == "Container" {
 			container := inventory.Container{
 				LocID: 3, ////////////////////////////////////
 				Name:     requestBody.Name,
@@ -29,7 +42,7 @@ func InventoryPost(inv inventory.Poster) gin.HandlerFunc {
 				InvItems: map[string]*InvItem, 
 				Containers: map[string]*Container,
 			}
-				
+
 			if requestBody.Type == "Add" {
 				inv.AddContainer(&container)
 			}
@@ -45,7 +58,7 @@ func InventoryPost(inv inventory.Poster) gin.HandlerFunc {
 				Name:     requestBody.Name,
 				Location: requestBody.Location,
 			}
-			
+
 			if requestBody.Type == "Add" {
 				inv.Add(&invItem)
 			}

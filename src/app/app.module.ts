@@ -26,6 +26,7 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
+import { RenameDialogComponent } from './inventory-page/rename-dialog/rename-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
     HomeComponent,
     AboutComponent,
     LoginPageComponent,
-    SignUpPageComponent
+    SignUpPageComponent,
+    RenameDialogComponent
   ],
   imports: [
     BrowserModule,

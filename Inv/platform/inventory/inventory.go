@@ -8,6 +8,7 @@ type Poster interface {
 	Rename(itemName string, newName string)
 	Relocate(itemName string, newLocation string)
 	AddContainer(invContainer *Container)
+	AddContainer(cont *Container)
 	RenameContainer(containerName string, newContainerName string)
 	RelocateContainer(containerName string, newContainerLocation string)
 }
@@ -26,12 +27,18 @@ type Container struct {
 	InvItems   map[string]*InvItem
 	Containers map[string]*Container
 	Parent     *Container
+	Poster
 }
 
+// main storage for all containers
+type ContainerStorage struct {
+	ContainersHolder map[string]*Container
+}
 
 func New() *Container {
 	return &Container{
-		InvItems: map[string]*InvItem{}, ///////////maybe add container initialization
+		InvItems:   map[string]*InvItem{},
+		Containers: map[string]*Container{}, ////TODO maybe add container initialization
 	}
 }
 
@@ -47,13 +54,11 @@ func (r *Container) GetAll() map[string]*InvItem {
 }
 
 func (r *Container) Rename(itemName string, newName string) {
-	_, ok := r.InvItems[itemName]
+	checker, ok := r.InvItems[itemName]
 	if ok {
-		checker := r.InvItems[itemName]
+		checker.Name = newName ////TODO check if this deletes and ruins everything
 		r.InvItems[newName] = checker
 		delete(r.InvItems, itemName)
-		r.InvItems[newName].Name = newName //////////////////////////check if this deletes and ruins everything
-
 	}
 }
 
@@ -71,17 +76,33 @@ func (r *Container) Delete(name string) {
 	}
 }
 
+func (r *ContainerStorage) AddContainer(cont *Container, parentName string) {
+	parent, ok := r.ContainersHolder[parentName]
+	if !ok {
+		// Parent container doesn't exist, handle error as appropriate
+		return
+	}
+
+	if parent.Containers == nil {
+		parent.Containers = make(map[string]*Container)
+	}
 
 func (r *Container) AddContainer(cont *Container) { ///////////
 	_, ok := r.Containers[cont.Name]
 	if !ok {
 		r.Containers[cont.Name] = cont
+
+	_, ok = parent.Containers[cont.Name]
+	if !ok {
+		cont.Parent = parent
+		parent.Containers[cont.Name] = cont
 	}
 }
 
 /*func (r *Container) GetAllContainers() map[string]*Container {
 	return r.Containers
 }*/
+
 
 func (r *Container) RenameContainer(containerName string, newContainerName string) {
 	_, ok := r.Containers[containerName]
@@ -90,6 +111,14 @@ func (r *Container) RenameContainer(containerName string, newContainerName strin
 		r.Containers[newContainerName ] = checker
 		delete(r.Containers, containerName)
 		r.Containers[newContainerName].Name = newContainerName  //////////////////////////check if this deletes and ruins everything
+
+
+func (r *ContainerStorage) RenameContainer(containerName string, newContainerName string) {
+	checker, ok := r.ContainersHolder[containerName]
+	if ok {
+		checker.Name = newContainerName
+		r.ContainersHolder[newContainerName] = checker
+		delete(r.ContainersHolder, containerName)
 
 	}
 }
