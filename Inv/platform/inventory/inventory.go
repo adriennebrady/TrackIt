@@ -17,6 +17,7 @@ type InvItem struct {
 }
 
 type Container struct {
+	LocID      int
 	Name       string `json:"Cont Name"`
 	InvItems   map[string]*InvItem
 	Containers map[string]Container
