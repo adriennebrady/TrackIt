@@ -7,9 +7,9 @@ type Poster interface {
 	Add(invItem *InvItem)
 	Rename(itemName string, newName string)
 	Relocate(itemName string, newLocation string)
-	AddContainer(invItem *InvItem)
-	RenameContainer(itemName string, newName string)
-	RelocateContainer(itemName string, newLocation string)
+	AddContainer(invContainer *Container)
+	RenameContainer(containerName string, newContainerName string)
+	RelocateContainer(containerName string, newContainerLocation string)
 }
 type Deleter interface {
 	Delete(name string)
@@ -24,14 +24,10 @@ type Container struct {
 	Name       string `json:"Cont Name"`
 	Location   string `json:"Cont Location"`
 	InvItems   map[string]*InvItem
-	Containers map[string]Container
+	Containers map[string]*Container
 	Parent     *Container
 }
 
-//main storage for all containers
-type ContainerStorage struct {
-	ContainersHolder map[string]*Container
-}
 
 func New() *Container {
 	return &Container{
@@ -76,10 +72,10 @@ func (r *Container) Delete(name string) {
 }
 
 
-func (r *ContainerStorage) AddContainer(cont *Container) { ///////////
-	_, ok := r.ContainersHolder[cont.Name]
+func (r *Container) AddContainer(cont *Container) { ///////////
+	_, ok := r.Containers[cont.Name]
 	if !ok {
-		r.ContainersHolder[cont.Name] = cont
+		r.Containers[cont.Name] = cont
 	}
 }
 
@@ -87,20 +83,20 @@ func (r *ContainerStorage) AddContainer(cont *Container) { ///////////
 	return r.Containers
 }*/
 
-func (r *ContainerStorage) RenameContainer(containerName string, newContainerName string) {
-	_, ok := r.ContainersHolder[containerName]
+func (r *Container) RenameContainer(containerName string, newContainerName string) {
+	_, ok := r.Containers[containerName]
 	if ok {
-		checker := r.ContainersHolder [containerName]
-		r.ContainersHolder [newContainerName ] = checker
-		delete(r.ContainersHolder , containerName)
-		r.ContainersHolder [newContainerName].Name = newContainerName  //////////////////////////check if this deletes and ruins everything
+		checker := r.Containers[containerName]
+		r.Containers[newContainerName ] = checker
+		delete(r.Containers, containerName)
+		r.Containers[newContainerName].Name = newContainerName  //////////////////////////check if this deletes and ruins everything
 
 	}
 }
 
-func (r *ContainerStorage) RelocateContainer(containerName string, newContainerLocation string) { ////////
-	_, ok := r.ContainersHolder[containerName]
+func (r *Container) RelocateContainer(containerName string, newContainerLocation string) { ////////
+	_, ok := r.Containers[containerName]
 	if ok {
-		r.ContainersHolder[containerName].Location = newContainerLocation
+		r.Containers[containerName].Location = newContainerLocation
 	}
 }

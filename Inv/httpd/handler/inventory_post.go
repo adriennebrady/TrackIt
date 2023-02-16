@@ -14,6 +14,7 @@ type InvRequest struct {
 	Type     string `json:"Type"`
 }
 
+
 func InventoryPost(inv inventory.Poster) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestBody := InvRequest{}
@@ -21,8 +22,12 @@ func InventoryPost(inv inventory.Poster) gin.HandlerFunc {
 
 		if  requestBody.Kind == "Container" {
 			container := inventory.Container{
+				LocID: 3, ////////////////////////////////////
 				Name:     requestBody.Name,
 				Location: requestBody.Location,
+				Parent:   *inv, ///////////////////////////
+				InvItems: map[string]*InvItem, 
+				Containers: map[string]*Container,
 			}
 				
 			if requestBody.Type == "Add" {
