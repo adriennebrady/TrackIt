@@ -15,7 +15,7 @@ type InvRequest struct {
 	Type          string `json:"Type"`
 }
 
-func InventoryPost(inv inventory.Poster) gin.HandlerFunc {
+func InventoryPost(inv *inventory.Container) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {
@@ -37,7 +37,7 @@ func InventoryPost(inv inventory.Poster) gin.HandlerFunc {
 				LocID:      3, ////////////////////////////////////
 				Name:       requestBody.Name,
 				Location:   requestBody.Location,
-				Parent:     *inv, ///////////////////////////
+				Parent:     inv, ///////////////////////////
 				InvItems:   make(map[string]*inventory.InvItem),
 				Containers: make(map[string]*inventory.Container),
 			}
