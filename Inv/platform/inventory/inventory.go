@@ -53,13 +53,11 @@ func (r *Container) GetAll() map[string]*InvItem {
 }
 
 func (r *Container) Rename(itemName string, newName string) {
-	_, ok := r.InvItems[itemName]
+	checker, ok := r.InvItems[itemName]
 	if ok {
-		checker := r.InvItems[itemName]
+		checker.Name = newName ////TODO check if this deletes and ruins everything
 		r.InvItems[newName] = checker
 		delete(r.InvItems, itemName)
-		r.InvItems[newName].Name = newName ////TODO check if this deletes and ruins everything
-
 	}
 }
 
@@ -100,13 +98,11 @@ func (r *ContainerStorage) AddContainer(cont *Container, parentName string) {
 }*/
 
 func (r *ContainerStorage) RenameContainer(containerName string, newContainerName string) {
-	_, ok := r.ContainersHolder[containerName]
+	checker, ok := r.ContainersHolder[containerName]
 	if ok {
-		checker := r.ContainersHolder[containerName]
+		checker.Name = newContainerName
 		r.ContainersHolder[newContainerName] = checker
 		delete(r.ContainersHolder, containerName)
-		r.ContainersHolder[newContainerName].Name = newContainerName //////////////////////////check if this deletes and ruins everything
-
 	}
 }
 
