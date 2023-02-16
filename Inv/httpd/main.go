@@ -16,6 +16,20 @@ type Account struct {
 	Token    string
 }
 
+type Item struct {
+	itemID   int `gorm:"primaryKey"`
+	user     string
+	itemName string
+	LocID    int
+	Count    int
+}
+
+type Container struct {
+	LocID    int `gorm:"primaryKey"`
+	Name     string
+	ParentID int
+}
+
 func main() {
 	inv := inventory.New()
 
@@ -24,21 +38,8 @@ func main() {
 		panic(err)
 	}
 	db.AutoMigrate(&Account{})
-
-	newAccount := Account{Username: "user", Password: "password", Token: "token"}
-	result := db.Create(&newAccount)
-	if result.Error != nil {
-		panic(result.Error)
-	}
-
-	var account Account
-	db.First(&account, "username =?", "user")
-
-	//db.Model(&account).Update("username", "Bob")
-	db.Model(&account).Updates(Account{Username: "Genius", Token: "sampletoken"})
-	db.Delete(&account, "username =?", "Genius")
-
-	db.Commit()
+	db.AutoMigrate(&Item{})
+	db.AutoMigrate(&Container{})
 
 	// Create a new user
 	//fmt.Println(inv)
@@ -50,6 +51,7 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.GET("/ping", handler.PingGet())
+		api.GET("/login", handler.LoginPost(db))
 		api.GET("/inventory", handler.InventoryGet(inv))
 		api.POST("/inventory", handler.InventoryPost(inv))
 		api.DELETE("/inventory", handler.InventoryDelete(inv))
@@ -59,3 +61,18 @@ func main() {
 }
 
 //https://gorm.io/docs/index.html GORM site
+/*	newAccount := Account{Username: "user", Password: "password", Token: "token"}
+	result := db.Create(&newAccount)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+
+	var account Account
+	db.First(&account, "username =?", "user")
+
+	db.Model(&account).Update("username", "Bob")
+	db.Model(&account).Updates(Account{Username: "Genius", Token: "sampletoken"})
+	db.Delete(&account, "username =?", "Genius")
+
+	db.Commit()
+*/
