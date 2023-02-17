@@ -52,6 +52,16 @@ func InventoryPost(inv *inventory.Container) gin.HandlerFunc {
 				inv.RelocateContainer(container.Name, container.Location)
 			}
 
+		} else if requestBody.Kind == "Traverse" {
+			if requestBody.Location == "Parent" {
+				inv = inv.Parent
+			} else {
+				test, ok := inv.Containers[requestBody.Location]
+				if !ok {
+					inv = test
+				}
+			}
+
 		} else {
 			invItem := inventory.InvItem{
 				Name:     requestBody.Name,
@@ -110,7 +120,5 @@ curl http://localhost:8080/inventory \
     --request "POST" \
     --data '{"Name": "Brush","Location": "Cabinet"}'
 
-curl http://localhost:8080/inventory \
-    --header "Content-Type: application/json" \
-    --request "GET"
+curl http://localhost:8080/inventory \ --header "Content-Type: application/json" \ --request "GET"
 */
