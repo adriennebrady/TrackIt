@@ -26,7 +26,7 @@ type Container struct {
 	InvItems   map[string]*InvItem
 	Containers map[string]*Container
 	Parent     *Container
-	Poster
+	// Poster //Tests work without poster, not sure what poster should be set to?
 }
 
 // main storage for all containers
@@ -91,13 +91,17 @@ func (r *Container) AddContainer(cont *Container) { ///////////
 	_, ok := r.Containers[cont.Name]
 	if !ok {
 		r.Containers[cont.Name] = cont
+	}
+	//leave for later, after testing
+	/*
+		cont.Parent
 
-	_, ok = parent.Containers[cont.Name]
-		if !ok {
-			cont.Parent = parent
+	_, ok = r.Containers[cont.Name]
+		if ok {
+			cont.Parent = r.Parent.Containers[cont.Name]
 			parent.Containers[cont.Name] = cont
 		}
-	}
+	} */
 }
 
 /*func (r *Container) GetAllContainers() map[string]*Container {
@@ -115,7 +119,7 @@ func (r *Container) RenameContainer(containerName string, newContainerName strin
 
 	}
 }
-
+/*
 func (r *ContainerStorage) RenameContainer(containerName string, newContainerName string) {
 	checker, ok := r.ContainersHolder[containerName]
 	if ok {
@@ -125,10 +129,18 @@ func (r *ContainerStorage) RenameContainer(containerName string, newContainerNam
 
 	}
 }
+*/
 
 func (r *Container) RelocateContainer(containerName string, newContainerLocation string) { ////////
 	_, ok := r.Containers[containerName]
 	if ok {
 		r.Containers[containerName].Location = newContainerLocation
+	}
+}
+
+func (r *Container) DeleteContainer(name string) {
+	_, ok := r.Containers[name]
+	if ok {
+		delete(r.Containers, name)
 	}
 }
