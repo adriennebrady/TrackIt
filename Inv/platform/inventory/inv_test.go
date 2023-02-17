@@ -59,11 +59,27 @@ func TestAddCont(t *testing.T) {
 	inv := New()
 	var iuop = map[string]*InvItem{}
 	var iuopp = map[string]*Container{}
-	inv.AddContainer(&Container{1, "top drawer", "dresser", iuop, iuopp, inv})
+	inv.AddContainer(&Container{1, "top drawer", "dresser", iuop, iuopp, nil})
+	inv.AddContainer(&Container{2, "bottom drawer", "dresser", iuop, iuopp, nil})
 
 	if len(inv.Containers) != 1 {
 		t.Errorf("Item was not added")
 	}
+}
+
+func TestAddCont2(t *testing.T) {
+	inv := New()
+	var iuop = map[string]*InvItem{}
+	var iuopp = map[string]*Container{}
+	inv.AddContainer(&Container{1, "top drawer", "dresser", iuop, iuopp, nil})
+	inv = inv.Containers["top drawer"] 
+	inv.AddContainer(&Container{2, "bottom drawer", "dresser", iuop, iuopp, nil})
+
+	if inv.Name != "top drawer" {
+		t.Errorf("Item was not added")
+	}
+
+	inv = inv.Parent
 }
 
 func TestRenameCont(t *testing.T) {

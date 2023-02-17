@@ -36,6 +36,7 @@ type ContainerStorage struct {
 
 func New() *Container {
 	return &Container{
+		LocID: -1,
 		InvItems:   map[string]*InvItem{},
 		Containers: map[string]*Container{}, ////TODO maybe add container initialization
 	}
@@ -74,7 +75,7 @@ func (r *Container) Delete(name string) {
 		delete(r.InvItems, name)
 	}
 }
-
+/*
 func (r *ContainerStorage) AddContainer(cont *Container, parentName string) {
 	parent, ok := r.ContainersHolder[parentName]
 	if !ok {
@@ -86,12 +87,15 @@ func (r *ContainerStorage) AddContainer(cont *Container, parentName string) {
 		parent.Containers = make(map[string]*Container)
 	}
 }
+*/
 
 func (r *Container) AddContainer(cont *Container) { ///////////
 	_, ok := r.Containers[cont.Name]
 	if !ok {
 		r.Containers[cont.Name] = cont
+		cont.Parent = r
 	}
+
 	//leave for later, after testing
 	/*
 		cont.Parent
@@ -104,9 +108,9 @@ func (r *Container) AddContainer(cont *Container) { ///////////
 	} */
 }
 
-/*func (r *Container) GetAllContainers() map[string]*Container {
+func (r *Container) GetAllContainers() map[string]*Container {
 	return r.Containers
-}*/
+}
 
 
 func (r *Container) RenameContainer(containerName string, newContainerName string) {
@@ -115,21 +119,10 @@ func (r *Container) RenameContainer(containerName string, newContainerName strin
 		checker := r.Containers[containerName]
 		r.Containers[newContainerName ] = checker
 		delete(r.Containers, containerName)
-		r.Containers[newContainerName].Name = newContainerName  //////////////////////////check if this deletes and ruins everything
+		r.Containers[newContainerName].Name = newContainerName 
 
 	}
 }
-/*
-func (r *ContainerStorage) RenameContainer(containerName string, newContainerName string) {
-	checker, ok := r.ContainersHolder[containerName]
-	if ok {
-		checker.Name = newContainerName
-		r.ContainersHolder[newContainerName] = checker
-		delete(r.ContainersHolder, containerName)
-
-	}
-}
-*/
 
 func (r *Container) RelocateContainer(containerName string, newContainerLocation string) { ////////
 	_, ok := r.Containers[containerName]
