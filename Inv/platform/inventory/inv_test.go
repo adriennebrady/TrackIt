@@ -57,36 +57,40 @@ func TestDelete(t *testing.T) {
 
 func TestAddCont(t *testing.T) {
 	inv := New()
-	var iuop = map[string]*InvItem{}
-	var iuopp = map[string]*Container{}
-	inv.AddContainer(&Container{1, "top drawer", "dresser", iuop, iuopp, nil})
-	inv.AddContainer(&Container{2, "bottom drawer", "dresser", iuop, iuopp, nil})
+	var newItems = map[string]*InvItem{}
+	var children = map[string]*Container{}
+	inv.AddContainer(&Container{1, "top drawer", "dresser", newItems, children, nil})
+	inv.AddContainer(&Container{2, "bottom drawer", "dresser", newItems, children, nil})
 
-	if len(inv.Containers) != 1 {
+	if len(inv.Containers) != 2 {
 		t.Errorf("Item was not added")
 	}
 }
 
 func TestAddCont2(t *testing.T) {
 	inv := New()
-	var iuop = map[string]*InvItem{}
-	var iuopp = map[string]*Container{}
-	inv.AddContainer(&Container{1, "top drawer", "dresser", iuop, iuopp, nil})
-	inv = inv.Containers["top drawer"] 
-	inv.AddContainer(&Container{2, "bottom drawer", "dresser", iuop, iuopp, nil})
+	var newItems = map[string]*InvItem{}
+	var children = map[string]*Container{}
+	inv.AddContainer(&Container{1, "top drawer", "dresser", newItems, children, nil})
+	inv = inv.Containers["top drawer"]
+	inv.AddContainer(&Container{2, "bottom drawer", "dresser", newItems, children, nil})
 
 	if inv.Name != "top drawer" {
-		t.Errorf("Item was not added")
+		t.Errorf("Traverse failed")
 	}
 
 	inv = inv.Parent
+
+	if inv.LocID != -1 {
+		t.Errorf("Traverse failed")
+	}
 }
 
 func TestRenameCont(t *testing.T) {
 	inv := New() ////////////////////////////////////
-	var iuop = map[string]*InvItem{}
-	var iuopp = map[string]*Container{}
-	inv.AddContainer(&Container{1, "top drawer", "dresser", iuop, iuopp, inv})
+	var newItems = map[string]*InvItem{}
+	var children = map[string]*Container{}
+	inv.AddContainer(&Container{1, "top drawer", "dresser", newItems, children, nil})
 	inv.RenameContainer("top drawer", "mid drawer")
 
 	if inv.Containers["mid drawer"].Name != "mid drawer" {
@@ -97,9 +101,9 @@ func TestRenameCont(t *testing.T) {
 
 func TestRelocateCont(t *testing.T) {
 	inv := New() ////////////////////////////////////
-	var iuop = map[string]*InvItem{}
-	var iuopp = map[string]*Container{}
-	inv.AddContainer(&Container{1, "top drawer", "dresser", iuop, iuopp, inv})
+	var newItems = map[string]*InvItem{}
+	var children = map[string]*Container{}
+	inv.AddContainer(&Container{1, "top drawer", "dresser", newItems, children, nil})
 	inv.RelocateContainer("top drawer", "fridge")
 
 	if inv.Containers["top drawer"].Location != "fridge" {
@@ -110,10 +114,10 @@ func TestRelocateCont(t *testing.T) {
 
 func TestDeleteCont(t *testing.T) {
 	inv := New() ////////////////////////////////////
-	var iuop = map[string]*InvItem{}
-	var iuopp = map[string]*Container{}
-	inv.AddContainer(&Container{1, "top drawer", "dresser", iuop, iuopp, inv})
-	inv.AddContainer(&Container{2, "bottom drawer", "dresser", iuop, iuopp, inv})
+	var newItems = map[string]*InvItem{}
+	var children = map[string]*Container{}
+	inv.AddContainer(&Container{1, "top drawer", "dresser", newItems, children, nil})
+	inv.AddContainer(&Container{2, "bottom drawer", "dresser", newItems, children, nil})
 	if len(inv.Containers) != 2 {
 		t.Errorf("Item was not added")
 	}
