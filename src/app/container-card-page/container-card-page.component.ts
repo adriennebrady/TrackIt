@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../inventory-page/dialog/dialog.component';
 import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm-dialog.component';
 import { RenameDialogComponent } from '../inventory-page/rename-dialog/rename-dialog.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 
 interface InvItem {
@@ -26,24 +26,48 @@ export class ContainerCardPageComponent implements OnInit {
   ) {}
 
   getInventory() {
+    // Set the HTTP headers with the authorization token
+    const authorization = {
+      Authorization: 'token',
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: authorization.Authorization,
+      }),
+    };
+
     this.http
-      .get<{ [key: string]: InvItem }>('/api/inventory')
+      .get<{ [key: string]: InvItem }>('/api/inventory', httpOptions)
       .subscribe((items) => {
         this.items = Object.values(items);
         this.cdRef.detectChanges();
+        console.log(this.items);
       });
   }
 
-  createItem(name: string) {
+  createItem(newName: string) {
     const newItem = {
-      name,
-      location: 'top shelf',
-      type: 'Add',
+      Authorization: 'token',
+      Kind: 'Item',
+      Name: newName,
+      Location: 'top shelf',
+      Type: 'Add',
     };
 
-    this.http.post('/api/inventory', newItem).subscribe((response) => {
-      console.log(response);
-    });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: newItem.Authorization,
+      }),
+    };
+
+    this.http
+      .post('/api/inventory', newItem, httpOptions)
+      .subscribe((response) => {
+        console.log(response);
+      });
 
     this.getInventory();
   }
@@ -66,8 +90,9 @@ export class ContainerCardPageComponent implements OnInit {
 
   removeItem(index: number) {
     const itemName = {
-      name: this.items[index].Name,
+      Name: this.items[index].Name,
     };
+
     this.http
       .delete('/api/inventory', { body: itemName })
       .subscribe((response) => {
@@ -105,13 +130,26 @@ export class ContainerCardPageComponent implements OnInit {
   }
 
   renameItem(index: number, newName: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken = 'token';
+
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + authToken
+    );
+
+    // Set the HTTP options with the headers
+    const options = {
+      headers: headers,
+    };
+
     const newItem = {
       name: this.items[index].Name,
       location: newName,
       type: 'Rename',
     };
 
-    this.http.post('/api/inventory', newItem).subscribe((response) => {
+    this.http.post('/api/inventory', newItem, options).subscribe((response) => {
       console.log(response);
     });
 
