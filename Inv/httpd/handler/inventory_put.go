@@ -7,7 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InventoryPost(inv *inventory.Container) gin.HandlerFunc {
+type InvRequest struct {
+	Authorization string `json:"Authorization"`
+	Kind          string `json:"Kind"` // container or item?
+	Name          string `json:"Name"`
+	Location      string `json:"Location"`
+	Type          string `json:"Type"`
+}
+
+func InventoryPut(inv *inventory.Container) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {
@@ -34,7 +42,12 @@ func InventoryPost(inv *inventory.Container) gin.HandlerFunc {
 				Containers: make(map[string]*inventory.Container),
 			}
 
-			inv.AddContainer(&container)
+			if requestBody.Type == "Rename" {
+				inv.RenameContainer(container.Name, container.Location)
+			}
+			if requestBody.Type == "Relocate" {
+				inv.RelocateContainer(container.Name, container.Location)
+			}
 
 		} else if requestBody.Kind == "Traverse" {
 			if requestBody.Location == "Parent" {
@@ -52,7 +65,12 @@ func InventoryPost(inv *inventory.Container) gin.HandlerFunc {
 				Location: requestBody.Location,
 			}
 
-			inv.Add(&invItem)
+			if requestBody.Type == "Rename" {
+				inv.Rename(invItem.Name, invItem.Location)
+			}
+			if requestBody.Type == "Relocate" {
+				inv.Relocate(invItem.Name, invItem.Location)
+			}
 		}
 
 		c.Status(http.StatusNoContent)
