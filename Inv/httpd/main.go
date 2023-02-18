@@ -17,9 +17,9 @@ type Account struct { //gorm.Model?
 }
 
 type Item struct {
-	itemID   int `gorm:"primaryKey"`
-	user     string
-	itemName string
+	ItemID   int `gorm:"primaryKey"`
+	User     string
+	ItemName string
 	LocID    int
 	Count    int
 }
