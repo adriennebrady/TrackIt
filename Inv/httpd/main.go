@@ -2,7 +2,6 @@ package main
 
 import (
 	"Trackit/Inv/httpd/handler"
-	"Trackit/Inv/platform/inventory"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -44,7 +43,6 @@ func InitializeDB() {
 }
 
 func main() {
-	inv := inventory.New()
 	InitializeDB()
 
 	r := gin.Default()
@@ -54,10 +52,10 @@ func main() {
 		api.GET("/ping", handler.PingGet())
 		api.POST("/login", handler.LoginPost(db))
 		api.POST("/register", handler.RegisterPost(db))
-		api.GET("/inventory", handler.InventoryGet(inv, db))
-		api.POST("/inventory", handler.InventoryPost(inv, db))
-		api.PUT("/inventory", handler.InventoryPut(inv, db))
-		api.DELETE("/inventory", handler.InventoryDelete(inv, db))
+		api.GET("/inventory", handler.InventoryGet(db))
+		api.POST("/inventory", handler.InventoryPost(db))
+		api.PUT("/inventory", handler.InventoryPut(db))
+		api.DELETE("/inventory", handler.InventoryDelete(db))
 	}
 
 	r.Run()

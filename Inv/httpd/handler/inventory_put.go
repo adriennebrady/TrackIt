@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"Trackit/Inv/platform/inventory"
+	"Inv/platform/inventory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ type InvRequest struct {
 	Type          string `json:"Type"`
 }
 
-func InventoryPut(inv *inventory.Container, db *gorm.DB) gin.HandlerFunc {
+func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {

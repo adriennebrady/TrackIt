@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"Trackit/Inv/platform/inventory"
 	"net/http"
 	"strings"
 
@@ -9,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func InventoryGet(inv inventory.Getter, db *gorm.DB) gin.HandlerFunc {
+func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {

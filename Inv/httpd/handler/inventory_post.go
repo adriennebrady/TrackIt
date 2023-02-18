@@ -1,14 +1,14 @@
 package handler
 
 import (
-	"Trackit/Inv/platform/inventory"
+	"Inve/platform/inventory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-func InventoryPost(inv *inventory.Container, db *gorm.DB) gin.HandlerFunc {
+func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {
