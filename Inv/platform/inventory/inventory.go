@@ -29,11 +29,6 @@ type Container struct {
 	// Poster //Tests work without poster, not sure what poster should be set to?
 }
 
-// main storage for all containers
-type ContainerStorage struct {
-	ContainersHolder map[string]*Container
-}
-
 func New() *Container {
 	return &Container{
 		LocID:      -1,
@@ -75,20 +70,6 @@ func (r *Container) Delete(name string) {
 		delete(r.InvItems, name)
 	}
 }
-
-/*
-func (r *ContainerStorage) AddContainer(cont *Container, parentName string) {
-	parent, ok := r.ContainersHolder[parentName]
-	if !ok {
-		// Parent container doesn't exist, handle error as appropriate
-		return
-	}
-
-	if parent.Containers == nil {
-		parent.Containers = make(map[string]*Container)
-	}
-}
-*/
 
 func (r *Container) AddContainer(cont *Container) { ///////////
 	_, ok := r.Containers[cont.Name]
