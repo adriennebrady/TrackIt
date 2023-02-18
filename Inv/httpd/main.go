@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Account struct {
+type Account struct { //gorm.Model?
 	Username string `gorm:"primaryKey"`
 	Password string
 	Token    string
@@ -30,10 +30,13 @@ type Container struct {
 	ParentID int
 }
 
+var db *gorm.DB
+var err error
+
 func main() {
 	inv := inventory.New()
 
-	db, err := gorm.Open(sqlite.Open("Inv/AllTracks.db"), &gorm.Config{})
+	db, err = gorm.Open(sqlite.Open("Inv/AllTracks.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
@@ -61,6 +64,8 @@ func main() {
 }
 
 //https://gorm.io/docs/index.html GORM site
+//https://www.youtube.com/watch?v=pHRHJCYBqxw possible problem
+//https://go.dev/tour/moretypes/13 go tutorial
 /*	newAccount := Account{Username: "user", Password: "password", Token: "token"}
 	result := db.Create(&newAccount)
 	if result.Error != nil {
