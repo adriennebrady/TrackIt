@@ -33,16 +33,11 @@ func InventoryPut(inv *inventory.Container) gin.HandlerFunc {
 		c.Bind(&requestBody)
 
 		if requestBody.Kind == "Container" {
-			container := inventory.New()
-			container.Name = requestBody.Name
-			container.Location = requestBody.Location
-			container.Parent = inv
-
 			if requestBody.Type == "Rename" {
-				inv.RenameContainer(container.Name, container.Location)
+				inv.RenameContainer(requestBody.Name, requestBody.Location)
 			}
 			if requestBody.Type == "Relocate" {
-				inv.RelocateContainer(container.Name, container.Location)
+				inv.RelocateContainer(requestBody.Name, requestBody.Location)
 			}
 
 		} else if requestBody.Kind == "Traverse" {

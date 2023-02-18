@@ -25,16 +25,12 @@ func InventoryPost(inv *inventory.Container) gin.HandlerFunc {
 		c.Bind(&requestBody)
 
 		if requestBody.Kind == "Container" {
-			container := inventory.Container{
-				LocID:      3, ////////////////////////////////////
-				Name:       requestBody.Name,
-				Location:   requestBody.Location,
-				Parent:     inv, ///////////////////////////
-				InvItems:   make(map[string]*inventory.InvItem),
-				Containers: make(map[string]*inventory.Container),
-			}
+			container := inventory.New()
+			container.Name = requestBody.Name
+			container.Location = requestBody.Location
+			container.Parent = inv
 
-			inv.AddContainer(&container)
+			inv.AddContainer(container)
 
 		} else if requestBody.Kind == "Traverse" {
 			if requestBody.Location == "Parent" {

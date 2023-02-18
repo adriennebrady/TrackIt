@@ -1,9 +1,9 @@
 package handler
 
 import (
+	"crypto/rand"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -61,5 +61,9 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 }
 
 func generateToken() string {
-	return fmt.Sprintf("%d", time.Now().UnixNano())
+	b := make([]byte, 16)
+	if _, err := rand.Read(b); err != nil {
+		return ""
+	}
+	return fmt.Sprintf("%x", b)
 }

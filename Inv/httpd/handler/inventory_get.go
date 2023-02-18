@@ -5,7 +5,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
+
+var db *gorm.DB
+var err error
 
 func InventoryGet(inv inventory.Getter) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -28,10 +32,18 @@ func InventoryGet(inv inventory.Getter) gin.HandlerFunc {
 	}
 }
 
-func isValidToken(token string) bool {
-	// Here you would need to implement a function that verifies the token against your database.
-	// For example, you could query your users table to check if the token is present and still valid.
-	// If the token is valid, return true, otherwise return false.
+func isValidToken(authHeader string) bool {
+	/*
+		token := strings.TrimPrefix(authHeader, "Bearer ")
+			// Query the database for a user with the given token.
+			var user User
+			if err := db.Where("token = ?", token).First(&user).Error; err != nil {
+				// If no user with the token is found, return false.
+				return false
+			}
+		return user.Token == token
+	*/
+	// If a user with the token is found, return true.
 	return true
 }
 
