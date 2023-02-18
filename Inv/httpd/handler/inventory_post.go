@@ -5,9 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func InventoryPost(inv *inventory.Container) gin.HandlerFunc {
+func InventoryPost(inv *inventory.Container, db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {
@@ -16,7 +17,7 @@ func InventoryPost(inv *inventory.Container) gin.HandlerFunc {
 		}
 
 		// Verify that the token is valid.
-		if !isValidToken(token) {
+		if !isValidToken(token, db) {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}

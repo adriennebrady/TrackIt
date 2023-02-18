@@ -33,9 +33,7 @@ type Container struct {
 var db *gorm.DB
 var err error
 
-func main() {
-	inv := inventory.New()
-
+func InitializeDB() {
 	db, err = gorm.Open(sqlite.Open("Inv/AllTracks.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -43,11 +41,11 @@ func main() {
 	db.AutoMigrate(&Account{})
 	db.AutoMigrate(&Item{})
 	db.AutoMigrate(&Container{})
+}
 
-	// Create a new user
-	//fmt.Println(inv)
-	//inv.Add(1, 2, 3)
-	//fmt.Println(inv)
+func main() {
+	inv := inventory.New()
+	InitializeDB()
 
 	r := gin.Default()
 
@@ -56,24 +54,18 @@ func main() {
 		api.GET("/ping", handler.PingGet())
 		api.GET("/login", handler.LoginPost(db))
 		api.GET("/register", handler.RegisterPost(db))
-		api.GET("/inventory", handler.InventoryGet(inv))
-		api.POST("/inventory", handler.InventoryPost(inv))
-		api.PUT("/inventory", handler.InventoryPut(inv))
-		api.DELETE("/inventory", handler.InventoryDelete(inv))
+		api.GET("/inventory", handler.InventoryGet(inv, db))
+		api.POST("/inventory", handler.InventoryPost(inv, db))
+		api.PUT("/inventory", handler.InventoryPut(inv, db))
+		api.DELETE("/inventory", handler.InventoryDelete(inv, db))
 	}
 
 	r.Run()
 }
 
-//https://gorm.io/docs/index.html GORM site
 //https://www.youtube.com/watch?v=pHRHJCYBqxw possible problem
 //https://go.dev/tour/moretypes/13 go tutorial
-/*	newAccount := Account{Username: "user", Password: "password", Token: "token"}
-	result := db.Create(&newAccount)
-	if result.Error != nil {
-		panic(result.Error)
-	}
-
+/*
 	var account Account
 	db.First(&account, "username =?", "user")
 
