@@ -17,9 +17,9 @@ type Account struct { //gorm.Model?
 }
 
 type Item struct {
-	itemID   int `gorm:"primaryKey"`
-	user     string
-	itemName string
+	ItemID   int `gorm:"primaryKey"`
+	User     string
+	ItemName string
 	LocID    int
 	Count    int
 }
@@ -52,8 +52,8 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.GET("/ping", handler.PingGet())
-		api.GET("/login", handler.LoginPost(db))
-		api.GET("/register", handler.RegisterPost(db))
+		api.POST("/login", handler.LoginPost(db))
+		api.POST("/register", handler.RegisterPost(db))
 		api.GET("/inventory", handler.InventoryGet(inv, db))
 		api.POST("/inventory", handler.InventoryPost(inv, db))
 		api.PUT("/inventory", handler.InventoryPut(inv, db))
