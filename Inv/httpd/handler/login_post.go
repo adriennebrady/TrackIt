@@ -35,7 +35,7 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 
 		// Check if the user exists.
 		var user User
-		if result := DB.Where("username = ?", request.Username).First(&user); result.Error != nil {
+		if result := DB.Table("accounts").Where("username = ?", request.Username).First(&user); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 			return
 		}
@@ -49,7 +49,7 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 		// Generate a token and save it to the database.
 		token := generateToken()
 		user.Token = token
-		if result := DB.Save(&user); result.Error != nil {
+		if result := DB.Table("accounts").Save(&user); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to save token"})
 			return
 		}

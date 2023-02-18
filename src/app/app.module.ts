@@ -8,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -41,7 +41,7 @@ import { RenameDialogComponent } from './inventory-page/rename-dialog/rename-dia
     AboutComponent,
     LoginPageComponent,
     SignUpPageComponent,
-    RenameDialogComponent
+    RenameDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,9 +57,10 @@ import { RenameDialogComponent } from './inventory-page/rename-dialog/rename-dia
     MatMenuModule,
     FormsModule,
     MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
