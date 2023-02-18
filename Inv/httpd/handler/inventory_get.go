@@ -39,6 +39,7 @@ func isValidToken(token string) bool {
 //////////////TODO lock inventories behind username they must have access for
 //////////////TODO allow users to delete accounts
 
+//TODO switch temporary data to frontend, switch backend storage to db
 //TODO parse urls to figure what container we're in
 //TODO bonus:be able to search for an item
 //TODO bonus::connect to angular///////////////////////////////////////////////////////////

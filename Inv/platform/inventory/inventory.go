@@ -36,9 +36,9 @@ type ContainerStorage struct {
 
 func New() *Container {
 	return &Container{
-		LocID: -1,
+		LocID:      -1,
 		InvItems:   map[string]*InvItem{},
-		Containers: map[string]*Container{}, ////TODO maybe add container initialization
+		Containers: map[string]*Container{},
 	}
 }
 
@@ -56,7 +56,7 @@ func (r *Container) GetAll() map[string]*InvItem {
 func (r *Container) Rename(itemName string, newName string) {
 	checker, ok := r.InvItems[itemName]
 	if ok {
-		checker.Name = newName ////TODO check if this deletes and ruins everything
+		checker.Name = newName
 		r.InvItems[newName] = checker
 		delete(r.InvItems, itemName)
 	}
@@ -75,6 +75,7 @@ func (r *Container) Delete(name string) {
 		delete(r.InvItems, name)
 	}
 }
+
 /*
 func (r *ContainerStorage) AddContainer(cont *Container, parentName string) {
 	parent, ok := r.ContainersHolder[parentName]
@@ -98,28 +99,27 @@ func (r *Container) AddContainer(cont *Container) { ///////////
 
 	//leave for later, after testing
 	/*
-		cont.Parent
+			cont.Parent
 
-	_, ok = r.Containers[cont.Name]
-		if ok {
-			cont.Parent = r.Parent.Containers[cont.Name]
-			parent.Containers[cont.Name] = cont
-		}
-	} */
+		_, ok = r.Containers[cont.Name]
+			if ok {
+				cont.Parent = r.Parent.Containers[cont.Name]
+				parent.Containers[cont.Name] = cont
+			}
+		} */
 }
 
 func (r *Container) GetAllContainers() map[string]*Container {
 	return r.Containers
 }
 
-
 func (r *Container) RenameContainer(containerName string, newContainerName string) {
 	_, ok := r.Containers[containerName]
 	if ok {
 		checker := r.Containers[containerName]
-		r.Containers[newContainerName ] = checker
+		r.Containers[newContainerName] = checker
 		delete(r.Containers, containerName)
-		r.Containers[newContainerName].Name = newContainerName 
+		r.Containers[newContainerName].Name = newContainerName
 
 	}
 }
