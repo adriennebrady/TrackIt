@@ -24,7 +24,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 
 		// Check if the user exists.
 		var existingUser User
-		if result := DB.Where("username = ?", request.Username).First(&existingUser); result.Error == nil {
+		if result := DB.Table("accounts").Where("username = ?", request.Username).First(&existingUser); result.Error == nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "User already exists"})
 			return
 		}
@@ -41,7 +41,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 			Password: request.Password,
 			Token:    generateToken(),
 		}
-		if result := DB.Create(&newUser); result.Error != nil {
+		if result := DB.Table("accounts").Create(&newUser); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 			return
 		}

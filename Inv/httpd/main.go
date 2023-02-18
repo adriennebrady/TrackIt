@@ -54,8 +54,8 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.GET("/ping", handler.PingGet())
-		api.GET("/login", handler.LoginPost(db))
-		api.GET("/register", handler.RegisterPost(db))
+		api.POST("/login", handler.LoginPost(db))
+		api.POST("/register", handler.RegisterPost(db))
 		api.GET("/inventory", handler.InventoryGet(inv))
 		api.POST("/inventory", handler.InventoryPost(inv))
 		api.PUT("/inventory", handler.InventoryPut(inv))
