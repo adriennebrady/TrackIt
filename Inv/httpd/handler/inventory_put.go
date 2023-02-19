@@ -7,15 +7,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type InvRequest struct {
-	Authorization string `json:"Authorization"`
-	Kind          string `json:"Kind"` // container or item?
-	ID            int    `json:"ID"`
-	Cont          int    `json:"Cont"`
-	Name          string `json:"Name"`
-	Type          string `json:"Type"`
-}
-
 func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
