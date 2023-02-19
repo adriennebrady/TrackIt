@@ -2,15 +2,22 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
+type GetRequest struct {
+	Authorization string `json:"Authorization"`
+	Container_id  int    `json:"Container_id"`
+}
+
 func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		requestBody := GetRequest{}
+		c.Bind(&requestBody)
+
 		token := c.GetHeader("Authorization")
 		if token == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
@@ -22,24 +29,17 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
-		// Get the container ID from the URL parameter.
-		containerIDStr := c.Param("container_id")
-		containerID, err := strconv.Atoi(containerIDStr)
-		if err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid container ID"})
-			return
-		}
 
 		// Get all containers that have the requested container as their parent.
 		var containers []Container
-		if result := db.Table("containers").Where("parent_id = ?", containerID).Find(&containers); result.Error != nil {
+		if result := db.Table("containers").Where("parent_id = ?", requestBody.Container_id).Find(&containers); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get containers"})
 			return
 		}
 
 		// Get all items that are in the requested container.
 		var items []Item
-		if result := db.Table("items").Where("loc_id = ?", containerID).Find(&items); result.Error != nil {
+		if result := db.Table("items").Where("loc_id = ?", requestBody.Container_id).Find(&items); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}
