@@ -23,7 +23,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Check if the user exists.
-		var existingUser User
+		var existingUser Account
 		if result := DB.Table("accounts").Where("username = ?", request.Username).First(&existingUser); result.Error == nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "User already exists"})
 			return
@@ -36,7 +36,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Create a new user object with the provided username and password.
-		newUser := User{
+		newUser := Account{
 			Username: request.Username,
 			Password: request.Password,
 			Token:    generateToken(),

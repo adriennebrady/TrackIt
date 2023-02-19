@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"Inve/platform/inventory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -26,29 +25,8 @@ func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 		c.Bind(&requestBody)
 
 		if requestBody.Kind == "Container" {
-			container := inventory.New()
-			container.Name = requestBody.Name
-			container.Location = requestBody.Location
-			container.Parent = inv
-
 			inv.AddContainer(container)
-
-		} else if requestBody.Kind == "Traverse" {
-			if requestBody.Location == "Parent" {
-				inv = inv.Parent
-			} else {
-				test, ok := inv.Containers[requestBody.Location]
-				if !ok {
-					inv = test
-				}
-			}
-
 		} else {
-			invItem := inventory.InvItem{
-				Name:     requestBody.Name,
-				Location: requestBody.Location,
-			}
-
 			inv.Add(&invItem)
 		}
 

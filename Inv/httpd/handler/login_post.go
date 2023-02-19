@@ -9,10 +9,24 @@ import (
 	"gorm.io/gorm"
 )
 
-type User struct {
+type Account struct { //gorm.Model?
 	Username string `gorm:"primaryKey"`
 	Password string
 	Token    string
+}
+
+type Item struct {
+	ItemID   int `gorm:"primaryKey"`
+	User     string
+	ItemName string
+	LocID    int
+	Count    int
+}
+
+type Container struct {
+	LocID    int `gorm:"primaryKey"`
+	Name     string
+	ParentID int
 }
 
 type LoginRequest struct {
@@ -34,7 +48,7 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Check if the user exists.
-		var user User
+		var user Account
 		if result := DB.Table("accounts").Where("username = ?", request.Username).First(&user); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 			return

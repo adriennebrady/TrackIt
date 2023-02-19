@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"Inv/platform/inventory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,8 +10,9 @@ import (
 type InvRequest struct {
 	Authorization string `json:"Authorization"`
 	Kind          string `json:"Kind"` // container or item?
+	ID            int    `json:"ID"`
+	Cont          int    `json:"Cont"`
 	Name          string `json:"Name"`
-	Location      string `json:"Location"`
 	Type          string `json:"Type"`
 }
 
@@ -34,35 +34,54 @@ func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 		c.Bind(&requestBody)
 
 		if requestBody.Kind == "Container" {
-			if requestBody.Type == "Rename" {
-				inv.RenameContainer(requestBody.Name, requestBody.Location)
-			}
-			if requestBody.Type == "Relocate" {
-				inv.RelocateContainer(requestBody.Name, requestBody.Location)
+			// Look up the container in the database by ID.
+			var container Container
+			result := db.First(&container, "loc_id = ?", requestBody.ID)
+			if result.Error != nil {
+				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Container not found"})
+				return
 			}
 
-		} else if requestBody.Kind == "Traverse" {
-			if requestBody.Location == "Parent" {
-				inv = inv.Parent
-			} else {
-				test, ok := inv.Containers[requestBody.Location]
-				if !ok {
-					inv = test
-				}
+			// Update the container's name or location if requested.
+			if requestBody.Type == "Rename" {
+				container.Name = requestBody.Name
+			} else if requestBody.Type == "Relocate" {
+				container.ParentID = requestBody.Cont
+			}
+
+			// Save the changes to the database.
+			result = db.Save(&container)
+			if result.Error != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Database error"})
+				return
+			}
+
+		} else if requestBody.Kind == "Item" {
+			// Look up the item in the database by ID.
+			var item Item
+			result := db.First(&item, "item_id = ?", requestBody.ID)
+			if result.Error != nil {
+				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Item not found"})
+				return
+			}
+
+			// Update the item's name or location if requested.
+			if requestBody.Type == "Rename" {
+				item.ItemName = requestBody.Name
+			} else if requestBody.Type == "Relocate" {
+				item.LocID = requestBody.Cont
+			}
+
+			// Save the changes to the database.
+			result = db.Save(&item)
+			if result.Error != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Database error"})
+				return
 			}
 
 		} else {
-			invItem := inventory.InvItem{
-				Name:     requestBody.Name,
-				Location: requestBody.Location,
-			}
-
-			if requestBody.Type == "Rename" {
-				inv.Rename(invItem.Name, invItem.Location)
-			}
-			if requestBody.Type == "Relocate" {
-				inv.Relocate(invItem.Name, invItem.Location)
-			}
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid Kind"})
+			return
 		}
 
 		c.Status(http.StatusNoContent)

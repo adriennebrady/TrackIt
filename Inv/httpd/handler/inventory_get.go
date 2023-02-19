@@ -33,12 +33,20 @@ func isValidToken(authHeader string, db *gorm.DB) bool {
 
 	token := strings.TrimPrefix(authHeader, "Bearer ")
 	// Query the database for a user with the given token.
-	var user User
-	if err := db.Where("token = ?", token).First(&user).Error; err != nil {
+	var user Account
+	if err := db.Table("Accounts").Where("token = ?", token).First(&user).Error; err != nil {
 		// If no user with the token is found, return false.
 		return false
 	}
 	return user.Token == token
+}
+
+func getUsernameFromToken(token string, db *gorm.DB) string {
+	var account Account
+	if err := db.Table("accounts").Where("token = ?", token).First(&account).Error; err != nil {
+		return ""
+	}
+	return account.Username
 }
 
 //TODO add backend accounts  to assign inventories to
