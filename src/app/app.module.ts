@@ -28,6 +28,9 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
 import { RenameDialogComponent } from './inventory-page/rename-dialog/rename-dialog.component';
 
+import { AuthService } from './auth.service';
+import { AuthGuard } from './auth.guard';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +63,7 @@ import { RenameDialogComponent } from './inventory-page/rename-dialog/rename-dia
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
