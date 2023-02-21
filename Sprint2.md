@@ -111,4 +111,53 @@ Failed to create user: an error occurred while attempting to create the user in 
 
 ### Inventory Put Request
 
+Update a container or item in the inventory.
+
+#### Request Body
+
+The request body must be a JSON object with the following properties:
+
+Authorization: The authorization token.
+Kind: The type of the object to update (Container or Item).
+Name: The name of the container or item to update.
+Location: The location of the container or item to update.
+Type: The type of update (Rename or Relocate).
+
+#### Headers
+
+The following headers must be included in the request:
+
+Authorization: The authorization token.
+#### Response
+Success
+
+A successful response has a 204 No Content status code.
+
+Error
+
+If the request fails, a JSON object with an error message will be returned, along with an appropriate status code. Possible error responses are:
+
+401 Unauthorized: The authorization token is missing or invalid.
+404 Not Found: The container or item does not exist.
+422 Unprocessable Entity: The request body is invalid.
+#### Example
+Request
+<pre>
+PUT /inventory HTTP/1.1
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+    "Kind": "Container",
+    "Name": "myContainer",
+    "Location": "newLocation",
+    "Type": "Relocate"
+}
+</pre>
+
+Response
+<pre>
+HTTP/1.1 204 No Content
+</pre>
+
 ### Inventory Delete Request
