@@ -25,6 +25,7 @@ The LoginPost API call is a HTTP POST request that allows a user to log in to th
 The request body for the LoginPost API must be in JSON format and contain the following fields:
 username: The username of the user trying to log in (string).
 password: The password of the user trying to log in (string).
+
 Example request:
 <pre>
 POST /login
@@ -35,9 +36,7 @@ Content-Type: application/json
   "password": "example_password"
 }
 </pre>
-Response
-
-The response body for the LoginPost API is a JSON object containing a single field:
+Response: The response body for the LoginPost API is a JSON object containing a single field:
 
 token: A randomly generated token that is used for authentication in subsequent API requests (string).
 
