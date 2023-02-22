@@ -5,6 +5,7 @@ import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm
 import { RenameDialogComponent } from '../inventory-page/rename-dialog/rename-dialog.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { AuthService } from '../auth.service';
 
 interface InvItem {
   Name: string;
@@ -22,8 +23,13 @@ export class ContainerCardPageComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private http: HttpClient,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private authService: AuthService
   ) {}
+
+  logOut() {
+    this.authService.logout();
+  }
 
   getInventory() {
     // Set the HTTP headers with the authorization token
