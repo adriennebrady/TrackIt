@@ -153,9 +153,6 @@ The isValidToken function is a helper function that verifies the validity of an 
 <p>&nbsp;</p>
 
 * ### Inventory Post Request
-Endpoint: POST /inventory
-
-This endpoint allows users to add or manipulate inventory items, containers, and locations.
 
 #### Request Header:
 
