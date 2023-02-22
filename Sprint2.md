@@ -1,5 +1,5 @@
  
-# TrackIt Sprint 2
+# TrackIt Sprint 2 <p>&nbsp;</p>
 
 ## Detail work you've completed in Sprint 2
 
@@ -8,16 +8,20 @@
 ### Back-End
 * Create database using sqlite
 * Create Web Login
+<p>&nbsp;</p>
 
 ## List unit tests and Cypress tests for frontend
+<p>&nbsp;</p>
 
 ## List unit tests for backend
+<p>&nbsp;</p>
 
 ## Add documentation for your backend API 
-### Login Post Request
+* ### Login Post Request
+#### Description:
 The LoginPost API call is a HTTP POST request that allows a user to log in to the system by providing their username and password. The API returns a JSON response containing a token that can be used for subsequent API requests that require authentication.
 
-#### Request
+#### Request:
 The request body for the LoginPost API must be in JSON format and contain the following fields:
 username: The username of the user trying to log in (string).
 password: The password of the user trying to log in (string).
@@ -46,31 +50,33 @@ Content-Type: application/json
   "token": "e14fa2e2df12692b8475bf5bb5ed5be5"
 }
 </pre>
-#### Errors
+#### Errors:
 
 The LoginPost API can return the following errors:
 
 400 Bad Request: The request body is missing or invalid.
 401 Unauthorized: The username or password is incorrect.
 500 Internal Server Error: The token could not be saved to the database.
-#### Code
+#### Code:
 
 The LoginPost API is implemented in Go using the Gin framework and GORM library. The LoginPost function takes a *gorm.DB as an argument and returns a gin.HandlerFunc. The function first parses the request body and checks if the user exists in the database. If the user exists, the function checks if the password is correct. If the password is correct, the function generates a token and saves it to the database. Finally, the function returns the token in a JSON response.
 
 The generateToken function generates a random token using the crypto/rand and fmt packages. The function returns a hexadecimal representation of the random bytes.
 
-### Register Post Request
+---------------------
 
+* ### Register Post Request
+#### Description:
 This API call allows users to create a new account by providing a unique username and a password.
 
-#### Request Body
+#### Request Body:
 
 The request body must be a JSON object with the following properties:
 
 username (string, required): the username for the new account.
 password (string, required): the password for the new account.
 password_confirmation (string, required): a confirmation of the password for the new account. This field is used to ensure that the user has entered the same password correctly.
-#### Response
+#### Response:
 
 If the registration is successful, the API will return an HTTP 200 OK response with a JSON object containing a token string:
 
@@ -96,7 +102,7 @@ If the registration fails due to an internal server error, the API will return a
 }
 </pre>
 
-#### Errors
+#### Errors:
 
 This API call can return the following errors:
 
@@ -105,11 +111,9 @@ User already exists: a user with the provided username already exists in the dat
 Password and password confirmation do not match: the password and password confirmation fields do not match.
 Failed to create user: an error occurred while attempting to create the user in the database.
 
-### Inventory Get Request
+---------------------
 
-Endpoint:
-GET /inventory
-
+* ### Inventory Get Request
 #### Description:
 This API endpoint allows retrieving all the inventory items from the database. It verifies the validity of a provided authentication token and then calls the GetAll method of the inventory.Getter interface to fetch the items from the database.
 
@@ -132,11 +136,6 @@ None
 }
 </pre>
 
-#### Dependencies:
-
-Trackit/Inv/platform/inventory - Package containing the inventory.Getter interface
-github.com/gin-gonic/gin - Gin web framework for building APIs
-gorm.io/gorm - GORM is an ORM library for Golang.
 #### Functions:
 
 InventoryGet - The main function that handles the GET request for the /inventory endpoint.
@@ -154,10 +153,9 @@ If the authentication token is valid, the function calls the GetAll method of th
 
 The isValidToken function is a helper function that verifies the validity of an authentication token. It first extracts the token from the authentication header and then queries the database to check if a user with the given token exists. If no user with the token is found, the function returns false, indicating that the token is invalid. If a user with the token is found, the function returns true if the token in the user object matches the provided token, indicating that the token is valid.
 
-### Inventory Post Request
-Endpoint: POST /inventory
+---------------------
 
-This endpoint allows users to add or manipulate inventory items, containers, and locations.
+* ### Inventory Post Request
 
 #### Request Header:
 
@@ -214,11 +212,13 @@ If "Kind" is "Traverse", the current inventory container will be updated to the 
 If "Kind" is empty, a new inventory item with the provided name and location will be created and added to the current inventory container.
 If the request header is missing or invalid, the response will be a 401 Unauthorized error.
 
-### Inventory Put Request
+---------------------
 
-Update a container or item in the inventory.
+* ### Inventory Put Request
+#### Description:
+This API endpoint allows updating a container or item in the inventory.
 
-#### Request Body
+#### Request Body:
 
 The request body must be a JSON object with the following properties:
 
@@ -228,7 +228,7 @@ Name: The name of the container or item to update.
 Location: The location of the container or item to update.
 Type: The type of update (Rename or Relocate).
 
-#### Headers
+#### Headers:
 
 The following headers must be included in the request:
 
@@ -245,7 +245,7 @@ If the request fails, a JSON object with an error message will be returned, alon
 401 Unauthorized: The authorization token is missing or invalid.
 404 Not Found: The container or item does not exist.
 422 Unprocessable Entity: The request body is invalid.
-#### Example
+#### Example:
 Request
 <pre>
 PUT /inventory HTTP/1.1
@@ -265,10 +265,9 @@ Response
 HTTP/1.1 204 No Content
 </pre>
 
-### Inventory Delete Request
+---------------------
 
-Endpoint:
-DELETE /inventory
+* ### Inventory Delete Request
 
 #### Description:
 This API endpoint allows deleting an inventory item. It verifies the validity of a provided authentication token and then calls the Delete method of the inventory.Deleter interface to delete the item from the database.
@@ -290,11 +289,6 @@ Authorization - An authentication token
 #### Response Body:
 None
 
-#### Dependencies:
-
-Trackit/Inv/platform/inventory - Package containing the inventory.Deleter interface
-github.com/gin-gonic/gin - Gin web framework for building APIs
-gorm.io/gorm - GORM is an ORM library for Golang.
 #### Functions:
 
 InventoryDelete - The main function that handles the DELETE request for the /inventory endpoint.
