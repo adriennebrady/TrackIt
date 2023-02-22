@@ -1,5 +1,5 @@
  
-# TrackIt Sprint 2
+# TrackIt Sprint 2 <p>&nbsp;</p>
 
 ## Detail work you've completed in Sprint 2
 
@@ -8,10 +8,13 @@
 ### Back-End
 * Create database using sqlite
 * Create Web Login
+<p>&nbsp;</p>
 
 ## List unit tests and Cypress tests for frontend
+<p>&nbsp;</p>
 
 ## List unit tests for backend
+<p>&nbsp;</p>
 
 ## Add documentation for your backend API 
 ### Login Post Request
@@ -265,7 +268,7 @@ Response
 HTTP/1.1 204 No Content
 </pre>
 
-### Inventory Delete Request
+### **Inventory Delete Request**  
 
 Endpoint:
 DELETE /inventory
@@ -290,22 +293,22 @@ Authorization - An authentication token
 #### Response Body:
 None
 
-#### Dependencies:
+* #### Dependencies:
 
 Trackit/Inv/platform/inventory - Package containing the inventory.Deleter interface
 github.com/gin-gonic/gin - Gin web framework for building APIs
 gorm.io/gorm - GORM is an ORM library for Golang.
-#### Functions:
+* #### Functions:
 
 InventoryDelete - The main function that handles the DELETE request for the /inventory endpoint.
-#### Parameters:
+* #### Parameters:
 
 inv (inventory.Deleter) - An instance of the inventory.Deleter interface that is used to delete inventory items.
 db (*gorm.DB) - A database object representing the connection to the database.
-#### Return:
+* #### Return:
 
 A gin.HandlerFunc function that can be used as a middleware for the /inventory DELETE endpoint.
-#### Functionality:
+* #### Functionality:
 The InventoryDelete function checks for the presence of a valid authentication token in the request header. If the token is missing, it returns an error response with a status code of 401. If the token is present but invalid, it also returns an error response with a status code of 401.
 
 If the authentication token is valid, the function attempts to parse the request body to get the name of the item to be deleted. It then calls the Delete method of the inventory.Deleter interface to delete the item from the database.
