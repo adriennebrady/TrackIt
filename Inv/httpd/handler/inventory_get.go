@@ -35,7 +35,7 @@ func isValidToken(authHeader string, db *gorm.DB) bool {
 	token := strings.TrimPrefix(authHeader, "Bearer ")
 	// Query the database for a user with the given token.
 	var user User
-	if err := db.Where("token = ?", token).First(&user).Error; err != nil {
+	if err := db.Table("accounts").Where("token = ?", token).First(&user).Error; err != nil {
 		// If no user with the token is found, return false.
 		return false
 	}

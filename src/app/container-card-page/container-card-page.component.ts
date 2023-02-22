@@ -33,8 +33,10 @@ export class ContainerCardPageComponent implements OnInit {
 
   getInventory() {
     // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
     const authorization = {
-      Authorization: 'token',
+      Authorization: authToken,
     };
 
     const httpOptions = {
@@ -54,8 +56,11 @@ export class ContainerCardPageComponent implements OnInit {
   }
 
   createItem(newName: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
     const newItem = {
-      Authorization: 'token',
+      Authorization: authToken,
       Kind: 'Item',
       Name: newName,
       Location: 'top shelf',
@@ -95,16 +100,29 @@ export class ContainerCardPageComponent implements OnInit {
   }
 
   removeItem(index: number) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const authorization = {
+      Authorization: authToken,
+    };
+
     const itemName = {
       Name: this.items[index].Name,
     };
 
-    this.http
-      .delete('/api/inventory', { body: itemName })
-      .subscribe((response) => {
-        console.log(response);
-        this.items.splice(index, 1);
-      });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: authorization.Authorization,
+      }),
+      body: itemName,
+    };
+
+    this.http.delete('/api/inventory', httpOptions).subscribe((response) => {
+      console.log(response);
+      this.items.splice(index, 1);
+    });
 
     this.getInventory();
   }
@@ -137,7 +155,7 @@ export class ContainerCardPageComponent implements OnInit {
 
   renameItem(index: number, newName: string) {
     // Set the HTTP headers with the authorization token
-    const authToken = 'token';
+    const authToken: string = localStorage.getItem('token')!;
 
     const headers = new HttpHeaders().set(
       'Authorization',
@@ -155,7 +173,7 @@ export class ContainerCardPageComponent implements OnInit {
       type: 'Rename',
     };
 
-    this.http.post('/api/inventory', newItem, options).subscribe((response) => {
+    this.http.put('/api/inventory', newItem, options).subscribe((response) => {
       console.log(response);
     });
 
