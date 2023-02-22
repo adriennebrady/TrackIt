@@ -21,7 +21,7 @@
 #### Description:
 The LoginPost API call is a HTTP POST request that allows a user to log in to the system by providing their username and password. The API returns a JSON response containing a token that can be used for subsequent API requests that require authentication.
 
-#### Request
+#### Request:
 The request body for the LoginPost API must be in JSON format and contain the following fields:
 username: The username of the user trying to log in (string).
 password: The password of the user trying to log in (string).
@@ -50,14 +50,14 @@ Content-Type: application/json
   "token": "e14fa2e2df12692b8475bf5bb5ed5be5"
 }
 </pre>
-#### Errors
+#### Errors:
 
 The LoginPost API can return the following errors:
 
 400 Bad Request: The request body is missing or invalid.
 401 Unauthorized: The username or password is incorrect.
 500 Internal Server Error: The token could not be saved to the database.
-#### Code
+#### Code:
 
 The LoginPost API is implemented in Go using the Gin framework and GORM library. The LoginPost function takes a *gorm.DB as an argument and returns a gin.HandlerFunc. The function first parses the request body and checks if the user exists in the database. If the user exists, the function checks if the password is correct. If the password is correct, the function generates a token and saves it to the database. Finally, the function returns the token in a JSON response.
 
@@ -69,14 +69,14 @@ The generateToken function generates a random token using the crypto/rand and fm
 #### Description:
 This API call allows users to create a new account by providing a unique username and a password.
 
-#### Request Body
+#### Request Body:
 
 The request body must be a JSON object with the following properties:
 
 username (string, required): the username for the new account.
 password (string, required): the password for the new account.
 password_confirmation (string, required): a confirmation of the password for the new account. This field is used to ensure that the user has entered the same password correctly.
-#### Response
+#### Response:
 
 If the registration is successful, the API will return an HTTP 200 OK response with a JSON object containing a token string:
 
@@ -102,7 +102,7 @@ If the registration fails due to an internal server error, the API will return a
 }
 </pre>
 
-#### Errors
+#### Errors:
 
 This API call can return the following errors:
 
@@ -218,7 +218,7 @@ If the request header is missing or invalid, the response will be a 401 Unauthor
 #### Description:
 This API endpoint allows updating a container or item in the inventory.
 
-#### Request Body
+#### Request Body:
 
 The request body must be a JSON object with the following properties:
 
@@ -228,7 +228,7 @@ Name: The name of the container or item to update.
 Location: The location of the container or item to update.
 Type: The type of update (Rename or Relocate).
 
-#### Headers
+#### Headers:
 
 The following headers must be included in the request:
 
@@ -245,7 +245,7 @@ If the request fails, a JSON object with an error message will be returned, alon
 401 Unauthorized: The authorization token is missing or invalid.
 404 Not Found: The container or item does not exist.
 422 Unprocessable Entity: The request body is invalid.
-#### Example
+#### Example:
 Request
 <pre>
 PUT /inventory HTTP/1.1
