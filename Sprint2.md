@@ -107,7 +107,112 @@ Failed to create user: an error occurred while attempting to create the user in 
 
 ### Inventory Get Request
 
+Endpoint:
+GET /inventory
+
+#### Description:
+This API endpoint allows retrieving all the inventory items from the database. It verifies the validity of a provided authentication token and then calls the GetAll method of the inventory.Getter interface to fetch the items from the database.
+
+#### Request Headers:
+Authorization - An authentication token
+
+#### Request Body:
+None
+
+#### Response Status Code:
+200 - OK
+401 - Unauthorized
+
+#### Response Body:
+<pre>
+{
+"Name": "string",
+"Quantity": "int",
+"Price": "float64"
+}
+</pre>
+
+#### Dependencies:
+
+Trackit/Inv/platform/inventory - Package containing the inventory.Getter interface
+github.com/gin-gonic/gin - Gin web framework for building APIs
+gorm.io/gorm - GORM is an ORM library for Golang.
+#### Functions:
+
+InventoryGet - The main function that handles the GET request for the /inventory endpoint.
+#### Parameters:
+
+inv (inventory.Getter) - An instance of the inventory.Getter interface that is used to retrieve inventory items.
+db (*gorm.DB) - A database object representing the connection to the database.
+#### Return:
+
+A gin.HandlerFunc function that can be used as a middleware for the /inventory GET endpoint.
+#### Functionality:
+The InventoryGet function checks for the presence of a valid authentication token in the request header. If the token is missing, it returns an error response with a status code of 401. If the token is present but invalid, it also returns an error response with a status code of 401.
+
+If the authentication token is valid, the function calls the GetAll method of the inventory.Getter interface to retrieve all the inventory items from the database. It then returns a response with a status code of 200 and the inventory data in JSON format.
+
+The isValidToken function is a helper function that verifies the validity of an authentication token. It first extracts the token from the authentication header and then queries the database to check if a user with the given token exists. If no user with the token is found, the function returns false, indicating that the token is invalid. If a user with the token is found, the function returns true if the token in the user object matches the provided token, indicating that the token is valid.
+
 ### Inventory Post Request
+Endpoint: POST /inventory
+
+This endpoint allows users to add or manipulate inventory items, containers, and locations.
+
+#### Request Header:
+
+Authorization: a valid token for user authentication
+#### Request Body:
+
+Name: string, required
+Location: string, required
+Kind: string (either "Container" or "Traverse")
+##### Possible Values of "Kind":
+
+"Container": create a new container for inventory items
+"Traverse": move through existing containers and locations
+"": add an inventory item to the current container
+#### Example usage:
+<pre>
+await fetch('/inventory', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+        Name: 'brush',
+        Location: 'dresser'
+    })
+})
+
+await fetch('/inventory', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+        Name: 'brush',
+        Location: 'brusher',
+        Type: 'Rename'
+    })
+})
+
+await fetch('/inventory', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+        Name: 'brush',
+        Location: 'closet',
+        Type: 'Relocate'
+    })
+})
+</pre>
+
+#### Response:
+
+Status Code: 204 (No Content)
+#### Notes:
+
+If "Kind" is "Container", a new container with the provided name and location will be created and added to the current inventory container.
+If "Kind" is "Traverse", the current inventory container will be updated to the specified location or parent container.
+If "Kind" is empty, a new inventory item with the provided name and location will be created and added to the current inventory container.
+If the request header is missing or invalid, the response will be a 401 Unauthorized error.
 
 ### Inventory Put Request
 
@@ -161,3 +266,48 @@ HTTP/1.1 204 No Content
 </pre>
 
 ### Inventory Delete Request
+
+Endpoint:
+DELETE /inventory
+
+#### Description:
+This API endpoint allows deleting an inventory item. It verifies the validity of a provided authentication token and then calls the Delete method of the inventory.Deleter interface to delete the item from the database.
+
+#### Request Headers:
+Authorization - An authentication token
+
+#### Request Body:
+<pre>
+{
+"Name": "string"
+}
+</pre>
+
+#### Response Status Code:
+204 - No Content
+401 - Unauthorized
+
+#### Response Body:
+None
+
+#### Dependencies:
+
+Trackit/Inv/platform/inventory - Package containing the inventory.Deleter interface
+github.com/gin-gonic/gin - Gin web framework for building APIs
+gorm.io/gorm - GORM is an ORM library for Golang.
+#### Functions:
+
+InventoryDelete - The main function that handles the DELETE request for the /inventory endpoint.
+#### Parameters:
+
+inv (inventory.Deleter) - An instance of the inventory.Deleter interface that is used to delete inventory items.
+db (*gorm.DB) - A database object representing the connection to the database.
+#### Return:
+
+A gin.HandlerFunc function that can be used as a middleware for the /inventory DELETE endpoint.
+#### Functionality:
+The InventoryDelete function checks for the presence of a valid authentication token in the request header. If the token is missing, it returns an error response with a status code of 401. If the token is present but invalid, it also returns an error response with a status code of 401.
+
+If the authentication token is valid, the function attempts to parse the request body to get the name of the item to be deleted. It then calls the Delete method of the inventory.Deleter interface to delete the item from the database.
+
+Finally, the function returns a response with a status code of 204 if the item was successfully deleted.
