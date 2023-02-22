@@ -61,7 +61,8 @@ The LoginPost API can return the following errors:
 The LoginPost API is implemented in Go using the Gin framework and GORM library. The LoginPost function takes a *gorm.DB as an argument and returns a gin.HandlerFunc. The function first parses the request body and checks if the user exists in the database. If the user exists, the function checks if the password is correct. If the password is correct, the function generates a token and saves it to the database. Finally, the function returns the token in a JSON response.
 
 The generateToken function generates a random token using the crypto/rand and fmt packages. The function returns a hexadecimal representation of the random bytes.
-<p>&nbsp;</p>
+
+---------------------
 
 * ### Register Post Request
 
@@ -108,7 +109,8 @@ Invalid request body: the request body is not a valid JSON object.
 User already exists: a user with the provided username already exists in the database.
 Password and password confirmation do not match: the password and password confirmation fields do not match.
 Failed to create user: an error occurred while attempting to create the user in the database.
-<p>&nbsp;</p>
+
+---------------------
 
 * ### Inventory Get Request
 
@@ -150,7 +152,8 @@ The InventoryGet function checks for the presence of a valid authentication toke
 If the authentication token is valid, the function calls the GetAll method of the inventory.Getter interface to retrieve all the inventory items from the database. It then returns a response with a status code of 200 and the inventory data in JSON format.
 
 The isValidToken function is a helper function that verifies the validity of an authentication token. It first extracts the token from the authentication header and then queries the database to check if a user with the given token exists. If no user with the token is found, the function returns false, indicating that the token is invalid. If a user with the token is found, the function returns true if the token in the user object matches the provided token, indicating that the token is valid.
-<p>&nbsp;</p>
+
+---------------------
 
 * ### Inventory Post Request
 
@@ -208,7 +211,8 @@ If "Kind" is "Container", a new container with the provided name and location wi
 If "Kind" is "Traverse", the current inventory container will be updated to the specified location or parent container.
 If "Kind" is empty, a new inventory item with the provided name and location will be created and added to the current inventory container.
 If the request header is missing or invalid, the response will be a 401 Unauthorized error.
-<p>&nbsp;</p>
+
+---------------------
 
 * ### Inventory Put Request
 
@@ -260,7 +264,8 @@ Response
 <pre>
 HTTP/1.1 204 No Content
 </pre>
-<p>&nbsp;</p>
+
+---------------------
 
 * ### Inventory Delete Request
 
