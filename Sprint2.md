@@ -229,13 +229,9 @@ The following headers must be included in the request:
 
 Authorization: The authorization token.
 * ####  &emsp; Response:
-Success
+Success: A successful response has a 204 No Content status code.
 
-A successful response has a 204 No Content status code.
-
-Error
-
-If the request fails, a JSON object with an error message will be returned, along with an appropriate status code. Possible error responses are:
+Error: If the request fails, a JSON object with an error message will be returned, along with an appropriate status code. Possible error responses are:
 
 401 Unauthorized: The authorization token is missing or invalid.
 404 Not Found: The container or item does not exist.
