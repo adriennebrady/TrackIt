@@ -1,1 +1,55 @@
-<p>about works!</p>
+<div *ngIf="loggedIn(); then thenBlock; else elseBlock"></div>
+<ng-template #thenBlock>
+  <mat-toolbar class="navbar">
+    <span routerLink="/home" class="logo">TRACKIT</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/about">About</button>
+    <button mat-button (click)="logOut()" routerLink="/home">Sign Out</button>
+    <button
+      mat-flat-button
+      routerLink="/inventory"
+      color="primary"
+      class="signUpButton"
+    >
+      My Inventory
+    </button>
+  </mat-toolbar>
+</ng-template>
+<ng-template #elseBlock>
+  <mat-toolbar class="navbar">
+    <span class="logo" routerLink="/home">TRACKIT</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/about">About</button>
+    <button mat-button routerLink="/login">Login</button>
+    <button
+      mat-flat-button
+      routerLink="/signup"
+      color="primary"
+      class="signUpButton"
+    >
+      Sign Up
+    </button>
+  </mat-toolbar>
+</ng-template>
+
+<div>
+  <div class="content">
+    <h1 class="title">Find it fast, TrackIt first.</h1>
+  </div>
+  <div class="description">
+    <p class="content">
+      TrackIt is a digital personal inventory tracker that helps you keep track
+      of all your belongings. It allows you to create virtual furniture, like
+      cabinets or fridges, and add containers, like shelves, to store your items
+      in a visual and accessible way.
+    </p>
+    <br />
+    <p class="content">
+      To get started, simply create an account and start adding items to your
+      virtual containers. You can categorize your items using tags, descriptors,
+      and location-based searches, making it easy to find what you need, when
+      you need it. With TrackIt, you'll never have to worry about losing track
+      of your belongings again.
+    </p>
+  </div>
+</div>

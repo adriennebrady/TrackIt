@@ -8,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +26,10 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
+import { RenameDialogComponent } from './inventory-page/rename-dialog/rename-dialog.component';
+
+import { AuthService } from './auth.service';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -39,7 +43,8 @@ import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
     HomeComponent,
     AboutComponent,
     LoginPageComponent,
-    SignUpPageComponent
+    SignUpPageComponent,
+    RenameDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,9 +60,10 @@ import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
     MatMenuModule,
     FormsModule,
     MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [AuthService, AuthGuard],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

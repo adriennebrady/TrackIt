@@ -1,10 +1,14 @@
 <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-title class="containerName">{{container.name}}</mat-card-title>
-      <span class="spacer"></span>
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="icon-button with a menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
+  <mat-card-header>
+    <mat-card-title class="containerName">{{ container.name }}</mat-card-title>
+    <span class="spacer"></span>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="icon-button with a menu"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item>
           <mat-icon>border_color</mat-icon>
@@ -22,12 +26,17 @@
       <mat-divider></mat-divider>
       
       <br>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-stroked-button color="primary" (click)="seeInside(container.id)">See Inside ></button>
-      <span class="spacer"></span>
-      <button mat-icon-button color="primary" (click)="deleteContainer(index)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </mat-card-actions>
-  </mat-card>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-stroked-button color="primary">See Inside ></button>
+    <span class="spacer"></span>
+    <button
+      class="deleteButton"
+      mat-icon-button
+      color="primary"
+      (click)="deleteContainer(index)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

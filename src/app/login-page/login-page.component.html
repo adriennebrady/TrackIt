@@ -1,1 +1,46 @@
-<p>login-page works!</p>
+<mat-toolbar class="navbar">
+  <span class="logo" routerLink="/home">TRACKIT</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/about">About</button>
+  <button mat-button routerLink="/login">Login</button>
+  <button
+    mat-flat-button
+    routerLink="/signup"
+    color="primary"
+    class="signUpButton"
+  >
+    Sign Up
+  </button>
+</mat-toolbar>
+
+<div class="card">
+  <mat-card-title>Log In</mat-card-title>
+  <br />
+  <br />
+  <mat-card-content>
+    <form (submit)="onSubmit()">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Username"
+          [(ngModel)]="username"
+          name="username"
+          required
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+      </mat-form-field>
+      <br />
+      <button mat-raised-button color="primary" type="submit">Log In</button>
+    </form>
+  </mat-card-content>
+</div>

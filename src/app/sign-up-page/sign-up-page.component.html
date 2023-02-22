@@ -1,1 +1,52 @@
-<p>sign-up-page works!</p>
+<mat-toolbar class="navbar">
+  <span class="logo" routerLink="/home">TRACKIT</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/about">About</button>
+  <button mat-button routerLink="/login">Login</button>
+  <button
+    mat-flat-button
+    routerLink="/signup"
+    color="primary"
+    class="signUpButton"
+  >
+    Sign Up
+  </button>
+</mat-toolbar>
+
+<div class="card">
+  <mat-card-title>Sign Up</mat-card-title>
+  <br />
+  <br />
+  <mat-card-content>
+    <form (submit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="username" name="username" required />
+      </mat-form-field>
+      <br />
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input
+          matInput
+          type="password"
+          [(ngModel)]="password_confirmation"
+          name="passwordConfirm"
+          required
+        />
+      </mat-form-field>
+      <br />
+      <button mat-raised-button color="primary" type="submit">Sign Up</button>
+    </form>
+  </mat-card-content>
+</div>

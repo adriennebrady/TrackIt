@@ -1,16 +1,21 @@
 import { Component, Input } from '@angular/core';
 import { ContainerCardPageComponent } from '../container-card-page/container-card-page.component';
 
+interface InvItem {
+  Name: string;
+  Location: string;
+}
+
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
-  styleUrls: ['./item.component.css']
+  styleUrls: ['./item.component.css'],
 })
 export class ItemComponent {
-  @Input() item: {
-    Name: string,
-    Location: string
-  } = { Name: '', Location: '' };
+  @Input() item: InvItem = {
+    Name: '',
+    Location: '',
+  };
 
   @Input() index: number = -1;
 
@@ -18,5 +23,9 @@ export class ItemComponent {
 
   deleteItem(index: number) {
     this.ContainerCardPage.openConfirmDialog(index);
+  }
+
+  renameItem(index: number) {
+    this.ContainerCardPage.openRenameDialog(index);
   }
 }
