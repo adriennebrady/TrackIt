@@ -18,6 +18,7 @@
 
 ## Add documentation for your backend API 
 * ### Login Post Request
+#### Description:
 The LoginPost API call is a HTTP POST request that allows a user to log in to the system by providing their username and password. The API returns a JSON response containing a token that can be used for subsequent API requests that require authentication.
 
 #### Request
@@ -65,7 +66,7 @@ The generateToken function generates a random token using the crypto/rand and fm
 ---------------------
 
 * ### Register Post Request
-
+#### Description:
 This API call allows users to create a new account by providing a unique username and a password.
 
 #### Request Body
@@ -113,7 +114,6 @@ Failed to create user: an error occurred while attempting to create the user in 
 ---------------------
 
 * ### Inventory Get Request
-
 #### Description:
 This API endpoint allows retrieving all the inventory items from the database. It verifies the validity of a provided authentication token and then calls the GetAll method of the inventory.Getter interface to fetch the items from the database.
 
@@ -215,8 +215,8 @@ If the request header is missing or invalid, the response will be a 401 Unauthor
 ---------------------
 
 * ### Inventory Put Request
-
-Update a container or item in the inventory.
+#### Description:
+This API endpoint allows updating a container or item in the inventory.
 
 #### Request Body
 
