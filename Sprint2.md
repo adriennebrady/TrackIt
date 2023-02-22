@@ -17,7 +17,7 @@
 <p>&nbsp;</p>
 
 ## Add documentation for your backend API 
-### Login Post Request
+* ### Login Post Request
 The LoginPost API call is a HTTP POST request that allows a user to log in to the system by providing their username and password. The API returns a JSON response containing a token that can be used for subsequent API requests that require authentication.
 
 #### Request
@@ -61,8 +61,9 @@ The LoginPost API can return the following errors:
 The LoginPost API is implemented in Go using the Gin framework and GORM library. The LoginPost function takes a *gorm.DB as an argument and returns a gin.HandlerFunc. The function first parses the request body and checks if the user exists in the database. If the user exists, the function checks if the password is correct. If the password is correct, the function generates a token and saves it to the database. Finally, the function returns the token in a JSON response.
 
 The generateToken function generates a random token using the crypto/rand and fmt packages. The function returns a hexadecimal representation of the random bytes.
+<p>&nbsp;</p>
 
-### Register Post Request
+* ### Register Post Request
 
 This API call allows users to create a new account by providing a unique username and a password.
 
