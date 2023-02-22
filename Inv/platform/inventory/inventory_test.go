@@ -12,7 +12,6 @@ func TestAdd(t *testing.T) {
 }
 
 func TestGetAll(t *testing.T) {
-
 	inv := New()
 	inv.Add(&InvItem{})
 	results := inv.GetAll()
@@ -22,14 +21,13 @@ func TestGetAll(t *testing.T) {
 }
 
 func TestRename(t *testing.T) {
-	inv := New() ////////////////////////////////////
+	inv := New()
 	inv.Add(&InvItem{"ac", "de"})
 	inv.Rename("ac", "rep")
 
 	if inv.InvItems["rep"].Name != "rep" {
 		t.Errorf("Item was not renamed")
 	}
-
 }
 
 func TestRelocate(t *testing.T) {
@@ -40,7 +38,6 @@ func TestRelocate(t *testing.T) {
 	if inv.InvItems["ac"].Location != "rep" {
 		t.Errorf("Item was not relocated")
 	}
-
 }
 
 func TestDelete(t *testing.T) {
@@ -87,7 +84,7 @@ func TestAddCont2(t *testing.T) {
 }
 
 func TestRenameCont(t *testing.T) {
-	inv := New() ////////////////////////////////////
+	inv := New()
 	var newItems = map[string]*InvItem{}
 	var children = map[string]*Container{}
 	inv.AddContainer(&Container{1, "top drawer", "dresser", newItems, children, nil})
@@ -96,11 +93,10 @@ func TestRenameCont(t *testing.T) {
 	if inv.Containers["mid drawer"].Name != "mid drawer" {
 		t.Errorf("Item was not renamed")
 	}
-
 }
 
 func TestRelocateCont(t *testing.T) {
-	inv := New() ////////////////////////////////////
+	inv := New()
 	var newItems = map[string]*InvItem{}
 	var children = map[string]*Container{}
 	inv.AddContainer(&Container{1, "top drawer", "dresser", newItems, children, nil})
@@ -109,11 +105,10 @@ func TestRelocateCont(t *testing.T) {
 	if inv.Containers["top drawer"].Location != "fridge" {
 		t.Errorf("Item was not relocated")
 	}
-
 }
 
 func TestDeleteCont(t *testing.T) {
-	inv := New() ////////////////////////////////////
+	inv := New()
 	var newItems = map[string]*InvItem{}
 	var children = map[string]*Container{}
 	inv.AddContainer(&Container{1, "top drawer", "dresser", newItems, children, nil})
