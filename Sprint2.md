@@ -165,11 +165,7 @@ Authorization: a valid token for user authentication
 Name: string, required
 Location: string, required
 Kind: string (either "Container" or "Traverse")
-##### Possible Values of "Kind":
 
-"Container": create a new container for inventory items
-"Traverse": move through existing containers and locations
-"": add an inventory item to the current container
 #### Example usage:
 <pre>
 await fetch('/inventory', {
