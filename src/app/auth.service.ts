@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 interface newUser {
   username: string;
@@ -24,8 +25,9 @@ interface LoginResponse {
 export class AuthService {
   isLoggedIn: boolean = false;
   token: string = '';
+  public redirectUrl: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   signup(user: newUser): Observable<boolean> {
     return this.http.post<LoginResponse>('/api/register', user).pipe(
@@ -42,6 +44,9 @@ export class AuthService {
       map((response) => {
         this.token = response.token;
         localStorage.setItem('token', this.token);
+        if (this.redirectUrl) {
+          this.router.navigate([this.redirectUrl]);
+        }
         return true;
       })
     );

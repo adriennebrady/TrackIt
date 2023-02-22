@@ -1,43 +1,39 @@
 .spacer {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 .signUpButton {
-    margin-left: 5px;
+  margin-left: 5px;
 }
 
 .navbar {
-    background-color: white;
+  background-color: white;
 }
 
 .logo {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .inventoryHeading {
-   text-align: center;
-   padding-top: 5%;
+  text-align: center;
+  padding-top: 5%;
 }
 
 .inventoryHeading h1 {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .actionField {
-    padding-top: 2%;
-    justify-content: center;
-    display: flex;
+  padding-top: 2%;
+  justify-content: center;
+  display: flex;
 }
 
 .actionField button {
-    height: 55px;
-    margin-right: 20px;
-}
-
-.inventoryGrid mat-grid-tile {
-    background: lightblue;
+  height: 55px;
+  margin-right: 20px;
 }
 
 app-container {
-    width: 90%;
+  width: 90%;
 }

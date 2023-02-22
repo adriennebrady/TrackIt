@@ -27,7 +27,12 @@ export class LoginPageComponent {
       (result) => {
         // handle successful login
         this.authService.loginSuccess();
-        this.router.navigate(['/inventory']);
+        if (this.authService.redirectUrl != '') {
+          this.router.navigate([this.authService.redirectUrl]);
+          this.authService.redirectUrl = '';
+        } else {
+          this.router.navigate(['/inventory']);
+        }
       },
       (error) => {
         // handle login error
