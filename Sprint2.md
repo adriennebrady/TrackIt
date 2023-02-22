@@ -1,5 +1,5 @@
  
-# TrackIt Sprint 2 <p>&nbsp;</p>
+# TrackIt Sprint 2
 
 ## Detail work you've completed in Sprint 2
 
