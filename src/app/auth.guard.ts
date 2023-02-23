@@ -26,8 +26,8 @@ export class AuthGuard implements CanActivate {
 
   checkLogin(url: string): boolean {
     if (
-      this.authService.isLoggedIn ||
-      typeof localStorage.getItem('token') !== 'undefined'
+      this.authService.isAuthenticated() ||
+      localStorage.getItem('token') !== null
     ) {
       return true;
     }

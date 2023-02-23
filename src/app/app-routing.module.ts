@@ -29,7 +29,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'containers',
+    path: 'containers/:id',
     component: ContainerCardPageComponent,
     title: 'TrackIt | Containers',
     canActivate: [AuthGuard],

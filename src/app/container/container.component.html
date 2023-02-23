@@ -28,14 +28,15 @@
     <br />
   </mat-card-content>
   <mat-card-actions>
-    <button mat-stroked-button color="primary">See Inside ></button>
-    <span class="spacer"></span>
     <button
-      class="deleteButton"
-      mat-icon-button
+      mat-stroked-button
       color="primary"
-      (click)="deleteContainer(index)"
+      (click)="seeInside(container.id)"
     >
+      See Inside >
+    </button>
+    <span class="spacer"></span>
+    <button mat-icon-button color="primary" (click)="deleteContainer(index)">
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-actions>
