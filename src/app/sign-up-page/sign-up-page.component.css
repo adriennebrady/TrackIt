@@ -12,6 +12,7 @@
 
 .logo {
   font-weight: bold;
+  cursor: pointer;
 }
 
 .card {
