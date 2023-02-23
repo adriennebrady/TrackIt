@@ -7,6 +7,7 @@ import { RenameDialogComponent } from '../inventory-page/rename-dialog/rename-di
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Location } from '@angular/common';
 
 interface InvItem {
   Name: string;
@@ -27,8 +28,13 @@ export class ContainerCardPageComponent implements OnInit {
     private http: HttpClient,
     private cdRef: ChangeDetectorRef,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {}
+
+  backClicked() {
+    this.location.back();
+  }
 
   logOut() {
     this.authService.logout();
@@ -88,7 +94,7 @@ export class ContainerCardPageComponent implements OnInit {
 
   ngOnInit() {
     this.getInventory();
-    
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.containerId = +id;

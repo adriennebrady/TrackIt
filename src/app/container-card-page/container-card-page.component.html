@@ -16,7 +16,12 @@
 
   <!-- TODO: Create back button navigation route -->
   <div class="backNav">
-    <button mat-stroked-button color="basic" class="backButton">
+    <button
+      mat-stroked-button
+      color="basic"
+      class="backButton"
+      (click)="backClicked()"
+    >
       <mat-icon
         aria-hidden="false"
         aria-label="Back"
