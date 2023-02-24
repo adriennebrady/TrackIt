@@ -7,6 +7,7 @@
 
 ### Back-End
 * Create database using sqlite
+* Adding, Relocating, Renaming, Deleting (Containers and Items) updated
 * Create Web Login
 <p>&nbsp;</p>
 
