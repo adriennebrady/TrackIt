@@ -36,7 +36,9 @@ describe('ContainerComponent', () => {
     inventoryPage = TestBed.inject(InventoryPageComponent);
     const containerName = 'Test Container';
     const containerDescription = 'This is a test container';
+    const containerID = -1;
     component.container = {
+      id: containerID,
       name: containerName,
       description: containerDescription,
     };
