@@ -72,7 +72,7 @@ export class ContainerCardPageComponent implements OnInit {
       Authorization: authToken,
       Kind: 'Item',
       Name: newName,
-      Location: 'top shelf',
+      Location: this.containerId.toString(),
       Type: 'Add',
     };
 
