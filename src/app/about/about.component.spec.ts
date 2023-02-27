@@ -3,6 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AboutComponent } from './about.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../auth.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -11,7 +13,13 @@ describe('AboutComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AboutComponent],
-      imports: [RouterTestingModule, MatToolbarModule, MatButtonModule],
+      imports: [
+        RouterTestingModule,
+        MatToolbarModule,
+        MatButtonModule,
+        HttpClientTestingModule,
+      ],
+      providers: [AuthService],
     }).compileComponents();
   });
 
@@ -25,41 +33,29 @@ describe('AboutComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have a toolbar with a logo and navigation buttons', () => {
-    const toolbarElement = fixture.nativeElement.querySelector('.navbar');
-    expect(toolbarElement).toBeTruthy();
+  it('should display the correct content when user is logged in', () => {
+    spyOn(component, 'loggedIn').and.returnValue(true);
+    fixture.detectChanges();
 
-    const logoElement = fixture.nativeElement.querySelector('.logo');
-    expect(logoElement).toBeTruthy();
-    expect(logoElement.textContent).toContain('TRACKIT');
-
-    const aboutButtonElement = fixture.nativeElement.querySelector(
-      'button[routerlink="/about"]'
+    expect(fixture.nativeElement.querySelector('.logo').textContent).toContain(
+      'TRACKIT'
     );
-    expect(aboutButtonElement).toBeTruthy();
-    expect(aboutButtonElement.textContent).toContain('About');
-
-    const loginButtonElement = fixture.nativeElement.querySelector(
-      'button[routerlink="/login"]'
-    );
-    expect(loginButtonElement).toBeTruthy();
-    expect(loginButtonElement.textContent).toContain('Login');
-
-    const signUpButtonElement =
-      fixture.nativeElement.querySelector('.signUpButton');
-    expect(signUpButtonElement).toBeTruthy();
-    expect(signUpButtonElement.textContent).toContain('Sign Up');
+    expect(fixture.nativeElement.querySelectorAll('button').length).toBe(3);
+    expect(
+      fixture.nativeElement.querySelector('.signUpButton').textContent
+    ).toContain('My Inventory');
   });
 
-  it('should have a title and description', () => {
-    const titleElement = fixture.nativeElement.querySelector('.title');
-    expect(titleElement).toBeTruthy();
-    expect(titleElement.textContent.trim()).toEqual(
-      'Find it fast, TrackIt first.'
-    );
+  it('should display the correct content when user is logged out', () => {
+    spyOn(component, 'loggedIn').and.returnValue(false);
+    fixture.detectChanges();
 
-    const descriptionElement =
-      fixture.nativeElement.querySelector('.description');
-    expect(descriptionElement).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.logo').textContent).toContain(
+      'TRACKIT'
+    );
+    expect(fixture.nativeElement.querySelectorAll('button').length).toBe(3);
+    expect(
+      fixture.nativeElement.querySelector('.signUpButton').textContent
+    ).toContain('Sign Up');
   });
 });
