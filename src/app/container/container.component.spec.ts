@@ -9,6 +9,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { AuthService } from '../auth.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ContainerComponent', () => {
   let component: ContainerComponent;
@@ -25,8 +28,14 @@ describe('ContainerComponent', () => {
         MatIconModule,
         MatMenuModule,
         MatDividerModule,
+        HttpClientTestingModule,
+        HttpClientModule,
       ],
-      providers: [ContainerCardPageComponent, InventoryPageComponent],
+      providers: [
+        ContainerCardPageComponent,
+        InventoryPageComponent,
+        AuthService,
+      ],
     }).compileComponents();
   });
 
