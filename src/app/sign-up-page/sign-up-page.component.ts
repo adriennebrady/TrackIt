@@ -37,7 +37,7 @@ export class SignUpPageComponent {
         this.router.navigate(['/inventory']);
       },
       error: (error) => {
-        // handle sign-up error
+        console.log('Error during sign-up:', error);
       },
     });
   }
