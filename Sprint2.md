@@ -4,6 +4,14 @@
 ## Detail work you've completed in Sprint 2
 
 ### Front-End
+* Implemented login and sign-up functionalities and connected them to the backend through an authService.
+* Clicking "login" or "sign up" now makes a post request that checks for the user in the database and returns a token upon login or sign up. This token is stored in the local storage and is used to make inventory requests or check if the user is logged in.
+* Connected existing features to the backend.
+* Added functionality to all buttons on the navbar, making it possible for users to navigate to different pages on the website.
+* Implemented conditional display of navbar buttons based on login status. Prior to logging in, the navbar displays login and sign-up buttons. However, after logging in, these buttons are replaced with the "my inventory" button.
+* Implemented an authGuard that redirects users to the login page if they try to access a specific page only accessible to logged-in users. After successfully logging in, the user is redirected back to the page they were trying to access.
+* Connected the inventory to the backend, enabling users to create, delete, and rename items through post, delete, and put requests, respectively.
+* Enabled users to navigate directly to containers using containers/ID, and clicking "back" will bring them back to the previous page.
 
 ### Back-End
 * Create database using sqlite
