@@ -20,7 +20,85 @@
 <p>&nbsp;</p>
 
 ## List unit tests and Cypress tests for frontend
-<p>&nbsp;</p>
+### Cypress Tests
+* Visit TrackIt Home Page
+* Visit About Page from Home Page
+* Visit Login Page from Home Page
+* Visit Signup Page from Home Page
+* Login Authentication
+* Visit About Page from My Inventory Page
+* Login User then Signout
+* Create Container 
+
+### Unit Tests
+* ContainerComponent
+  * should create
+  * should call openConfirmDialog on click of delete button
+  * should display the container name and description
+* ItemComponent
+  * should create
+  * should display the item name and location
+* AuthService
+  * should logout a user
+  * should signup a user
+  * should be created
+  * should login a user
+  * should return true if the user is authenticated
+  * should return the token
+* ContainerCardPageComponent
+  * should create
+* HomeComponent
+  * should display the home page description
+  * should display the home page title
+  * should have a button to get started
+  * should have a button for Login
+  * should have a button for About
+  * should have a button for Sign Up
+  * should display the TRACKIT logo
+* AuthGuard
+  * canActivate
+  * should return true for user with token in localStorage
+  * should return true for authenticated user
+  * should redirect to login page for unauthenticated user
+  * checkLogin
+  * should return true for authenticated user
+  * should return true for user with token in localStorage
+  * should redirect to login page for unauthenticated user
+* ConfirmDialogComponent
+  * should create
+  * should display confirm dialog title
+* SignUpPageComponent
+  * should create
+  * onSubmit() should not navigate to inventory page if passwords do not match
+  * constructor should navigate to inventory page if user is already authenticated
+  * onSubmit() should call authService.signup() and navigate to inventory page on successful sign-up
+* AppComponent
+  * should have as title 'cen3031-project'
+  * should create the app
+* AboutComponent
+  * should create
+  * should display the correct content when user is logged out
+  * should display the correct content when user is logged in
+* InventoryPageComponent
+  * should display the correct page title and description
+  * should create
+  * should display the correct navigation
+  * should call openDialog on click of new container button
+* DialogComponent
+  * should call onNoClick() when cancel button is clicked
+  * should display rename dialog title
+  * should create
+* RenameDialogComponent
+  * should call cancel() when cancel button is clicked
+  * should display rename dialog title
+  * should create
+* LoginPageComponent
+  * should create
+  * onSubmit
+  * should navigate to /inventory on successful login and no redirect URL is set
+  * should navigate to the redirect URL on successful login and a redirect URL is set
+  * should call authService.loginSuccess on successful login
+  * should call authService.login with the correct user
 
 ## List unit tests for backend
 ### (Included in the video)
