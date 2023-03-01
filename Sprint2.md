@@ -1,5 +1,7 @@
  
 # TrackIt Sprint 2
+## Video link
+https://drive.google.com/file/d/1dt2JFYXTRY-zWKRqCxAnxEK6Ly_t1La4/view?usp=sharing
 
 ## Detail work you've completed in Sprint 2
 
