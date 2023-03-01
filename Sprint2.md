@@ -57,9 +57,9 @@
   * should display the TRACKIT logo
 * AuthGuard
   * canActivate
-  * should return true for user with token in localStorage
-  * should return true for authenticated user
-  * should redirect to login page for unauthenticated user
+    * should return true for user with token in localStorage
+    * should return true for authenticated user
+    * should redirect to login page for unauthenticated user
   * checkLogin
   * should return true for authenticated user
   * should return true for user with token in localStorage
