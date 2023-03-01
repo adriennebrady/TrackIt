@@ -27,8 +27,11 @@
 * Visit Signup Page from Home Page
 * Login Authentication
 * Visit About Page from My Inventory Page
-* Login User then Signout
-* Create Container 
+  * Login, visit About Page, then return to My Inventory Page
+* Signout Authentication
+  * Login, then sign out
+* Create Container
+  * Login, click Create New Container button and fill out dialog form
 
 ### Unit Tests
 * ContainerComponent
@@ -61,9 +64,9 @@
     * should return true for authenticated user
     * should redirect to login page for unauthenticated user
   * checkLogin
-  * should return true for authenticated user
-  * should return true for user with token in localStorage
-  * should redirect to login page for unauthenticated user
+    * should return true for authenticated user
+    * should return true for user with token in localStorage
+    * should redirect to login page for unauthenticated user
 * ConfirmDialogComponent
   * should create
   * should display confirm dialog title
@@ -95,10 +98,10 @@
 * LoginPageComponent
   * should create
   * onSubmit
-  * should navigate to /inventory on successful login and no redirect URL is set
-  * should navigate to the redirect URL on successful login and a redirect URL is set
-  * should call authService.loginSuccess on successful login
-  * should call authService.login with the correct user
+    * should navigate to /inventory on successful login and no redirect URL is set
+    * should navigate to the redirect URL on successful login and a redirect URL is set
+    * should call authService.loginSuccess on successful login
+    * should call authService.login with the correct user
 
 ## List unit tests for backend
 ### (Included in the video)
