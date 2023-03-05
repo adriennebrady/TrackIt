@@ -24,9 +24,9 @@ type Item struct {
 }
 
 type Container struct {
-	LocID    int `gorm:"primaryKey"`
+	LocID    int `gorm:"primaryKey;column:LocID"`
 	Name     string
-	ParentID int
+	ParentID int `gorm:"column:ParentID"`
 }
 
 type LoginRequest struct {

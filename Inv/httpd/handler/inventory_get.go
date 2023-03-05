@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 	"strings"
-
+	
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -29,17 +29,17 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
-
+		
 		// Get all containers that have the requested container as their parent.
 		var containers []Container
-		if result := db.Table("containers").Where("parent_id = ?", requestBody.Container_id).Find(&containers); result.Error != nil {
+		if result := db.Table("Containers").Where("parentID = ?", requestBody.Container_id).Find(&containers); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get containers"})
 			return
 		}
 
 		// Get all items that are in the requested container.
 		var items []Item
-		if result := db.Table("items").Where("loc_id = ?", requestBody.Container_id).Find(&items); result.Error != nil {
+		if result := db.Table("items").Where("locID = ?", requestBody.Container_id).Find(&items); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}
