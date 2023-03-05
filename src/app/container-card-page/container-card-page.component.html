@@ -34,7 +34,7 @@
   <!-- TODO: Add rename option -->
   <div class="heading">
     <h1>
-      Container ID: {{ containerId }}
+      {{ containerName }}
       <mat-icon
         aria-hidden="false"
         aria-label="Edit"
@@ -53,7 +53,7 @@
   </div>
 
   <div class="actionField">
-    <button mat-flat-button color="primary" (click)="openDialog()">
+    <button mat-flat-button color="primary" (click)="openItemDialog()">
       Add Item
     </button>
     <button mat-flat-button color="primary" (click)="openDialog()">

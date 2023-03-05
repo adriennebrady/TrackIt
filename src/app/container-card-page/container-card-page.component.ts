@@ -8,10 +8,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Location } from '@angular/common';
+import { ItemDialogComponent } from '../inventory-page/item-dialog/item-dialog.component';
 
-interface InvItem {
+interface Item {
+  ItemID: number;
+  User: string;
+  ItemName: string;
+  LocID: number;
+  Count: number;
+}
+
+interface Container {
+  LocID: number;
   Name: string;
-  Location: string;
+  ParentID: number;
 }
 
 @Component({
@@ -21,7 +31,9 @@ interface InvItem {
 })
 export class ContainerCardPageComponent implements OnInit {
   containerId: number = -1;
-  items: InvItem[] = [];
+  items: Item[] = [];
+  containers: Container[] = [];
+  containerName: string = '';
 
   constructor(
     public dialog: MatDialog,
@@ -56,24 +68,33 @@ export class ContainerCardPageComponent implements OnInit {
     };
 
     this.http
-      .get<{ [key: string]: InvItem }>('/api/inventory', httpOptions)
-      .subscribe((items) => {
-        this.items = Object.values(items);
+      .get<any>(`/api/inventory?Container_id=${this.containerId}`, httpOptions)
+      .subscribe((response) => {
+        this.containers = response.filter(
+          (item: any) => 'ParentID' in item
+        ) as Container[];
+
+        this.items = response.filter(
+          (item: any) => 'ItemName' in item
+        ) as Item[];
         this.cdRef.detectChanges();
-        console.log(this.items);
+        console.log(this.containers);
       });
   }
 
-  createItem(newName: string) {
+  createContainer(newName: string) {}
+
+  createItem(newName: string, count: number) {
     // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
 
     const newItem = {
       Authorization: authToken,
-      Kind: 'Item',
+      Kind: 'item',
       Name: newName,
-      Location: this.containerId.toString(),
+      ID: Math.floor(Math.random() * 100000) + 28,
       Type: 'Add',
+      Cont: this.containerId,
     };
 
     const httpOptions = {
@@ -87,18 +108,23 @@ export class ContainerCardPageComponent implements OnInit {
       .post('/api/inventory', newItem, httpOptions)
       .subscribe((response) => {
         console.log(response);
+        this.getInventory();
       });
-
-    this.getInventory();
   }
 
   ngOnInit() {
-    this.getInventory();
-
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.containerId = +id;
     }
+
+    const name = sessionStorage.getItem('containerName');
+    if (name) {
+      this.containerName = name;
+      sessionStorage.removeItem('containerName');
+    }
+
+    this.getInventory();
   }
 
   openDialog(): void {
@@ -108,7 +134,19 @@ export class ContainerCardPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.createItem(result.name);
+        this.createContainer(result.name);
+      }
+    });
+  }
+
+  openItemDialog(): void {
+    const dialogRef = this.dialog.open(ItemDialogComponent, {
+      data: Object.entries({ name: '', count: '' }),
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.createItem(result.name, result.count);
       }
     });
   }
@@ -122,7 +160,7 @@ export class ContainerCardPageComponent implements OnInit {
     };
 
     const itemName = {
-      Name: this.items[index].Name,
+      Name: this.items[index].ItemName,
     };
 
     const httpOptions = {
@@ -144,7 +182,7 @@ export class ContainerCardPageComponent implements OnInit {
   openConfirmDialog(index: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
-      data: { name: this.items[index].Name },
+      data: { name: this.items[index].ItemName },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -157,7 +195,7 @@ export class ContainerCardPageComponent implements OnInit {
   openRenameDialog(index: number) {
     const dialogRef = this.dialog.open(RenameDialogComponent, {
       width: '300px',
-      data: { name: this.items[index].Name },
+      data: { name: this.items[index].ItemName },
     });
 
     dialogRef.afterClosed().subscribe((newName: string) => {
@@ -182,7 +220,7 @@ export class ContainerCardPageComponent implements OnInit {
     };
 
     const newItem = {
-      name: this.items[index].Name,
+      name: this.items[index].ItemName,
       location: newName,
       type: 'Rename',
     };

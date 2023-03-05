@@ -16,11 +16,11 @@ type Account struct { //gorm.Model?
 }
 
 type Item struct {
-	ItemID   int `gorm:"primaryKey"`
-	User     string
-	ItemName string
-	LocID    int
-	Count    int
+	ItemID   int `gorm:"primaryKey;column:id"`
+	User     string `gorm:"column:username"`
+	ItemName string `gorm:"column:itemName"`
+	LocID    int `gorm:"column:LocID"`
+	Count    int `gorm:"column:count"`
 }
 
 type Container struct {

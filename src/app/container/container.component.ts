@@ -28,6 +28,7 @@ export class ContainerComponent {
   }
 
   seeInside(id: number) {
+    sessionStorage.setItem('containerName', this.container.Name);
     this.router.navigate(['/containers', id]);
   }
 

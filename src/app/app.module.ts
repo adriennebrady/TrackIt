@@ -30,6 +30,7 @@ import { RenameDialogComponent } from './inventory-page/rename-dialog/rename-dia
 
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
+import { ItemDialogComponent } from './inventory-page/item-dialog/item-dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AuthGuard } from './auth.guard';
     LoginPageComponent,
     SignUpPageComponent,
     RenameDialogComponent,
+    ItemDialogComponent,
   ],
   imports: [
     BrowserModule,
