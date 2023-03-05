@@ -1,14 +1,22 @@
 package handler
 
 import (
-	"Trackit/Inv/platform/inventory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-func InventoryPost(inv *inventory.Container, db *gorm.DB) gin.HandlerFunc {
+type InvRequest struct {
+	Authorization string `json:"Authorization"`
+	Kind          string `json:"Kind"` // container or item?
+	ID            int    `json:"ID"`
+	Cont          int    `json:"Cont"`
+	Name          string `json:"Name"`
+	Type          string `json:"Type"`
+}
+
+func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {
@@ -23,33 +31,38 @@ func InventoryPost(inv *inventory.Container, db *gorm.DB) gin.HandlerFunc {
 		}
 
 		requestBody := InvRequest{}
-		c.Bind(&requestBody)
+		if err := c.ShouldBindJSON(&requestBody); err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+			return
+		}
 
-		if requestBody.Kind == "Container" {
-			container := inventory.New()
-			container.Name = requestBody.Name
-			container.Location = requestBody.Location
-			container.Parent = inv
-
-			inv.AddContainer(container)
-
-		} else if requestBody.Kind == "Traverse" {
-			if requestBody.Location == "Parent" {
-				inv = inv.Parent
-			} else {
-				test, ok := inv.Containers[requestBody.Location]
-				if !ok {
-					inv = test
-				}
-			}
-
-		} else {
-			invItem := inventory.InvItem{
+		if requestBody.Kind == "container" {
+			newContainer := Container{
+				LocID:    requestBody.ID,
 				Name:     requestBody.Name,
-				Location: requestBody.Location,
+				ParentID: requestBody.Cont,
 			}
 
-			inv.Add(&invItem)
+			if result := db.Table("containers").Create(&newContainer); result.Error != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to create container"})
+				return
+			}
+		} else if requestBody.Kind == "item" {
+			newItem := Item{
+				ItemID:   requestBody.ID,
+				User:     getUsernameFromToken(token, db),
+				ItemName: requestBody.Name,
+				LocID:    requestBody.Cont,
+				Count:    1,
+			}
+
+			if result := db.Table("items").Create(&newItem); result.Error != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to create item"})
+				return
+			}
+		} else {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+			return
 		}
 
 		c.Status(http.StatusNoContent)
@@ -58,14 +71,6 @@ func InventoryPost(inv *inventory.Container, db *gorm.DB) gin.HandlerFunc {
 }
 
 /*
-await fetch('/inventory', {
-    method: 'POST',
-    headers: {'content-type': 'application/json'},
-    body: JSON.stringify({
-        Name: 'brush',
-        Location: 'dresser'
-    })
-})
 
 await fetch('/inventory', {
     method: 'POST',
@@ -74,16 +79,6 @@ await fetch('/inventory', {
         Name: 'brush',
         Location: 'brusher',
         Type: 'Rename'
-    })
-})
-
-await fetch('/inventory', {
-    method: 'POST',
-    headers: {'content-type': 'application/json'},
-    body: JSON.stringify({
-        Name: 'brush',
-        Location: 'closet',
-        Type: 'Relocate'
     })
 })
 
