@@ -159,24 +159,19 @@ export class ContainerCardPageComponent implements OnInit {
       Authorization: authToken,
     };
 
-    const itemName = {
-      Name: this.items[index].ItemName,
-    };
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: authorization.Authorization,
+        id: this.items[index].ItemID.toString(),
       }),
-      body: itemName,
     };
 
     this.http.delete('/api/inventory', httpOptions).subscribe((response) => {
       console.log(response);
       this.items.splice(index, 1);
+      this.getInventory();
     });
-
-    this.getInventory();
   }
 
   openConfirmDialog(index: number) {
