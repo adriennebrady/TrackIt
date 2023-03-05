@@ -1,5 +1,22 @@
-<mat-card>
+<mat-toolbar class="navbar">
+  <span class="logo" routerLink="/home">TRACKIT</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/about">About</button>
+  <button mat-button routerLink="/login">Login</button>
+  <button
+    mat-flat-button
+    routerLink="/signup"
+    color="primary"
+    class="signUpButton"
+  >
+    Sign Up
+  </button>
+</mat-toolbar>
+
+<div class="card">
   <mat-card-title>Log In</mat-card-title>
+  <br />
+  <br />
   <mat-card-content>
     <form (submit)="onSubmit()">
       <mat-form-field>
@@ -11,6 +28,7 @@
           required
         />
       </mat-form-field>
+      <br />
       <mat-form-field>
         <input
           matInput
@@ -21,7 +39,8 @@
           required
         />
       </mat-form-field>
+      <br />
       <button mat-raised-button color="primary" type="submit">Log In</button>
     </form>
   </mat-card-content>
-</mat-card>
+</div>

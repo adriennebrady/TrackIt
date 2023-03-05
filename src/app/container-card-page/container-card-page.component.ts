@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../inventory-page/dialog/dialog.component';
 import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 import { RenameDialogComponent } from '../inventory-page/rename-dialog/rename-dialog.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { Location } from '@angular/common';
 
 interface InvItem {
   Name: string;
@@ -17,18 +20,32 @@ interface InvItem {
   styleUrls: ['./container-card-page.component.css'],
 })
 export class ContainerCardPageComponent implements OnInit {
+  containerId: number = -1;
   items: InvItem[] = [];
 
   constructor(
     public dialog: MatDialog,
     private http: HttpClient,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private location: Location
   ) {}
+
+  backClicked() {
+    this.location.back();
+  }
+
+  logOut() {
+    this.authService.logout();
+  }
 
   getInventory() {
     // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
     const authorization = {
-      Authorization: 'token',
+      Authorization: authToken,
     };
 
     const httpOptions = {
@@ -48,11 +65,14 @@ export class ContainerCardPageComponent implements OnInit {
   }
 
   createItem(newName: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
     const newItem = {
-      Authorization: 'token',
+      Authorization: authToken,
       Kind: 'Item',
       Name: newName,
-      Location: 'top shelf',
+      Location: this.containerId.toString(),
       Type: 'Add',
     };
 
@@ -74,6 +94,11 @@ export class ContainerCardPageComponent implements OnInit {
 
   ngOnInit() {
     this.getInventory();
+
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.containerId = +id;
+    }
   }
 
   openDialog(): void {
@@ -89,16 +114,29 @@ export class ContainerCardPageComponent implements OnInit {
   }
 
   removeItem(index: number) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const authorization = {
+      Authorization: authToken,
+    };
+
     const itemName = {
       Name: this.items[index].Name,
     };
 
-    this.http
-      .delete('/api/inventory', { body: itemName })
-      .subscribe((response) => {
-        console.log(response);
-        this.items.splice(index, 1);
-      });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: authorization.Authorization,
+      }),
+      body: itemName,
+    };
+
+    this.http.delete('/api/inventory', httpOptions).subscribe((response) => {
+      console.log(response);
+      this.items.splice(index, 1);
+    });
 
     this.getInventory();
   }
@@ -131,7 +169,7 @@ export class ContainerCardPageComponent implements OnInit {
 
   renameItem(index: number, newName: string) {
     // Set the HTTP headers with the authorization token
-    const authToken = 'token';
+    const authToken: string = localStorage.getItem('token')!;
 
     const headers = new HttpHeaders().set(
       'Authorization',
@@ -149,7 +187,7 @@ export class ContainerCardPageComponent implements OnInit {
       type: 'Rename',
     };
 
-    this.http.post('/api/inventory', newItem, options).subscribe((response) => {
+    this.http.put('/api/inventory', newItem, options).subscribe((response) => {
       console.log(response);
     });
 

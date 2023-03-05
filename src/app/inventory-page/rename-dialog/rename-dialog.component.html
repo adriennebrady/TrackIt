@@ -13,11 +13,12 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button class="cancelButton" (click)="cancel()">Cancel</button>
   <span class="spacer"></span>
   <button
     mat-raised-button
     color="primary"
+    class = "renameButton"
     [disabled]="!form.valid"
     (click)="rename()"
   >

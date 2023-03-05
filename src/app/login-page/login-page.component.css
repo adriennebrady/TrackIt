@@ -1,0 +1,23 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.signUpButton {
+  margin-left: 5px;
+}
+
+.navbar {
+  background-color: white;
+}
+
+.logo {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.card {
+  padding-top: 7%;
+  text-align: center;
+  margin: auto;
+  width: 300px;
+}

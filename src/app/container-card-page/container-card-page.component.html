@@ -1,48 +1,71 @@
 <body>
-    <mat-toolbar class="navbar">
-        <span class="logo">TRACKIT</span>
-        <span class="spacer"></span>
-        <button mat-button routerLink="/about">About</button>
-        <button mat-button routerLink="/home">Sign Out</button>
-        <button mat-flat-button routerLink="/inventory" color="primary" class="inventoryButton">My Inventory</button>
-    </mat-toolbar>
+  <mat-toolbar class="navbar">
+    <span routerLink="/home" class="logo">TRACKIT</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/about">About</button>
+    <button mat-button (click)="logOut()" routerLink="/home">Sign Out</button>
+    <button
+      mat-flat-button
+      routerLink="/inventory"
+      color="primary"
+      class="inventoryButton"
+    >
+      My Inventory
+    </button>
+  </mat-toolbar>
 
+  <!-- TODO: Create back button navigation route -->
+  <div class="backNav">
+    <button
+      mat-stroked-button
+      color="basic"
+      class="backButton"
+      (click)="backClicked()"
+    >
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Back"
+        fontIcon="keyboard_arrow_left"
+      ></mat-icon>
+      Back
+    </button>
+  </div>
 
-    <!-- TODO: Create back button navigation route -->
-    <div class="backNav">
-        <button mat-stroked-button color="basic" class="backButton">
-            <mat-icon aria-hidden="false" aria-label="Back" fontIcon="keyboard_arrow_left"></mat-icon>
-            Back
-        </button>
-    </div>
-  
-    <!-- TODO: Add rename option -->
-    <div class="heading">
-        <h1>
-            Top Shelf
-            <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
-        </h1>
-    </div>
-  
-    <div class="actionField">
-        <form>
-            <mat-form-field>
-                <mat-label>Search item</mat-label>
-                <input type="search" matInput placeholder="Ex. Cereal">
-              </mat-form-field>
-        </form>
-    </div>
+  <!-- TODO: Add rename option -->
+  <div class="heading">
+    <h1>
+      Container ID: {{ containerId }}
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Edit"
+        fontIcon="edit"
+      ></mat-icon>
+    </h1>
+  </div>
 
-    <div class="actionField">
-        <button mat-flat-button color="primary" (click)="openDialog()">Add Item</button>
-        <button mat-flat-button color="primary" (click)="openDialog()">Add Container</button>
-    </div>
-  
-    <div class="inventoryGrid">
-        <mat-grid-list cols="4" rowHeight="1:1">
-            <mat-grid-tile *ngFor="let item of items; index as i">
-               <app-item [item]="item" [index]="i"></app-item> 
-            </mat-grid-tile>
-          </mat-grid-list>
-    </div>
-  </body>
+  <div class="actionField">
+    <form>
+      <mat-form-field>
+        <mat-label>Search item</mat-label>
+        <input type="search" matInput placeholder="Ex. Cereal" />
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div class="actionField">
+    <button mat-flat-button color="primary" (click)="openDialog()">
+      Add Item
+    </button>
+    <button mat-flat-button color="primary" (click)="openDialog()">
+      Add Container
+    </button>
+  </div>
+
+  <div class="inventoryGrid">
+    <mat-grid-list cols="4" rowHeight="1:1">
+      <mat-grid-tile *ngFor="let item of items; index as i">
+        <app-item [item]="item" [index]="i"></app-item>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</body>
