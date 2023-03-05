@@ -30,4 +30,8 @@ export class ContainerComponent {
   seeInside(id: number) {
     this.router.navigate(['/containers', id]);
   }
+
+  renameContainer(index: number) {
+    this.inventoryPage.openRenameDialog(index);
+  }
 }

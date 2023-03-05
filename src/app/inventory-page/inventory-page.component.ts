@@ -4,6 +4,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { AuthService } from '../auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { RenameDialogComponent } from './rename-dialog/rename-dialog.component';
 
 interface Item {
   ItemID: number;
@@ -117,7 +118,7 @@ export class InventoryPageComponent implements OnInit {
     };
 
     const containerName = {
-      Name: this.containers[index].Name,
+      LocID: this.containers[index].LocID,
     };
 
     const httpOptions = {
@@ -147,5 +148,46 @@ export class InventoryPageComponent implements OnInit {
         this.removeContainer(index);
       }
     });
+  }
+
+  openRenameDialog(index: number) {
+    const dialogRef = this.dialog.open(RenameDialogComponent, {
+      width: '300px',
+      data: { name: this.containers[index].Name },
+    });
+
+    dialogRef.afterClosed().subscribe((newName: string) => {
+      if (newName) {
+        this.renameContainer(index, newName);
+      }
+    });
+  }
+
+  renameContainer(index: number, newName: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const updateContainer = {
+      Authorization: authToken,
+      Kind: 'Container',
+      ID: this.containers[index].LocID,
+      Cont: 27,
+      Name: newName,
+      Type: 'Rename',
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: updateContainer.Authorization,
+      }),
+    };
+
+    this.http
+      .put('/api/inventory', updateContainer, httpOptions)
+      .subscribe((response) => {
+        console.log(response);
+        this.getInventory();
+      });
   }
 }
