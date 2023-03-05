@@ -118,14 +118,14 @@ describe('Valid User Navigation', () => {
   })
 
   // Create new container
-  it('User navigates clicks Create Container', () => {
+  it('User clicks Create Container', () => {
     cy.contains('Create new container').click()
     cy.get('app-dialog.ng-star-inserted')
     .should('be.visible').should('contain', 'Add Container')
     .then(($dialog)=>{
-      cy.wrap($dialog).get('.nameField').type('Test Container')
-      cy.wrap($dialog).get('.descriptionField').type('Hello World')
-      cy.wrap($dialog).find('button').contains('Save').click()
+      cy.wrap($dialog).get('.nameField').type('Test Container');
+      cy.wrap($dialog).get('.descriptionField').type('Hello World');
+      cy.wrap($dialog).find('button').contains('Save').click();
     });
   })
 })
