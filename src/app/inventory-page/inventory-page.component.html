@@ -1,6 +1,6 @@
 <body>
   <mat-toolbar class="navbar">
-    <span class="logo">TRACKIT</span>
+    <span class="logo" routerLink="/home">TRACKIT</span>
     <span class="spacer"></span>
     <button mat-button routerLink="/about">About</button>
     <button mat-button (click)="logOut()" routerLink="/home">Sign Out</button>
@@ -20,7 +20,12 @@
   </div>
 
   <div class="actionField">
-    <button class="newContainerButton" mat-flat-button color="primary" (click)="openDialog()">
+    <button
+      class="newContainerButton"
+      mat-flat-button
+      color="primary"
+      (click)="openDialog()"
+    >
       Create new container
     </button>
     <form>
