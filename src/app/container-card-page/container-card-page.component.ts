@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../inventory-page/dialog/dialog.component';
 import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm-dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RenameDialogComponent } from '../inventory-page/rename-dialog/rename-dialog.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Location } from '@angular/common';
 import { ItemDialogComponent } from '../inventory-page/item-dialog/item-dialog.component';
+import { NavigationEnd } from '@angular/router';
 
 interface Item {
   ItemID: number;
@@ -41,7 +42,8 @@ export class ContainerCardPageComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   backClicked() {
@@ -70,19 +72,55 @@ export class ContainerCardPageComponent implements OnInit {
     this.http
       .get<any>(`/api/inventory?Container_id=${this.containerId}`, httpOptions)
       .subscribe((response) => {
-        this.containers = response.filter(
-          (item: any) => 'ParentID' in item
-        ) as Container[];
+        if (response != null) {
+          const result = response.reduce(
+            (acc: { containers: Container[]; items: Item[] }, item: any) => {
+              if (item.ParentID) {
+                acc.containers.push(item);
+              } else if (item.ItemID) {
+                acc.items.push(item);
+              }
+              return acc;
+            },
+            { containers: [], items: [] }
+          );
 
-        this.items = response.filter(
-          (item: any) => 'ItemName' in item
-        ) as Item[];
-        this.cdRef.detectChanges();
-        console.log(this.containers);
+          this.containers = result.containers;
+          this.items = result.items;
+        } else {
+          this.containers = [];
+          this.items = [];
+        }
       });
   }
 
-  createContainer(newName: string) {}
+  createContainer(newName: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const newContainer = {
+      Authorization: authToken,
+      Kind: 'container',
+      Name: newName,
+      ID: Math.floor(Math.random() * 100000) + 28,
+      Type: 'Add',
+      Cont: +this.containerId,
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: newContainer.Authorization,
+      }),
+    };
+
+    this.http
+      .post('/api/inventory', newContainer, httpOptions)
+      .subscribe((response) => {
+        console.log(response);
+        this.getInventory();
+      });
+  }
 
   createItem(newName: string, count: number) {
     // Set the HTTP headers with the authorization token
@@ -94,7 +132,7 @@ export class ContainerCardPageComponent implements OnInit {
       Name: newName,
       ID: Math.floor(Math.random() * 100000) + 28,
       Type: 'Add',
-      Cont: this.containerId,
+      Cont: +this.containerId,
     };
 
     const httpOptions = {
@@ -113,18 +151,21 @@ export class ContainerCardPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.containerId = +id;
-    }
+    this.route.params.subscribe((params) => {
+      this.containerId = params['id'];
+      this.getInventory();
+      const name = sessionStorage.getItem('containerName');
+      if (name) {
+        this.containerName = name;
+        sessionStorage.removeItem('containerName');
+      }
+    });
 
-    const name = sessionStorage.getItem('containerName');
-    if (name) {
-      this.containerName = name;
-      sessionStorage.removeItem('containerName');
-    }
-
-    this.getInventory();
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.cdRef.detectChanges();
+      }
+    });
   }
 
   openDialog(): void {

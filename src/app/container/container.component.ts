@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { InventoryPageComponent } from '../inventory-page/inventory-page.component';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
+import { ContainerCardPageComponent } from '../container-card-page/container-card-page.component';
 import { Router } from '@angular/router';
 
 interface Container {
@@ -19,20 +19,22 @@ export class ContainerComponent {
   @Input() index: number = -1;
 
   constructor(
-    private inventoryPage: InventoryPageComponent,
-    private router: Router
+    private containerPage: ContainerCardPageComponent,
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
 
   deleteContainer(index: number) {
-    this.inventoryPage.openConfirmDialog(index);
+    this.containerPage.openConfirmDialog(index);
   }
 
   seeInside(id: number) {
     sessionStorage.setItem('containerName', this.container.Name);
-    this.router.navigate(['/containers', id]);
+    this.router.navigate(['/containers', this.container.LocID]);
+    this.cd.detectChanges();
   }
 
   renameContainer(index: number) {
-    this.inventoryPage.openRenameDialog(index);
+    this.containerPage.openRenameDialog(index);
   }
 }
