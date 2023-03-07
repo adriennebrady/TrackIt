@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 	"strings"
-	
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -29,7 +29,7 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
-		
+
 		// Get all containers that have the requested container as their parent.
 		var containers []Container
 		if result := db.Table("Containers").Where("parentID = ?", requestBody.Container_id).Find(&containers); result.Error != nil {
@@ -77,12 +77,11 @@ func getUsernameFromToken(token string, db *gorm.DB) string {
 	return account.Username
 }
 
-//TODO add backend accounts  to assign inventories to
-//////////////TODO lock inventories behind username they must have access for
-//////////////TODO allow users to delete accounts
-
-//TODO possibly salt/encrypt the password
-//TODO switch temporary data to frontend, switch backend storage to db
-//TODO parse urls to figure what container we're in
-//TODO bonus:be able to search for an item
-//TODO bonus::connect to angular///////////////////////////////////////////////////////////
+//TODO allow users to delete accounts////////////////////////
+//TODO possibly salt/encrypt the password //////////possibly  Tana
+//TODO bonus:be able to search for an item  ///////////////decide whether to make this front or backend
+//TODO Add user account to container table and send
+//TODO Multi user inventories
+//TODO import/export inventories
+//TODO trash for recently deleted
+//TODO Delete CONTAINERS

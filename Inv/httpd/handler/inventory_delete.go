@@ -47,5 +47,3 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 
 	}
 }
-
-//////////TODO ADD CONTAINERS
