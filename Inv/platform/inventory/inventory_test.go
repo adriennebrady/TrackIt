@@ -64,7 +64,7 @@ func TestAddCont(t *testing.T) {
 	}
 }
 
-func TestAddCont2(t *testing.T) {
+func TestTraverseCont(t *testing.T) {
 	inv := New()
 	var newItems = map[string]*InvItem{}
 	var children = map[string]*Container{}
