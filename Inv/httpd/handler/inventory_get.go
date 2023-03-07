@@ -76,12 +76,3 @@ func getUsernameFromToken(token string, db *gorm.DB) string {
 	}
 	return account.Username
 }
-
-//TODO allow users to delete accounts////////////////////////
-//TODO possibly salt/encrypt the password //////////possibly  Tana
-//TODO bonus:be able to search for an item  ///////////////decide whether to make this front or backend
-//TODO Add user account to container table and send
-//TODO Multi user inventories
-//TODO import/export inventories
-//TODO trash for recently deleted
-//TODO Delete CONTAINERS
