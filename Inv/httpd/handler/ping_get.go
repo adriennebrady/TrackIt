@@ -19,9 +19,11 @@ func PingGet() gin.HandlerFunc {
 //TODO And then make a column in account for rootLocID
 //TODO get that rootLocID from the register or login post request along with the token?
 //TODO allow users to delete accounts
-//TODO possibly salt/encrypt the password //////////possibly  Tana
-//TODO bonus:be able to search for an item  ///////////////decide whether to make this front or backend
-//TODO Add user account to container table and send
+//TODO search for an item 
+//TODO simple get name of container from locid
+//TODO possibly later more complex recursive version
+
+//TODO trash for recently deleted
+
 //TODO Multi user inventories
 //TODO import/export inventories
-//TODO trash for recently deleted
