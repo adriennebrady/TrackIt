@@ -5,6 +5,22 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+
+	//current encrypt
+	"golang.org/x/crypto/bcrypt"
+
+    /*/ salting
+            "crypto/rand"
+            "crypto/sha256"
+            "encoding/base64"
+    // encrypting
+            "crypto/aes"
+            "crypto/cipher"
+            "crypto/rand"
+            "encoding/base64"
+            "fmt"
+            "io"*/
+
 )
 
 type RegisterRequest struct {
@@ -12,6 +28,25 @@ type RegisterRequest struct {
 	Password             string `json:"password"`
 	PasswordConfirmation string `json:"password_confirmation"`
 }
+
+//Hash and Salt password
+func hashAndSalt(password []byte) string {
+
+	// Use GenerateFromPassword to hash & salt pwd
+	// MinCost is just an integer constant provided by the bcrypt
+	// package along with DefaultCost & MaxCost. 
+	// The cost can be any value you want provided it isn't lower
+	// than the MinCost (4)
+	// Hash the password using the salt
+	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
+	if err != nil {
+		println(err)
+		return ""
+	}
+	// Convert the hash to a string and return it
+	return string(hash)
+}
+	
 
 func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -38,7 +73,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		// Create a new user object with the provided username and password.
 		newUser := Account{
 			Username: request.Username,
-			Password: request.Password,
+			Password: hashAndSalt([]byte(request.Password)), //replaced with hash and salt password,
 			Token:    generateToken(),
 		}
 		if result := DB.Table("accounts").Create(&newUser); result.Error != nil {
