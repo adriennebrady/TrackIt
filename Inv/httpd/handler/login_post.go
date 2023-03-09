@@ -42,18 +42,17 @@ type LoginResponse struct {
 }
 
 func comparePasswords(hashedPwd string, plainPwd []byte) bool {
-    // Since we'll be getting the hashed password from the DB it
-    // will be a string so we'll need to convert it to a byte slice
-    byteHash := []byte(hashedPwd)
-    err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
-    if err != nil {
-        println(err)
-        return false
-    }
-    
-    return true
-}
+	// Since we'll be getting the hashed password from the DB it
+	// will be a string so we'll need to convert it to a byte slice
+	byteHash := []byte(hashedPwd)
+	err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
+	if err != nil {
+		println(err)
+		return false
+	}
 
+	return true
+}
 
 func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -72,7 +71,7 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Check if the password is correct.
-		if comparePasswords(user.Password, []byte(request.Password)) == false {
+		if !comparePasswords(user.Password, []byte(request.Password)) {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 			return
 		}
