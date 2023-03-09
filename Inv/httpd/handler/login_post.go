@@ -7,6 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+
+	//hash and salt password
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Account struct { //gorm.Model?
@@ -38,6 +41,20 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
+func comparePasswords(hashedPwd string, plainPwd []byte) bool {
+    // Since we'll be getting the hashed password from the DB it
+    // will be a string so we'll need to convert it to a byte slice
+    byteHash := []byte(hashedPwd)
+    err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
+    if err != nil {
+        println(err)
+        return false
+    }
+    
+    return true
+}
+
+
 func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Parse the request body.
@@ -55,7 +72,7 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Check if the password is correct.
-		if user.Password != request.Password {
+		if comparePasswords(user.Password, []byte(request.Password)) == false {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 			return
 		}
