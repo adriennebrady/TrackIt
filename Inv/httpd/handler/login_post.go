@@ -9,8 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	//hash and salt password
-    "golang.org/x/crypto/bcrypt"
-
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Account struct { //gorm.Model?
@@ -73,7 +72,7 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Check if the password is correct.
-		if comparePasswords(request.Password, []byte(user.Password)) == false {
+		if comparePasswords(user.Password, []byte(request.Password)) == false {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 			return
 		}
