@@ -2,16 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../inventory-page/dialog/dialog.component';
 import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm-dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RenameDialogComponent } from '../inventory-page/rename-dialog/rename-dialog.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Location } from '@angular/common';
+import { ItemDialogComponent } from '../inventory-page/item-dialog/item-dialog.component';
+import { NavigationEnd } from '@angular/router';
 
-interface InvItem {
+interface Item {
+  ItemID: number;
+  User: string;
+  ItemName: string;
+  LocID: number;
+  Count: number;
+}
+
+interface Container {
+  LocID: number;
   Name: string;
-  Location: string;
+  ParentID: number;
 }
 
 @Component({
@@ -21,7 +32,9 @@ interface InvItem {
 })
 export class ContainerCardPageComponent implements OnInit {
   containerId: number = -1;
-  items: InvItem[] = [];
+  items: Item[] = [];
+  containers: Container[] = [];
+  containerName: string = '';
 
   constructor(
     public dialog: MatDialog,
@@ -29,7 +42,8 @@ export class ContainerCardPageComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   backClicked() {
@@ -56,24 +70,69 @@ export class ContainerCardPageComponent implements OnInit {
     };
 
     this.http
-      .get<{ [key: string]: InvItem }>('/api/inventory', httpOptions)
-      .subscribe((items) => {
-        this.items = Object.values(items);
-        this.cdRef.detectChanges();
-        console.log(this.items);
+      .get<any>(`/api/inventory?Container_id=${this.containerId}`, httpOptions)
+      .subscribe((response) => {
+        if (response != null) {
+          const result = response.reduce(
+            (acc: { containers: Container[]; items: Item[] }, item: any) => {
+              if (item.ParentID) {
+                acc.containers.push(item);
+              } else if (item.ItemID) {
+                acc.items.push(item);
+              }
+              return acc;
+            },
+            { containers: [], items: [] }
+          );
+
+          this.containers = result.containers;
+          this.items = result.items;
+        } else {
+          this.containers = [];
+          this.items = [];
+        }
       });
   }
 
-  createItem(newName: string) {
+  createContainer(newName: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const newContainer = {
+      Authorization: authToken,
+      Kind: 'container',
+      Name: newName,
+      ID: Math.floor(Math.random() * 100000) + 28,
+      Type: 'Add',
+      Cont: +this.containerId,
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: newContainer.Authorization,
+      }),
+    };
+
+    this.http
+      .post('/api/inventory', newContainer, httpOptions)
+      .subscribe((response) => {
+        console.log(response);
+        this.getInventory();
+      });
+  }
+
+  createItem(newName: string, count: number) {
     // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
 
     const newItem = {
       Authorization: authToken,
-      Kind: 'Item',
+      Kind: 'item',
       Name: newName,
-      Location: this.containerId.toString(),
+      ID: Math.floor(Math.random() * 100000) + 28,
       Type: 'Add',
+      Cont: +this.containerId,
     };
 
     const httpOptions = {
@@ -87,18 +146,26 @@ export class ContainerCardPageComponent implements OnInit {
       .post('/api/inventory', newItem, httpOptions)
       .subscribe((response) => {
         console.log(response);
+        this.getInventory();
       });
-
-    this.getInventory();
   }
 
   ngOnInit() {
-    this.getInventory();
+    this.route.params.subscribe((params) => {
+      this.containerId = params['id'];
+      this.getInventory();
+      const name = sessionStorage.getItem('containerName');
+      if (name) {
+        this.containerName = name;
+        sessionStorage.removeItem('containerName');
+      }
+    });
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.containerId = +id;
-    }
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.cdRef.detectChanges();
+      }
+    });
   }
 
   openDialog(): void {
@@ -108,7 +175,19 @@ export class ContainerCardPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.createItem(result.name);
+        this.createContainer(result.name);
+      }
+    });
+  }
+
+  openItemDialog(): void {
+    const dialogRef = this.dialog.open(ItemDialogComponent, {
+      data: Object.entries({ name: '', count: '' }),
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.createItem(result.name, result.count);
       }
     });
   }
@@ -121,30 +200,25 @@ export class ContainerCardPageComponent implements OnInit {
       Authorization: authToken,
     };
 
-    const itemName = {
-      Name: this.items[index].Name,
-    };
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: authorization.Authorization,
+        id: this.items[index].ItemID.toString(),
       }),
-      body: itemName,
     };
 
     this.http.delete('/api/inventory', httpOptions).subscribe((response) => {
       console.log(response);
       this.items.splice(index, 1);
+      this.getInventory();
     });
-
-    this.getInventory();
   }
 
   openConfirmDialog(index: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
-      data: { name: this.items[index].Name },
+      data: { name: this.items[index].ItemName },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -157,7 +231,7 @@ export class ContainerCardPageComponent implements OnInit {
   openRenameDialog(index: number) {
     const dialogRef = this.dialog.open(RenameDialogComponent, {
       width: '300px',
-      data: { name: this.items[index].Name },
+      data: { name: this.items[index].ItemName },
     });
 
     dialogRef.afterClosed().subscribe((newName: string) => {
@@ -182,7 +256,7 @@ export class ContainerCardPageComponent implements OnInit {
     };
 
     const newItem = {
-      name: this.items[index].Name,
+      name: this.items[index].ItemName,
       location: newName,
       type: 'Rename',
     };

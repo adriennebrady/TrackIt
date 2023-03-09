@@ -32,14 +32,14 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 
 		// Get all containers that have the requested container as their parent.
 		var containers []Container
-		if result := db.Table("containers").Where("parent_id = ?", requestBody.Container_id).Find(&containers); result.Error != nil {
+		if result := db.Table("Containers").Where("parentID = ?", requestBody.Container_id).Find(&containers); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get containers"})
 			return
 		}
 
 		// Get all items that are in the requested container.
 		var items []Item
-		if result := db.Table("items").Where("loc_id = ?", requestBody.Container_id).Find(&items); result.Error != nil {
+		if result := db.Table("items").Where("locID = ?", requestBody.Container_id).Find(&items); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}
@@ -76,13 +76,3 @@ func getUsernameFromToken(token string, db *gorm.DB) string {
 	}
 	return account.Username
 }
-
-//TODO add backend accounts  to assign inventories to
-//////////////TODO lock inventories behind username they must have access for
-//////////////TODO allow users to delete accounts
-
-//TODO possibly salt/encrypt the password
-//TODO switch temporary data to frontend, switch backend storage to db
-//TODO parse urls to figure what container we're in
-//TODO bonus:be able to search for an item
-//TODO bonus::connect to angular///////////////////////////////////////////////////////////

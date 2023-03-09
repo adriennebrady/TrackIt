@@ -1,9 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { ContainerCardPageComponent } from '../container-card-page/container-card-page.component';
 
-interface InvItem {
-  Name: string;
-  Location: string;
+interface Item {
+  ItemID: number;
+  User: string;
+  ItemName: string;
+  LocID: number;
+  Count: number;
 }
 
 @Component({
@@ -12,9 +15,12 @@ interface InvItem {
   styleUrls: ['./item.component.css'],
 })
 export class ItemComponent {
-  @Input() item: InvItem = {
-    Name: '',
-    Location: '',
+  @Input() item: Item = {
+    ItemID: -1,
+    User: '',
+    ItemName: '',
+    LocID: -1,
+    Count: -1,
   };
 
   @Input() index: number = -1;

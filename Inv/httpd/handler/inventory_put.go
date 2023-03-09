@@ -23,11 +23,11 @@ func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 
 		requestBody := InvRequest{}
 		c.Bind(&requestBody)
-
+		
 		if requestBody.Kind == "Container" {
 			// Look up the container in the database by ID.
 			var container Container
-			result := db.First(&container, "loc_id = ?", requestBody.ID)
+			result := db.First(&container, "LocID = ?", requestBody.ID)
 			if result.Error != nil {
 				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Container not found"})
 				return

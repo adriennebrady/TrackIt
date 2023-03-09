@@ -32,7 +32,7 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 
 		// Check if the item belongs to the user.
 		var item Item
-		if result := db.Table("items").Where("item_id = ? AND user = ?", itemID, getUsernameFromToken(token, db)).First(&item); result.Error != nil {
+		if result := db.Table("items").Where("id = ? AND username = ?", itemID, getUsernameFromToken(token, db)).First(&item); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Item not found"})
 			return
 		}
@@ -47,5 +47,3 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 
 	}
 }
-
-//////////TODO ADD CONTAINERS

@@ -34,7 +34,7 @@
   <!-- TODO: Add rename option -->
   <div class="heading">
     <h1>
-      Container ID: {{ containerId }}
+      {{ containerName }}
       <mat-icon
         aria-hidden="false"
         aria-label="Edit"
@@ -53,7 +53,7 @@
   </div>
 
   <div class="actionField">
-    <button mat-flat-button color="primary" (click)="openDialog()">
+    <button mat-flat-button color="primary" (click)="openItemDialog()">
       Add Item
     </button>
     <button mat-flat-button color="primary" (click)="openDialog()">
@@ -63,6 +63,9 @@
 
   <div class="inventoryGrid">
     <mat-grid-list cols="4" rowHeight="1:1">
+      <mat-grid-tile *ngFor="let container of containers; index as i">
+        <app-container [container]="container" [index]="i"></app-container>
+      </mat-grid-tile>
       <mat-grid-tile *ngFor="let item of items; index as i">
         <app-item [item]="item" [index]="i"></app-item>
       </mat-grid-tile>
