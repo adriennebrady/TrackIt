@@ -15,11 +15,9 @@ func PingGet() gin.HandlerFunc {
 }
 
 //TODO create a container when someone registers
-//TODO And then make a column in account for rootLocID
 //TODO get that rootLocID from the register or login post request along with the token?
-//TODO search for an item
-//TODO simple get name of container from LocID
 //TODO Delete CONTAINERS
+//TODO CREATE SEARCH INDEX, FIX TABLES
 
 //TODO trash for recently deleted
 

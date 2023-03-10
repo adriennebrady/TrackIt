@@ -13,20 +13,21 @@ type Account struct { //gorm.Model?
 	Username string `gorm:"primaryKey"`
 	Password string
 	Token    string
+	RootLoc  int `gorm:"column:rootLoc"`
 }
 
 type Item struct {
-	ItemID   int `gorm:"primaryKey"`
-	User     string
-	ItemName string
-	LocID    int
-	Count    int
+	ItemID   int    `gorm:"primaryKey"`
+	User     string `gorm:"column:username"`
+	ItemName string `gorm:"column:itemName"`
+	LocID    int    `gorm:"column:LocID"`
+	Count    int    `gorm:"column:count"`
 }
 
 type Container struct {
 	LocID    int `gorm:"primaryKey"`
 	Name     string
-	ParentID int
+	ParentID int `gorm:"column:ParentID"`
 }
 
 var db *gorm.DB

@@ -16,6 +16,7 @@ type Account struct { //gorm.Model?
 	Username string `gorm:"primaryKey"`
 	Password string
 	Token    string
+	RootLoc  int `gorm:"column:rootLoc"`
 }
 
 type Item struct {
@@ -39,6 +40,7 @@ type LoginRequest struct {
 
 type LoginResponse struct {
 	Token string `json:"token"`
+	LocID int    `json:"LocID"`
 }
 
 func comparePasswords(hashedPwd string, plainPwd []byte) bool {
