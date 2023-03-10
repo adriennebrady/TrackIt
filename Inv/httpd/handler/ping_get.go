@@ -16,8 +16,8 @@ func PingGet() gin.HandlerFunc {
 
 //TODO create a container when someone registers
 //TODO get that rootLocID from the register or login post request along with the token?
+
 //TODO Delete CONTAINERS
-//TODO CREATE SEARCH INDEX, FIX TABLES
 
 //TODO trash for recently deleted
 
