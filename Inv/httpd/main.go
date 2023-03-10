@@ -51,6 +51,8 @@ func main() {
 	{
 		api.GET("/ping", handler.PingGet())
 		api.POST("/login", handler.LoginPost(db))
+		api.POST("/search", handler.SearchGet(db))
+		api.POST("/name", handler.NameGet(db))
 		api.POST("/register", handler.RegisterPost(db))
 		api.GET("/inventory", handler.InventoryGet(db))
 		api.POST("/inventory", handler.InventoryPost(db))
