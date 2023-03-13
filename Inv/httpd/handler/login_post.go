@@ -39,8 +39,8 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	Token string `json:"token"`
-	LocID int    `json:"LocID"`
+	Token   string `json:"token"`
+	RootLoc int    `json:"LocID"`
 }
 
 func comparePasswords(hashedPwd string, plainPwd []byte) bool {
@@ -87,7 +87,7 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Return the token to the user.
-		response := LoginResponse{Token: token}
+		response := LoginResponse{Token: token, RootLoc: user.RootLoc}
 		c.JSON(http.StatusOK, response)
 	}
 }
