@@ -68,7 +68,7 @@ func deleteItem(db *gorm.DB, id int, token string) error {
 }
 
 func DestroyContainer(db *gorm.DB, locID int) error {
-	// Check if the container belongs to the user.
+	// Check if the container belongs to the user.//////////////////////////////////////////////////////////// TODO IMPROVE
 	var container Container
 	if result := db.Table("containers").Where("LocID = ? AND ParentID = 0", locID).First(&container); result.Error != nil {
 		return result.Error
@@ -93,7 +93,7 @@ func DestroyContainer(db *gorm.DB, locID int) error {
 }
 
 func destroyContainer(db *gorm.DB, locID int) error {
-	// Check if the container belongs to the user.
+	// Check if the container belongs to the user. //////////////////////////////////////////////////////////// TODO IMPROVE
 	var container Container
 	if result := db.Table("containers").Where("LocID = ? AND ParentID = 0", locID).First(&container); result.Error != nil {
 		return result.Error
