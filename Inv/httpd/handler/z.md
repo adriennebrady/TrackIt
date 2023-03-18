@@ -1,4 +1,4 @@
-## Information flow
+# Information flow
 
 Components:
 
@@ -54,7 +54,7 @@ Components:
 Workflow:
 FE => BE => DB => BE => FE
 
-### Promises
+## Promises
 
 Component
 

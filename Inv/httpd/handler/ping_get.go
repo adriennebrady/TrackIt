@@ -14,7 +14,6 @@ func PingGet() gin.HandlerFunc {
 	}
 }
 
-//TODO Delete CONTAINERS (And accounts)
 //TODO Multi user inventories
 //TODO import/export inventories
 //TODO More complex recursive version of get container name

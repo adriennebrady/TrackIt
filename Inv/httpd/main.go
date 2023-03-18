@@ -59,6 +59,7 @@ func main() {
 		api.POST("/inventory", handler.InventoryPost(db))
 		api.PUT("/inventory", handler.InventoryPut(db))
 		api.DELETE("/inventory", handler.InventoryDelete(db))
+		api.DELETE("/account", handler.AccountDelete(db))
 	}
 
 	r.Run()
