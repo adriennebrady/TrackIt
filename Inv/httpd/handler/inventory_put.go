@@ -16,18 +16,19 @@ func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Verify that the token is valid.
-		if !isValidToken(token, db) {
+		var username string
+		if username := isValidToken(token, db); username != "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
 
 		requestBody := InvRequest{}
 		c.Bind(&requestBody)
-		
+
 		if requestBody.Kind == "Container" {
 			// Look up the container in the database by ID.
 			var container Container
-			result := db.First(&container, "LocID = ?", requestBody.ID)
+			result := db.First(&container, "LocID = ? AND username = ?", requestBody.ID, username)
 			if result.Error != nil {
 				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Container not found"})
 				return
@@ -50,7 +51,7 @@ func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 		} else if requestBody.Kind == "Item" {
 			// Look up the item in the database by ID.
 			var item Item
-			result := db.First(&item, "item_id = ?", requestBody.ID)
+			result := db.First(&item, "item_id = ? AND username = ?", requestBody.ID, username)
 			if result.Error != nil {
 				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Item not found"})
 				return

@@ -84,6 +84,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 			LocID:    int(maxLocID) + 1,
 			Name:     newUser.Username + "'s container",
 			ParentID: 0, // Assuming it's a top-level container.
+			User:     newUser.Username,
 		}
 
 		// Start a new transaction to ensure atomicity.

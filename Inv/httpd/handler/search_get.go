@@ -24,14 +24,15 @@ func SearchGet(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Verify that the token is valid.
-		if !isValidToken(token, db) {
+		var username string
+		if username := isValidToken(token, db); username != "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
 
 		// Get all items that are in the requested container.
 		var items []Item
-		if result := db.Table("items").Where("ItemName = ? AND username = ?", requestBody.Item, getUsernameFromToken(token, db)).Find(&items); result.Error != nil {
+		if result := db.Table("items").Where("ItemName = ? AND username = ?", requestBody.Item, username).Find(&items); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}

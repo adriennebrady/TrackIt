@@ -25,7 +25,8 @@ func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Verify that the token is valid.
-		if !isValidToken(token, db) {
+		var username string
+		if username := isValidToken(token, db); username != "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
@@ -41,6 +42,7 @@ func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 				LocID:    requestBody.ID,
 				Name:     requestBody.Name,
 				ParentID: requestBody.Cont,
+				User:     username,
 			}
 
 			if result := db.Table("containers").Create(&newContainer); result.Error != nil {
@@ -50,7 +52,7 @@ func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 		} else if requestBody.Kind == "item" {
 			newItem := Item{
 				ItemID:   requestBody.ID,
-				User:     getUsernameFromToken(token, db),
+				User:     username,
 				ItemName: requestBody.Name,
 				LocID:    requestBody.Cont,
 				Count:    1,

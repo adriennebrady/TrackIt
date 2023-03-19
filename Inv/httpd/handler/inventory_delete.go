@@ -23,7 +23,8 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Verify that the token is valid.
-		if !isValidToken(requestBody.Token, db) {
+		var username string
+		if username := isValidToken(requestBody.Token, db); username != "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
@@ -34,13 +35,13 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		if requestBody.Type == "item" {
-			if err := deleteItem(db, requestBody.ID, requestBody.Token); err != nil {
+			if err := deleteItem(db, requestBody.ID, username); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 				return
 			}
 		} else if requestBody.Type == "container" {
 			// Delete all items and sub-containers associated with the container.
-			if err := DestroyContainer(db, requestBody.ID); err != nil {
+			if err := DestroyContainer(db, requestBody.ID, username); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 				return
 			}
@@ -52,10 +53,10 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func deleteItem(db *gorm.DB, id int, token string) error {
+func deleteItem(db *gorm.DB, id int, username string) error {
 	// Check if the item belongs to the user.
 	var item Item
-	if result := db.Table("items").Where("id = ? AND username = ?", id, getUsernameFromToken(token, db)).First(&item); result.Error != nil {
+	if result := db.Table("items").Where("id = ? AND username = ?", id, username).First(&item); result.Error != nil {
 		return result.Error
 	}
 
@@ -67,10 +68,10 @@ func deleteItem(db *gorm.DB, id int, token string) error {
 	return nil
 }
 
-func DestroyContainer(db *gorm.DB, locID int) error {
-	// Check if the container belongs to the user.//////////////////////////////////////////////////////////// TODO IMPROVE
+func DestroyContainer(db *gorm.DB, locID int, username string) error {
+	// Look up the container in the database by ID.
 	var container Container
-	if result := db.Table("containers").Where("LocID = ? AND ParentID = 0", locID).First(&container); result.Error != nil {
+	if result := db.First(&container, "LocID = ? AND username = ?", locID, username); result.Error != nil {
 		return result.Error
 	}
 
@@ -92,10 +93,10 @@ func DestroyContainer(db *gorm.DB, locID int) error {
 	return nil
 }
 
-func destroyContainer(db *gorm.DB, locID int) error {
-	// Check if the container belongs to the user. //////////////////////////////////////////////////////////// TODO IMPROVE
+func destroyContainer(db *gorm.DB, locID int, username string) error {
+	// Look up the container in the database by ID.
 	var container Container
-	if result := db.Table("containers").Where("LocID = ? AND ParentID = 0", locID).First(&container); result.Error != nil {
+	if result := db.First(&container, "LocID = ? AND username = ?", locID, username); result.Error != nil {
 		return result.Error
 	}
 

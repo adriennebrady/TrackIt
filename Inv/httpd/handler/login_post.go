@@ -30,7 +30,8 @@ type Item struct {
 type Container struct {
 	LocID    int `gorm:"primaryKey;column:LocID"`
 	Name     string
-	ParentID int `gorm:"column:ParentID"`
+	ParentID int    `gorm:"column:ParentID"`
+	User     string `gorm:"column:username"`
 }
 
 type LoginRequest struct {

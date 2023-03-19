@@ -19,13 +19,14 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Verify that the token is valid.
-		if !isValidToken(token, db) {
+		var username string
+		if username := isValidToken(token, db); username != "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
 
 		var names string
-		if result := db.Table("Containers").Where("LocID = ?", requestBody.Container_id).First(&names); result.Error != nil {
+		if result := db.Table("Containers").Where("LocID = ? AND username = ?", requestBody.Container_id, username).First(&names); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get container"})
 			return
 		}

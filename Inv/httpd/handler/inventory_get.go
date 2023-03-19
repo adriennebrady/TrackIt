@@ -25,14 +25,22 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Verify that the token is valid.
-		if !isValidToken(token, db) {
+		var username string
+		if username := isValidToken(token, db); username != "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			return
+		}
+
+		// Check if the container belongs to the user.
+		var cont Container
+		if result := db.Table("items").Where("LocID = ? AND username = ?", requestBody.Container_id, username).First(&cont); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid container"})
 			return
 		}
 
 		// Get all containers that have the requested container as their parent.
 		var containers []Container
-		if result := db.Table("Containers").Where("parentID = ?", requestBody.Container_id).Find(&containers); result.Error != nil {
+		if result := db.Table("Containers").Where("parentID = ? ", requestBody.Container_id).Find(&containers); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get containers"})
 			return
 		}
@@ -57,22 +65,15 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func isValidToken(authHeader string, db *gorm.DB) bool {
+func isValidToken(authHeader string, db *gorm.DB) string {
 
 	token := strings.TrimPrefix(authHeader, "Bearer ")
 	// Query the database for a user with the given token.
 	var user Account
 	if err := db.Table("Accounts").Where("token = ?", token).First(&user).Error; err != nil {
 		// If no user with the token is found, return false.
-		return false
-	}
-	return user.Token == token
-}
-
-func getUsernameFromToken(token string, db *gorm.DB) string {
-	var account Account
-	if err := db.Table("accounts").Where("token = ?", token).First(&account).Error; err != nil {
 		return ""
 	}
-	return account.Username
+
+	return user.Username
 }

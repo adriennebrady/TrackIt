@@ -53,7 +53,7 @@ func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 }
 
 func destroyUserResources(DB *gorm.DB, user Account) error {
-	if err := destroyContainer(DB, user.RootLoc); err != nil {
+	if err := destroyContainer(DB, user.RootLoc, user.Username); err != nil {
 		return err
 	}
 
