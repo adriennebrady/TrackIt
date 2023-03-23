@@ -103,7 +103,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Update the new user's RootLoc to the LocID of the new container.
-		if result := tx.Table("accounts").Where("username = ?", newUser.Username).Update("rootLoc", newContainer.LocID); result.Error != nil {
+		if result := tx.Table("accounts").Where("username = ?", newUser.Username).Update("rootLoc", newContainer.loc_id); result.Error != nil {
 			tx.Rollback()
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user's RootLoc"})
 			return
