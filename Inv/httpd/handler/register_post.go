@@ -81,7 +81,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		newContainer := Container{
-			LocID:    int(maxLocID) + 1,
+			loc_id:    int(maxLocID) + 1,
 			Name:     newUser.Username + "'s container",
 			ParentID: 0, // Assuming it's a top-level container.
 			User:     newUser.Username,
@@ -113,7 +113,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		tx.Commit()
 
 		// Return the token to the user.
-		response := LoginResponse{Token: newUser.Token, RootLoc: newContainer.LocID}
+		response := LoginResponse{Token: newUser.Token, RootLoc: newContainer.loc_id}
 		c.JSON(http.StatusOK, response)
 	}
 }
