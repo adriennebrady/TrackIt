@@ -9,6 +9,7 @@
 
 ### Back-End
 * (List here)
+<p>&nbsp;</p>
 
 ## List frontend unit tests
 * (List here)
@@ -29,5 +30,6 @@
 
 * #### Sprint 3
   * (List more...)
+<p>&nbsp;</p>
 
 ## Show updated documentation for your backend API 
