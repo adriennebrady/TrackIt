@@ -15,18 +15,19 @@
 
 ## List backend unit tests
 ### (Included in the video)
-* ### &emsp; Sprint 2
-* #### TestAdd
-* #### TestGetAll
-* #### TestRename
-* #### TestRelocate
-* #### TestDelete
-* #### TestAddContainer
-* #### TestTraverseContainer
-* #### TestRenameContainer
-* #### TestRelocateContainer
-* #### TestDeleteContainer
-* ### &emsp; Sprint 3
+### &ndash; Sprint 2
+* #### &emsp; TestAdd
+* #### &emsp; TestGetAll
+* #### &emsp; TestRename
+* #### &emsp; TestRelocate
+* #### &emsp; TestDelete
+* #### &emsp; TestAddContainer
+* #### &emsp; TestTraverseContainer
+* #### &emsp; TestRenameContainer
+* #### &emsp; TestRelocateContainer
+* #### &emsp; TestDeleteContainer
+
+### &ndash; Sprint 3
 * (List more...)
 
 ## Show updated documentation for your backend API 
