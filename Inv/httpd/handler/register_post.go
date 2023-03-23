@@ -74,14 +74,14 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 		// Create a new container object with a unique LocID.
 		var maxLocID int64
-		err := DB.Table("containers").Select("MAX(loc_id)").Row().Scan(&maxLocID)
+		err := DB.Table("containers").Select("MAX(LocID)").Row().Scan(&maxLocID)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get max LocID"})
 			return
 		}
 
 		newContainer := Container{
-			loc_id:    int(maxLocID) + 1,
+			LocID:    int(maxLocID) + 1,
 			Name:     newUser.Username + "'s container",
 			ParentID: 0, // Assuming it's a top-level container.
 			User:     newUser.Username,
@@ -103,7 +103,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Update the new user's RootLoc to the LocID of the new container.
-		if result := tx.Table("accounts").Where("username = ?", newUser.Username).Update("rootLoc", newContainer.loc_id); result.Error != nil {
+		if result := tx.Table("accounts").Where("username = ?", newUser.Username).Update("rootLoc", newContainer.LocID); result.Error != nil {
 			tx.Rollback()
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user's RootLoc"})
 			return
@@ -113,7 +113,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		tx.Commit()
 
 		// Return the token to the user.
-		response := LoginResponse{Token: newUser.Token, RootLoc: newContainer.loc_id}
+		response := LoginResponse{Token: newUser.Token, RootLoc: newContainer.LocID}
 		c.JSON(http.StatusOK, response)
 	}
 }
