@@ -74,7 +74,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 		// Create a new container object with a unique LocID.
 		var maxLocID int64
-		err := DB.Table("containers").Select("MAX(LocID)").Row().Scan(&maxLocID)
+		err := DB.Table("containers").Select("MAX(loc_id)").Row().Scan(&maxLocID)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get max LocID"})
 			return
