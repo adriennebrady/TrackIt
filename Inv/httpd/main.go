@@ -7,12 +7,14 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 type Account struct { //gorm.Model?
 	Username string `gorm:"primaryKey"`
 	Password string
 	Token    string
+	RecentlyDeletedItemsID int //recently delete?
 }
 
 type Item struct {
@@ -29,6 +31,14 @@ type Container struct {
 	ParentID int
 }
 
+//recently delete
+type RecentlyDeletedItem struct {
+    ItemID           int `gorm:"primaryKey"`
+    AccountID    string
+    DeletedItemID int
+    Timestamp    time.Time
+}
+
 var db *gorm.DB
 var err error
 
@@ -40,6 +50,8 @@ func InitializeDB() {
 	db.AutoMigrate(&Account{})
 	db.AutoMigrate(&Item{})
 	db.AutoMigrate(&Container{})
+	// create the recently deleted items table
+	db.AutoMigrate(&RecentlyDeletedItem{})
 }
 
 func main() {
