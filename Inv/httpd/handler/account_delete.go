@@ -23,9 +23,15 @@ func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Check if the password is correct.
+		// Check if the passwords match.
 		if request.Password != request.PasswordConfirmation {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Password and password confirmation do not match"})
+			return
+		}
+
+		// Check if the password is correct.
+		if !comparePasswords(existingUser.Password, []byte(request.Password)) {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 			return
 		}
 
