@@ -17,15 +17,9 @@ func SearchGet(db *gorm.DB) gin.HandlerFunc {
 		requestBody := SearchRequest{}
 		c.Bind(&requestBody)
 
-		token := c.GetHeader("Authorization")
-		if token == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
-			return
-		}
-
 		// Verify that the token is valid.
 		var username string
-		if username := isValidToken(token, db); username != "" {
+		if username := isValidToken(requestBody.Authorization, db); username != "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
