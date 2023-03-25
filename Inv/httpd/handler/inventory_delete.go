@@ -24,7 +24,7 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 
 		// Verify that the token is valid.
 		var username string
-		if username := isValidToken(requestBody.Token, db); username != "" {
+		if username = isValidToken(requestBody.Token, db); username != "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}

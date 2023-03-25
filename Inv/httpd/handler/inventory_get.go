@@ -25,8 +25,8 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Verify that the token is valid.
-		username := isValidToken(token, db)
-		if username == "" {
+		var username string
+		if username = isValidToken(token, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
