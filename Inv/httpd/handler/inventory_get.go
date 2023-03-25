@@ -2,49 +2,52 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-type GetRequest struct {
-	Authorization string `json:"Authorization"`
-	Container_id  int    `json:"Container_id"`
-}
-
 func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var requestBody GetRequest
-		if err := c.BindJSON(&requestBody); err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		token := c.GetHeader("Authorization")
+		if token == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
+			return
+		}
+		// Get the container ID from the URL parameter.
+		containerIDStr := c.Param("container_id")
+		Container_id, err := strconv.Atoi(containerIDStr)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid container ID"})
 			return
 		}
 
 		// Verify that the token is valid.
 		var username string
-		if username := isValidToken(requestBody.Authorization, db); username != "" {
+		if username := isValidToken(token, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
 
 		// Check if the container belongs to the user.
 		var cont Container
-		if result := db.Table("items").Where("LocID = ? AND username = ?", requestBody.Container_id, username).First(&cont); result.Error != nil {
+		if result := db.Table("items").Where("LocID = ? AND username = ?", Container_id, username).First(&cont); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid container"})
 			return
 		}
 
 		// Get all containers that have the requested container as their parent.
 		var containers []Container
-		if result := db.Table("Containers").Where("parentID = ? ", requestBody.Container_id).Find(&containers); result.Error != nil {
+		if result := db.Table("Containers").Where("parentID = ? ", Container_id).Find(&containers); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get containers"})
 			return
 		}
 
 		// Get all items that are in the requested container.
 		var items []Item
-		if result := db.Table("items").Where("locID = ?", requestBody.Container_id).Find(&items); result.Error != nil {
+		if result := db.Table("items").Where("locID = ?", Container_id).Find(&items); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}
