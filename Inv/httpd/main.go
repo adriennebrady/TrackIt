@@ -34,9 +34,8 @@ type Container struct {
 
 // recently delete
 type RecentlyDeletedItem struct {
-	ItemID        int `gorm:"primaryKey"`
 	AccountID     string
-	DeletedItemID int
+	DeletedItemID int `gorm:"primaryKey"`
 	Timestamp     time.Time
 }
 

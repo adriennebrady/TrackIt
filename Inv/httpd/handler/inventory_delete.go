@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -11,6 +12,13 @@ type DeleteRequest struct {
 	Token string `json:"token"`
 	Type  string `json:"type"`
 	ID    int    `json:"id"`
+}
+
+// recently delete
+type RecentlyDeletedItem struct {
+	AccountID     string
+	DeletedItemID int `gorm:"primaryKey"`
+	Timestamp     time.Time
 }
 
 func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
@@ -57,6 +65,23 @@ func deleteItem(db *gorm.DB, id int, username string) error {
 	// Check if the item belongs to the user.
 	var item Item
 	if result := db.Table("items").Where("id = ? AND username = ?", id, username).First(&item); result.Error != nil {
+		return result.Error
+	}
+
+	// Delete the item.
+	if result := db.Table("items").Delete(&item); result.Error != nil {
+		return result.Error
+	}
+
+	// Create a new RecentlyDeletedItem object with the deleted item's ID and the current timestamp.
+	deletedItem := RecentlyDeletedItem{
+		AccountID:     username,
+		DeletedItemID: item.ItemID,
+		Timestamp:     time.Now(),
+	}
+
+	// Save the RecentlyDeletedItem object to the database.
+	if result := db.Table("recently_deleted_items").Create(&deletedItem); result.Error != nil {
 		return result.Error
 	}
 
