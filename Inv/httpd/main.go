@@ -2,6 +2,7 @@ package main
 
 import (
 	"Trackit/Inv/httpd/handler"
+	"time"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -31,6 +32,14 @@ type Container struct {
 	User     string `gorm:"column:username"`
 }
 
+// recently delete
+type RecentlyDeletedItem struct {
+	ItemID        int `gorm:"primaryKey"`
+	AccountID     string
+	DeletedItemID int
+	Timestamp     time.Time
+}
+
 var db *gorm.DB
 var err error
 
@@ -41,7 +50,8 @@ func InitializeDB() {
 	}
 	db.AutoMigrate(&Account{})
 	db.AutoMigrate(&Item{})
-	db.AutoMigrate(&Container{})
+	db.AutoMigrate(&Container{}) // create the recently deleted items table
+	db.AutoMigrate(&RecentlyDeletedItem{})
 }
 
 func main() {
