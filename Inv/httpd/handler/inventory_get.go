@@ -12,22 +12,17 @@ import (
 func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
-		if token == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
-			return
-		}
-		// Get the container ID from the URL parameter.
-		containerIDStr := c.Param("container_id")
-		Container_id, err := strconv.Atoi(containerIDStr)
-		if err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid container ID"})
-			return
-		}
-
 		// Verify that the token is valid.
 		var username string
 		if username = isValidToken(token, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			return
+		}
+
+		// Get the container ID from the URL parameter.
+		Container_id, err := strconv.Atoi(c.Param("container_id"))
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid container ID"})
 			return
 		}
 
