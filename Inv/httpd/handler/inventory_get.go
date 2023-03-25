@@ -15,7 +15,7 @@ type GetRequest struct {
 
 func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		requestBody := GetRequest{}
+		var requestBody GetRequest
 		if err := c.BindJSON(&requestBody); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 			return
