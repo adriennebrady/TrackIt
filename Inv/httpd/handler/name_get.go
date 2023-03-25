@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -14,21 +15,28 @@ type GetRequest struct {
 
 func NameGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		requestBody := GetRequest{}
-		if err := c.BindJSON(&requestBody); err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		token := c.GetHeader("Authorization")
+		if token == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
 			return
 		}
 
 		// Verify that the token is valid.
 		var username string
-		if username = isValidToken(requestBody.Authorization, db); username == "" {
+		if username = isValidToken(token, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
 
+		containerIDStr := c.Query("Container_id")
+		containerID, err := strconv.Atoi(containerIDStr)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid container ID"})
+			return
+		}
+
 		var names string
-		if result := db.Table("Containers").Where("LocID = ? AND username = ?", requestBody.Container_id, username).First(&names); result.Error != nil {
+		if result := db.Table("Containers").Select("name").Where("LocID = ? AND username = ?", containerID, username).Scan(&names); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get container"})
 			return
 		}
