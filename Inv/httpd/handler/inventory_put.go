@@ -24,32 +24,14 @@ func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 
 		if requestBody.Kind == "Container" {
 			if message := ContainerPut(requestBody, db, username); message != "" {
-				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": message})
 				return
 			}
 		} else if requestBody.Kind == "Item" {
-			// Look up the item in the database by ID.
-			var item Item
-			result := db.First(&item, "item_id = ? AND username = ?", requestBody.ID, username)
-			if result.Error != nil {
-				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Item not found"})
+			if message := ItemPut(requestBody, db, username); message != "" {
+				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": message})
 				return
 			}
-
-			// Update the item's name or location if requested.
-			if requestBody.Type == "Rename" {
-				item.ItemName = requestBody.Name
-			} else if requestBody.Type == "Relocate" {
-				item.LocID = requestBody.Cont
-			}
-
-			// Save the changes to the database.
-			result = db.Save(&item)
-			if result.Error != nil {
-				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Database error"})
-				return
-			}
-
 		} else {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid Kind"})
 			return
@@ -81,5 +63,28 @@ func ContainerPut(requestBody InvRequest, db *gorm.DB, username string) string {
 		return "Database error"
 	}
 
+	return ""
+}
+
+func ItemPut(requestBody InvRequest, db *gorm.DB, username string) string {
+	// Look up the item in the database by ID.
+	var item Item
+	result := db.First(&item, "item_id = ? AND username = ?", requestBody.ID, username)
+	if result.Error != nil {
+		return "Item not found"
+	}
+
+	// Update the item's name or location if requested.
+	if requestBody.Type == "Rename" {
+		item.ItemName = requestBody.Name
+	} else if requestBody.Type == "Relocate" {
+		item.LocID = requestBody.Cont
+	}
+
+	// Save the changes to the database.
+	result = db.Save(&item)
+	if result.Error != nil {
+		return "Database error"
+	}
 	return ""
 }
