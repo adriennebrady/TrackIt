@@ -17,14 +17,14 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		requestBody := DeleteRequest{}
-		if err := c.ShouldBindJSON(&requestBody); err != nil {
+		if err := c.BindJSON(&requestBody); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 			return
 		}
 
 		// Verify that the token is valid.
 		var username string
-		if username = isValidToken(requestBody.Token, db); username != "" {
+		if username = isValidToken(requestBody.Token, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}

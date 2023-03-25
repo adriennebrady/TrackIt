@@ -18,22 +18,16 @@ type InvRequest struct {
 
 func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
-		if token == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
+		requestBody := InvRequest{}
+		if err := c.ShouldBindJSON(&requestBody); err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 			return
 		}
 
 		// Verify that the token is valid.
 		var username string
-		if username = isValidToken(token, db); username != "" {
+		if username = isValidToken(requestBody.Authorization, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-			return
-		}
-
-		requestBody := InvRequest{}
-		if err := c.ShouldBindJSON(&requestBody); err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 			return
 		}
 
