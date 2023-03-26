@@ -38,6 +38,7 @@ export class SearchComponent implements OnInit {
 
   onSubmit() {
     this.router.navigate(['/search'], { queryParams: { q: this.query } });
+    this.search();
   }
 
   backClicked() {
