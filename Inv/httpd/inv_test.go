@@ -53,18 +53,16 @@ func TestSearchGet(t *testing.T) {
 	r.GET("/search", handler.SearchGet(db))
 
 }
-func TestSearchGet(t *testing.T) {
+func TestInventoryGet(t *testing.T) {
 	InitializeDB()
 
 	r := gin.Default()
-	r.GET("/search", handler.SearchGet(db))
+	r.GET("/inventory", handler.InventoryGet(db))
+	//todo: implement
 
 }
-func TestSearchGet(t *testing.T) {
-	InitializeDB()
-
-	r := gin.Default()
-	r.GET("/search", handler.SearchGet(db))
+func TestisValidToken(t *testing.T) {
+	//todo: implement
 
 }
 func TestInventoryPost(t *testing.T) {

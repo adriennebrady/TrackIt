@@ -38,7 +38,7 @@ func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 		// Start a new transaction to ensure atomicity.
 		tx := DB.Begin()
 
-		if err := destroyUserResources(DB, existingUser); err != nil {
+		if err := destroyContainer(DB, existingUser.RootLoc, existingUser.Username); err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			tx.Rollback()
 			return
@@ -56,12 +56,4 @@ func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 
 		c.JSON(http.StatusNoContent, nil)
 	}
-}
-
-func destroyUserResources(DB *gorm.DB, user Account) error {
-	if err := destroyContainer(DB, user.RootLoc, user.Username); err != nil {
-		return err
-	}
-
-	return nil
 }
