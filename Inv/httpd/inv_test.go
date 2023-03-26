@@ -38,7 +38,6 @@ func TestSearchGet(t *testing.T) {
 	r.GET("/search", handler.SearchGet(db))
 
 }
-
 func TestSearchGet(t *testing.T) {
 	InitializeDB()
 
@@ -51,6 +50,26 @@ func TestSearchGet(t *testing.T) {
 
 	r := gin.Default()
 	r.GET("/search", handler.SearchGet(db))
+
+}
+func TestSearchGet(t *testing.T) {
+	InitializeDB()
+
+	r := gin.Default()
+	r.GET("/search", handler.SearchGet(db))
+
+}
+
+func TestRegisterPost(t *testing.T) {
+	InitializeDB()
+
+	//todo: implement
+
+}
+func TestAccountDelete(t *testing.T) {
+	InitializeDB()
+
+	//todo: implement
 
 }
 func TestInventoryGet(t *testing.T) {
