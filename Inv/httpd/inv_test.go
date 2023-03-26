@@ -62,6 +62,20 @@ func TestInventoryDelete(t *testing.T) {
 	//todo: implement
 
 }
+func TestInventoryPut(t *testing.T) {
+	InitializeDB()
+
+	//todo: implement
+
+}
+func TestInventoryGet(t *testing.T) {
+	InitializeDB()
+
+	r := gin.Default()
+	r.GET("/inventory", handler.InventoryGet(db))
+	//todo: implement
+
+}
 func TestDeleteItem(t *testing.T) {
 	//todo: implement
 
@@ -74,12 +88,7 @@ func TestDdestroyContainer(t *testing.T) {
 	//todo: implement
 
 }
-func TestInventoryPut(t *testing.T) {
-	InitializeDB()
 
-	//todo: implement
-
-}
 func TestItemPut(t *testing.T) {
 	//todo: implement
 
@@ -117,14 +126,7 @@ func TestAccountDelete(t *testing.T) {
 	//todo: implement
 
 }
-func TestInventoryGet(t *testing.T) {
-	InitializeDB()
 
-	r := gin.Default()
-	r.GET("/inventory", handler.InventoryGet(db))
-	//todo: implement
-
-}
 func TestIsValidToken(t *testing.T) {
 	//todo: implement
 
