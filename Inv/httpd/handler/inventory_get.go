@@ -20,7 +20,7 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Get the container ID from the URL parameter.
-		Container_id, err := strconv.Atoi(c.Param("container_id"))
+		Container_id, err := strconv.Atoi(c.Query("container_id"))
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid container ID"})
 			return
@@ -42,7 +42,7 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 
 		// Get all items that are in the requested container.
 		var items []Item
-		if result := db.Table("items").Where("locID = ?", Container_id).Find(&items); result.Error != nil {
+		if result := db.Table("Containers").Where("locID = ?", Container_id).Find(&items); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}
