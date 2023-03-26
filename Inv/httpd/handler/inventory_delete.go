@@ -64,7 +64,7 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 func DeleteItem(db *gorm.DB, id int, username string) error {
 	// Check if the item belongs to the user.
 	var item Item
-	if result := db.Table("items").Where("id = ? AND username = ?", id, username).First(&item); result.Error != nil {
+	if result := db.Table("items").Where("ItemID = ? AND username = ?", id, username).First(&item); result.Error != nil {
 		return result.Error
 	}
 

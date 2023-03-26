@@ -212,15 +212,17 @@ export class ContainerCardPageComponent implements OnInit {
     const authToken: string = localStorage.getItem('token')!;
 
     const authorization = {
-      Authorization: authToken,
+      token: authToken,
+      type: 'item',
+      id: this.items[index].ItemID,
     };
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: authorization.Authorization,
-        id: this.items[index].ItemID.toString(),
+        Authorization: authorization.token,
       }),
+      body: authorization,
     };
 
     this.http.delete('/api/inventory', httpOptions).subscribe((response) => {
@@ -320,9 +322,8 @@ export class ContainerCardPageComponent implements OnInit {
 
     this.http.put('/api/inventory', newItem, options).subscribe((response) => {
       console.log(response);
+      this.getInventory();
     });
-
-    this.getInventory();
   }
 
   renameContainer(index: number, newName: string) {
