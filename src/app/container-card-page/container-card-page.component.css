@@ -41,6 +41,10 @@
   width: 20%;
 }
 
+.renameIcon {
+  cursor: pointer;
+}
+
 app-container {
   width: 90%;
 }

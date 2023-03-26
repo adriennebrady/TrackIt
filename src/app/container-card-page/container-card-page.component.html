@@ -14,7 +14,6 @@
     </button>
   </mat-toolbar>
 
-  <!-- TODO: Create back button navigation route -->
   <div class="backNav">
     <button
       mat-stroked-button
@@ -31,7 +30,6 @@
     </button>
   </div>
 
-  <!-- TODO: Add rename option -->
   <div class="heading">
     <h1>
       {{ containerName }}
@@ -39,6 +37,8 @@
         aria-hidden="false"
         aria-label="Edit"
         fontIcon="edit"
+        (click)="renameTopContainerDialog()"
+        class="renameIcon"
       ></mat-icon>
     </h1>
   </div>

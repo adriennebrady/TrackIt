@@ -153,7 +153,7 @@ export class ContainerCardPageComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.containerId = params['id'];
+      this.containerId = parseInt(params['id']);
       this.getContainerName();
       this.getInventory();
     });
@@ -282,6 +282,19 @@ export class ContainerCardPageComponent implements OnInit {
     }
   }
 
+  renameTopContainerDialog() {
+    const dialogRef = this.dialog.open(RenameDialogComponent, {
+      width: '300px',
+      data: { name: this.containerName },
+    });
+
+    dialogRef.afterClosed().subscribe((newName: string) => {
+      if (newName) {
+        this.renameTopContainer(newName);
+      }
+    });
+  }
+
   renameItem(index: number, newName: string) {
     // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
@@ -312,13 +325,12 @@ export class ContainerCardPageComponent implements OnInit {
   renameContainer(index: number, newName: string) {
     // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
-    const rootLoc: string = localStorage.getItem('rootloc')!;
 
     const updateContainer = {
       Authorization: authToken,
       Kind: 'Container',
       ID: this.containers[index].LocID,
-      Cont: parseInt(rootLoc),
+      Cont: this.containerId,
       Name: newName,
       Type: 'Rename',
     };
@@ -334,6 +346,35 @@ export class ContainerCardPageComponent implements OnInit {
       .put('/api/inventory', updateContainer, httpOptions)
       .subscribe((response) => {
         console.log(response);
+        this.getInventory();
+      });
+  }
+
+  renameTopContainer(newName: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const updateContainer = {
+      Authorization: authToken,
+      Kind: 'Container',
+      ID: this.containerId,
+      Cont: -1,
+      Name: newName,
+      Type: 'Rename',
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: updateContainer.Authorization,
+      }),
+    };
+
+    this.http
+      .put('/api/inventory', updateContainer, httpOptions)
+      .subscribe((response) => {
+        console.log(response);
+        this.containerName = newName;
         this.getInventory();
       });
   }
