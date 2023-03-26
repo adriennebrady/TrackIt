@@ -61,13 +61,13 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Check if the password is correct.
-		if !comparePasswords(user.Password, []byte(request.Password)) {
+		if !ComparePasswords(user.Password, []byte(request.Password)) {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 			return
 		}
 
 		// Generate a token and save it to the database.
-		token := generateToken()
+		token := GenerateToken()
 		user.Token = token
 		if result := DB.Table("accounts").Save(&user); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to save token"})

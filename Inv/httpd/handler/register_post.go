@@ -27,7 +27,7 @@ type RegisterRequest struct {
 }
 
 // Hash and Salt password
-func hashAndSalt(password []byte) string {
+func HashAndSalt(password []byte) string {
 
 	// Use GenerateFromPassword to hash & salt pwd
 	// MinCost is just an integer constant provided by the bcrypt
@@ -69,8 +69,8 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		// Create a new user object with the provided username and password.
 		newUser := Account{
 			Username: request.Username,
-			Password: hashAndSalt([]byte(request.Password)), //replaced with hash and salt password,
-			Token:    generateToken(),
+			Password: HashAndSalt([]byte(request.Password)), //replaced with hash and salt password,
+			Token:    GenerateToken(),
 		}
 		// Create a new container object with a unique LocID.
 		var maxLocID int64
