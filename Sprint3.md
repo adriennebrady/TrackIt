@@ -49,9 +49,9 @@ The API provides a single POST endpoint for user authentication. The request sho
 
 * ####  &emsp; Errors:
 The API returns these possible error responses:
-   1. Invalid request body (HTTP 400): If the request payload is not in the expected format, the API returns an HTTP 400 error.
-   2. Invalid username or password (HTTP 401): If the provided username or password is incorrect, the API returns an HTTP 401 error.
-   3. Failed to save token (HTTP 500): If the API fails to save the generated token to the database, it returns an HTTP 500 error.
+   - Invalid request body (HTTP 400): If the request payload is not in the expected format, the API returns an HTTP 400 error.
+   - Invalid username or password (HTTP 401): If the provided username or password is incorrect, the API returns an HTTP 401 error.
+   - Failed to save token (HTTP 500): If the API fails to save the generated token to the database, it returns an HTTP 500 error.
 
 * ####  &emsp; Response:
 If the authentication is successful, the API returns a JSON payload with a token and rootLoc field. The token can be used to authenticate future requests, and the rootLoc field specifies the user's root location.
@@ -78,23 +78,23 @@ This API handles registration of new users by accepting HTTP POST requests with 
 * ####  &emsp; Request:
 The request is a POST HTTP request to the endpoint /register, containing a JSON payload with the following fields:
 
-  * username: a string representing the user's desired username
-  * password: a string representing the user's desired password
-  * password_confirmation: a string representing the user's password confirmation
+  1. username: a string representing the user's desired username
+  2. password: a string representing the user's desired password
+  3. password_confirmation: a string representing the user's password confirmation
 
 * ####  &emsp; Errors:
 The API returns the following error responses:
 
-  * 400 Bad Request with a JSON payload containing "error": "Invalid request body" if the request body is invalid.
-  * 400 Bad Request with a JSON payload containing "error": "User already exists" if a user with the provided username already exists.
-  * 400 Bad Request with a JSON payload containing "error": "Password and password confirmation do not match" if the provided password and password confirmation do not match.
-  * 500 Internal Server Error with a JSON payload containing "error": "Failed to get max LocID", "error": "Failed to create user", "error": "Failed to create container", or "error": "Failed to update user's RootLoc" if there are any database errors.
+  1. 400 Bad Request with a JSON payload containing "error": "Invalid request body" if the request body is invalid.
+  2. 400 Bad Request with a JSON payload containing "error": "User already exists" if a user with the provided username already exists.
+  3. 400 Bad Request with a JSON payload containing "error": "Password and password confirmation do not match" if the provided password and password confirmation do not match.
+  4. 500 Internal Server Error with a JSON payload containing "error": "Failed to get max LocID", "error": "Failed to create user", "error": "Failed to create container", or "error": "Failed to update user's RootLoc" if there are any database errors.
 
 * ####  &emsp; Response:
 The API returns a JSON payload with the following fields:
 
-  * token: a string representing the user's unique token.
-  * rootLoc: an integer representing the unique ID of the user's container.
+  1. token: a string representing the user's unique token.
+  2. rootLoc: an integer representing the unique ID of the user's container.
 
 * ####  &emsp; Functionality:
 The API accepts HTTP POST requests to the /register endpoint. Upon receiving a valid request, it creates a new user account and generates a unique token for the user. The API also creates a new container for the user and commits all changes to the database. Finally, the API returns the token and container ID to the user.
@@ -108,23 +108,23 @@ This API is used to retrieve a list of containers and items in a specific contai
 * ####  &emsp; Request
 The request is a GET request with the following parameters:
 
-  * Authorization - A token for user authorization.
-  * container_id - The ID of the container to retrieve.
+  1. Authorization - A token for user authorization.
+  2. container_id - The ID of the container to retrieve.
 
 * ####  &emsp; Errors
 The API may return the following errors:
 
-  * Invalid token - The provided token is not valid.
-  * Invalid container ID - The provided container ID is not valid.
-  * Invalid container - The provided container does not belong to the user.
-  * Failed to get containers - There was an error retrieving the list of containers.
-  * Failed to get items - There was an error retrieving the list of items.
+  1. Invalid token - The provided token is not valid.
+  2. Invalid container ID - The provided container ID is not valid.
+  3. Invalid container - The provided container does not belong to the user.
+  4. Failed to get containers - There was an error retrieving the list of containers.
+  5. Failed to get items - There was an error retrieving the list of items.
 
 * ####  &emsp; Response
 The API will return a JSON response with the following data:
 
-  * Containers - A list of containers that have the requested container as their parent.
-  * Items - A list of items that are in the requested container.
+  1. Containers - A list of containers that have the requested container as their parent.
+  2. Items - A list of items that are in the requested container.
 
 * ####  &emsp; Functionality
 The API will check the user's authorization by validating the token provided in the request header. If the token is invalid, the API will return an error response. If the token is valid, the API will get the container ID from the URL parameter and check if the container belongs to the user. If the container does not belong to the user, the API will return an error response.
