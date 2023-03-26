@@ -28,7 +28,7 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 
 		// Check if the container belongs to the user.
 		var cont Container
-		if result := db.Table("items").Where("LocID = ? AND username = ?", Container_id, username).First(&cont); result.Error != nil {
+		if result := db.Table("Containers").Where("LocID = ? AND username = ?", Container_id, username).First(&cont); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid container"})
 			return
 		}
@@ -42,7 +42,7 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 
 		// Get all items that are in the requested container.
 		var items []Item
-		if result := db.Table("Containers").Where("locID = ?", Container_id).Find(&items); result.Error != nil {
+		if result := db.Table("Items").Where("locID = ?", Container_id).Find(&items); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}
