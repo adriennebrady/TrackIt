@@ -14,7 +14,7 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 		token := c.GetHeader("Authorization")
 		// Verify that the token is valid.
 		var username string
-		if username = isValidToken(token, db); username == "" {
+		if username = IsValidToken(token, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
@@ -60,7 +60,7 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func isValidToken(authHeader string, db *gorm.DB) string {
+func IsValidToken(authHeader string, db *gorm.DB) string {
 
 	token := strings.TrimPrefix(authHeader, "Bearer ")
 	// Query the database for a user with the given token.

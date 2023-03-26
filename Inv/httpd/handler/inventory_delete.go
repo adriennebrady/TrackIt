@@ -32,7 +32,7 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 
 		// Verify that the token is valid.
 		var username string
-		if username = isValidToken(requestBody.Token, db); username == "" {
+		if username = IsValidToken(requestBody.Token, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
@@ -43,7 +43,7 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		if requestBody.Type == "item" {
-			if err := deleteItem(db, requestBody.ID, username); err != nil {
+			if err := DeleteItem(db, requestBody.ID, username); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 				return
 			}
@@ -61,7 +61,7 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func deleteItem(db *gorm.DB, id int, username string) error {
+func DeleteItem(db *gorm.DB, id int, username string) error {
 	// Check if the item belongs to the user.
 	var item Item
 	if result := db.Table("items").Where("id = ? AND username = ?", id, username).First(&item); result.Error != nil {

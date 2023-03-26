@@ -80,7 +80,7 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func generateToken() string {
+func GenerateToken() string {
 	b := make([]byte, 16)
 	if _, err := rand.Read(b); err != nil {
 		return ""
@@ -88,7 +88,7 @@ func generateToken() string {
 	return fmt.Sprintf("%x", b)
 }
 
-func comparePasswords(hashedPwd string, plainPwd []byte) bool {
+func ComparePasswords(hashedPwd string, plainPwd []byte) bool {
 	// Since we'll be getting the hashed password from the DB it
 	// will be a string so we'll need to convert it to a byte slice
 	byteHash := []byte(hashedPwd)

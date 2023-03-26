@@ -31,32 +31,52 @@ func TestSearchGet(t *testing.T) {
 	assert.Equal(t, "[]", resp.Body.String())
 }
 
-func TestSearchGet(t *testing.T) {
+func TestInventoryDelete(t *testing.T) {
 	InitializeDB()
 
-	r := gin.Default()
-	r.GET("/search", handler.SearchGet(db))
+	//todo: implement
 
 }
-func TestSearchGet(t *testing.T) {
-	InitializeDB()
-
-	r := gin.Default()
-	r.GET("/search", handler.SearchGet(db))
+func TestDeleteItem(t *testing.T) {
+	//todo: implement
 
 }
-func TestSearchGet(t *testing.T) {
-	InitializeDB()
-
-	r := gin.Default()
-	r.GET("/search", handler.SearchGet(db))
+func TestDestroyContainer(t *testing.T) {
+	//todo: implement
 
 }
-func TestSearchGet(t *testing.T) {
+func TestdestroyContainer(t *testing.T) {
+	//todo: implement
+
+}
+func TestInventoryPut(t *testing.T) {
 	InitializeDB()
 
-	r := gin.Default()
-	r.GET("/search", handler.SearchGet(db))
+	//todo: implement
+
+}
+func TestItemPut(t *testing.T) {
+	//todo: implement
+
+}
+func TestContainerPut(t *testing.T) {
+	//todo: implement
+
+}
+func TestLoginPost(t *testing.T) {
+	InitializeDB()
+
+	//todo: implement
+
+}
+
+func TestGenerateToken(t *testing.T) {
+	//todo: implement
+
+}
+
+func TestComparePasswords(t *testing.T) {
+	//todo: implement
 
 }
 
@@ -80,7 +100,7 @@ func TestInventoryGet(t *testing.T) {
 	//todo: implement
 
 }
-func TestisValidToken(t *testing.T) {
+func TestIsValidToken(t *testing.T) {
 	//todo: implement
 
 }
@@ -100,6 +120,6 @@ func testPingGet(t *testing.T) {
 	//todo: implement
 
 }
-func TesthashAndSalt(t *testing.T) {
+func TestHashAndSalt(t *testing.T) {
 	//TODO implement
 }
