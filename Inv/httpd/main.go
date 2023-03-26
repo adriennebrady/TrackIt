@@ -43,7 +43,7 @@ var db *gorm.DB
 var err error
 
 func InitializeDB() {
-	db, err = gorm.Open(sqlite.Open("Inv/AllTracks.db"), &gorm.Config{})
+	db, err = gorm.Open(sqlite.Open("Inv/AllTracks.sqlite"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
