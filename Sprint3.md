@@ -49,9 +49,9 @@ The API provides a single POST endpoint for user authentication. The request sho
 
 * ####  &emsp; Errors:
 The API returns these possible error responses:
-   - Invalid request body (HTTP 400): If the request payload is not in the expected format, the API returns an HTTP 400 error.
-   - Invalid username or password (HTTP 401): If the provided username or password is incorrect, the API returns an HTTP 401 error.
-   - Failed to save token (HTTP 500): If the API fails to save the generated token to the database, it returns an HTTP 500 error.
+   1. Invalid request body (HTTP 400): If the request payload is not in the expected format, the API returns an HTTP 400 error.
+   2. Invalid username or password (HTTP 401): If the provided username or password is incorrect, the API returns an HTTP 401 error.
+   3. Failed to save token (HTTP 500): If the API fails to save the generated token to the database, it returns an HTTP 500 error.
 
 * ####  &emsp; Response:
 If the authentication is successful, the API returns a JSON payload with a token and rootLoc field. The token can be used to authenticate future requests, and the rootLoc field specifies the user's root location.
@@ -141,19 +141,19 @@ The InventoryPost API is a RESTful API that allows users to add items or contain
 * ####  &emsp; Request:
 The API expects a POST request with a JSON payload containing the following fields:
 
-  * Authorization: The user token for authentication.
-  * Kind: Indicates the type of object to add, whether a container or an item.
-  * ID: A unique ID for the object to add.
-  * Cont: The parent container ID if the object is an item.
-  * Name: The name of the object.
-  * Type: The type of object to add, such as a "book" or "tool".
+  1. Authorization: The user token for authentication.
+  2. Kind: Indicates the type of object to add, whether a container or an item.
+  3. ID: A unique ID for the object to add.
+  4. Cont: The parent container ID if the object is an item.
+  5. Name: The name of the object.
+  6. Type: The type of object to add, such as a "book" or "tool".
 
 * ####  &emsp; Errors:
 The API returns the following HTTP error codes and response messages:
 
-  * 400 Bad Request: Returned when the request payload is invalid.
-  * 401 Unauthorized: Returned when the user token is invalid.
-  * 500 Internal Server Error: Returned when an error occurs while processing the request.
+  1. 400 Bad Request: Returned when the request payload is invalid.
+  2. 401 Unauthorized: Returned when the user token is invalid.
+  3. 500 Internal Server Error: Returned when an error occurs while processing the request.
 
 * ####  &emsp; Response:
 The API returns an HTTP status code of 204 No Content upon successful creation of the requested item or container.
@@ -183,11 +183,11 @@ The Authorization field should contain a valid JWT token that the API uses to au
 * ####  &emsp; Errors:
 The API returns the following error messages:
 
-  * Invalid request body: Returned when the request body is missing or invalid.
-  * Invalid token: Returned when the token in the Authorization field is invalid.
-  * Invalid Kind: Returned when the Kind field in the request is neither "Container" nor "Item".
-  * Container/Item not found: Returned when the container/item ID in the request is not found in the database.
-  * Database error: Returned when there is an error while updating the container/item in the database.
+  1. Invalid request body: Returned when the request body is missing or invalid.
+  2. Invalid token: Returned when the token in the Authorization field is invalid.
+  3. Invalid Kind: Returned when the Kind field in the request is neither "Container" nor "Item".
+  4. Container/Item not found: Returned when the container/item ID in the request is not found in the database.
+  5. Database error: Returned when there is an error while updating the container/item in the database.
   
 * ####  &emsp; Response:
 The API returns a 204 No Content status code if the container/item is updated successfully.
@@ -204,17 +204,17 @@ This API provides functionality for deleting items and containers from an invent
 * ####  &emsp; Request:
 The request to the API should include a JSON body with the following fields:
 
-  * "token": A string containing a valid token for the user making the request.
-  * "type": A string indicating whether the ID corresponds to an item or container.
-  * "id": An integer representing the ID of the item or container to be deleted.
+  1. "token": A string containing a valid token for the user making the request.
+  2. "type": A string indicating whether the ID corresponds to an item or container.
+  3. "id": An integer representing the ID of the item or container to be deleted.
 
 * ####  &emsp; Errors:
 The API will return an error response if any of the following occur:
 
-  * The request body is invalid.
-  * The token is invalid.
-  * The type field is invalid.
-  * There is an error deleting the item or container.
+  1. The request body is invalid.
+  2. The token is invalid.
+  3. The type field is invalid.
+  4. There is an error deleting the item or container.
 
 * ####  &emsp; Response:
 The API will return a response with a status code indicating success or failure. If the request is successful, the API will return a status code of 204 (No Content).
@@ -231,15 +231,15 @@ This API endpoint allows a user to get the name of a container given its ID.
 * ####  &emsp; Request
 The endpoint accepts a GET request with the following parameters:
 
-  * Authorization: a token string that verifies the identity of the user.
-  * Container_id: an integer representing the ID of the container to be retrieved.
+  1. Authorization: a token string that verifies the identity of the user.
+  2. Container_id: an integer representing the ID of the container to be retrieved.
 
 * ####  &emsp; Errors
 The endpoint can return the following errors:
 
-  * 401 Unauthorized: when the Authorization token is missing or invalid.
-  * 400 Bad Request: when the container ID is not a valid integer.
-  * 500 Internal Server Error: when there is a problem retrieving the container name from the database.
+  1. 401 Unauthorized: when the Authorization token is missing or invalid.
+  2. 400 Bad Request: when the container ID is not a valid integer.
+  3. 500 Internal Server Error: when there is a problem retrieving the container name from the database.
 
 * ####  &emsp; Response
 If successful, the endpoint returns a JSON object with the following format:
@@ -275,16 +275,16 @@ Item (string): The name of the item to search for.
 * ####  &emsp; Errors:
 If the API encounters an error, it will respond with an HTTP error code and a JSON object containing an error message. The following error codes may be returned:
 
-  * 401 Unauthorized: The authorization token is invalid.
-  * 500 Internal Server Error: An error occurred while processing the request.
+  1. 401 Unauthorized: The authorization token is invalid.
+  2. 500 Internal Server Error: An error occurred while processing the request.
 
 * ####  &emsp; Response:
 If the request is successful, the API will respond with an HTTP status code of 200 and a JSON object containing a list of all items in the account that match the specified item name. The JSON object will contain the following fields for each item:
 
-  * ItemID (int): The unique identifier for the item.
-  * ItemName (string): The name of the item.
-  * Quantity (int): The quantity of the item.
-  * Username (string): The username of the account the item belongs to.
+  1. ItemID (int): The unique identifier for the item.
+  2. ItemName (string): The name of the item.
+  3. Quantity (int): The quantity of the item.
+  4. Username (string): The username of the account the item belongs to.
 
 * ####  &emsp; Functionality:
 This API takes in a search request with an authorization token and an item name. It verifies that the token is valid and belongs to the user whose items are being searched. It then searches the account for all items that match the specified item name and responds with a JSON object containing a list of all matching items. If an error occurs, the API will respond with an appropriate error code and error message.
@@ -307,18 +307,18 @@ This API expects a POST request to the endpoint /account/delete, with the follow
 }
 </pre>
 
-  * username: the username of the account to be deleted (required)
-  * password: the password of the account to be deleted (required)
-  * passwordConfirmation: the confirmation of the password (required)
+  1. username: the username of the account to be deleted (required)
+  2. password: the password of the account to be deleted (required)
+  3. passwordConfirmation: the confirmation of the password (required)
 
 * ####  &emsp; Errors:
 This API returns the following error responses:
 
-  * 400 Bad Request: The request is invalid.
-  * 404 Not Found: The requested user does not exist.
-  * 401 Unauthorized: Invalid username or password.
-  * 500 Internal Server Error: An unexpected error occurred.
-  *
+  1. 400 Bad Request: The request is invalid.
+  2. 404 Not Found: The requested user does not exist.
+  3. 401 Unauthorized: Invalid username or password.
+  4. 500 Internal Server Error: An unexpected error occurred.
+  
 * ####  &emsp; Response:
 If the request is successful, the API returns a status code of '204 No Content', indicating that the request was successful but there is no response body.
 
