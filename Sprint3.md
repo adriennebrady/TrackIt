@@ -49,11 +49,11 @@ The API provides a single POST endpoint for user authentication. The request sho
 
 * ####  &emsp; Errors:
 The API returns these possible error responses:
-
-    * Invalid request body (HTTP 400): If the request payload is not in the expected format, the API returns an HTTP 400 error.
-    * Invalid username or password (HTTP 401): If the provided username or password is incorrect, the API returns an HTTP 401 error.
-    * Failed to save token (HTTP 500): If the API fails to save the generated token to the database, it returns an HTTP 500 error.
-
+*
+   * Invalid request body (HTTP 400): If the request payload is not in the expected format, the API returns an HTTP 400 error.
+   * Invalid username or password (HTTP 401): If the provided username or password is incorrect, the API returns an HTTP 401 error.
+   * Failed to save token (HTTP 500): If the API fails to save the generated token to the database, it returns an HTTP 500 error.
+*
 * ####  &emsp; Response:
 If the authentication is successful, the API returns a JSON payload with a token and rootLoc field. The token can be used to authenticate future requests, and the rootLoc field specifies the user's root location.
 
@@ -78,11 +78,11 @@ This API handles registration of new users by accepting HTTP POST requests with 
 
 * ####  &emsp; Request:
 The request is a POST HTTP request to the endpoint /register, containing a JSON payload with the following fields:
-***
+
   * username: a string representing the user's desired username
   * password: a string representing the user's desired password
   * password_confirmation: a string representing the user's password confirmation
-***
+
 * ####  &emsp; Errors:
 The API returns the following error responses:
 
