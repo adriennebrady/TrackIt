@@ -5,6 +5,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { AuthService } from '../auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RenameDialogComponent } from './rename-dialog/rename-dialog.component';
+import { Router } from '@angular/router';
 
 interface Item {
   ItemID: number;
@@ -27,17 +28,20 @@ interface Container {
 })
 export class InventoryPageComponent implements OnInit {
   containers: Container[] = [];
+  query: string = '';
 
   constructor(
     public dialog: MatDialog,
     private authService: AuthService,
     private http: HttpClient,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   getInventory() {
     // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
+    const rootLoc: string = localStorage.getItem('rootloc')!;
 
     const authorization = {
       Authorization: authToken,
@@ -51,7 +55,7 @@ export class InventoryPageComponent implements OnInit {
     };
 
     this.http
-      .get<any>('/api/inventory?Container_id=27', httpOptions)
+      .get<any>('/api/inventory?container_id=' + rootLoc, httpOptions)
       .subscribe((response) => {
         this.containers = response.filter(
           (item: any) => 'ParentID' in item
@@ -64,12 +68,13 @@ export class InventoryPageComponent implements OnInit {
   createContainer(newName: string) {
     // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
+    const rootLoc: string = localStorage.getItem('rootloc')!;
 
     const newContainer = {
       Authorization: authToken,
       Kind: 'container',
       ID: Math.floor(Math.random() * 100000) + 28,
-      Cont: 27,
+      Cont: parseInt(rootLoc),
       Name: newName,
       Type: 'Add',
     };
@@ -118,7 +123,9 @@ export class InventoryPageComponent implements OnInit {
     };
 
     const containerName = {
-      LocID: this.containers[index].LocID,
+      token: authToken,
+      type: 'container',
+      id: this.containers[index].LocID,
     };
 
     const httpOptions = {
@@ -166,12 +173,13 @@ export class InventoryPageComponent implements OnInit {
   renameContainer(index: number, newName: string) {
     // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
+    const rootLoc: string = localStorage.getItem('rootloc')!;
 
     const updateContainer = {
       Authorization: authToken,
       Kind: 'Container',
       ID: this.containers[index].LocID,
-      Cont: 27,
+      Cont: parseInt(rootLoc),
       Name: newName,
       Type: 'Rename',
     };
@@ -189,5 +197,9 @@ export class InventoryPageComponent implements OnInit {
         console.log(response);
         this.getInventory();
       });
+  }
+
+  onSubmit() {
+    this.router.navigate(['/search'], { queryParams: { q: this.query } });
   }
 }

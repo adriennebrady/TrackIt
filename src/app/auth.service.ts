@@ -17,6 +17,7 @@ interface user {
 
 interface LoginResponse {
   token: string;
+  LocID: number;
 }
 
 @Injectable({
@@ -25,6 +26,7 @@ interface LoginResponse {
 export class AuthService {
   isLoggedIn: boolean = false;
   token: string = '';
+  rootloc: number = -1;
   public redirectUrl: string = '';
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -34,6 +36,8 @@ export class AuthService {
       map((response) => {
         this.token = response.token;
         localStorage.setItem('token', this.token);
+        this.rootloc = response.LocID;
+        localStorage.setItem('rootloc', this.rootloc.toString());
         return true;
       })
     );
@@ -44,6 +48,8 @@ export class AuthService {
       map((response) => {
         this.token = response.token;
         localStorage.setItem('token', this.token);
+        this.rootloc = response.LocID;
+        localStorage.setItem('rootloc', this.rootloc.toString());
         if (this.redirectUrl) {
           this.router.navigate([this.redirectUrl]);
         }
