@@ -49,11 +49,10 @@ The API provides a single POST endpoint for user authentication. The request sho
 
 * ####  &emsp; Errors:
 The API returns these possible error responses:
-*
-   * Invalid request body (HTTP 400): If the request payload is not in the expected format, the API returns an HTTP 400 error.
-   * Invalid username or password (HTTP 401): If the provided username or password is incorrect, the API returns an HTTP 401 error.
-   * Failed to save token (HTTP 500): If the API fails to save the generated token to the database, it returns an HTTP 500 error.
-*
+   1. Invalid request body (HTTP 400): If the request payload is not in the expected format, the API returns an HTTP 400 error.
+   2. Invalid username or password (HTTP 401): If the provided username or password is incorrect, the API returns an HTTP 401 error.
+   3. Failed to save token (HTTP 500): If the API fails to save the generated token to the database, it returns an HTTP 500 error.
+
 * ####  &emsp; Response:
 If the authentication is successful, the API returns a JSON payload with a token and rootLoc field. The token can be used to authenticate future requests, and the rootLoc field specifies the user's root location.
 
