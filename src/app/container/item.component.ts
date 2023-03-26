@@ -28,10 +28,10 @@ export class ItemComponent {
   constructor(private ContainerCardPage: ContainerCardPageComponent) {}
 
   deleteItem(index: number) {
-    this.ContainerCardPage.openConfirmDialog(index);
+    this.ContainerCardPage.openConfirmDialog(index, 'item');
   }
 
   renameItem(index: number) {
-    this.ContainerCardPage.openRenameDialog(index);
+    this.ContainerCardPage.openRenameDialog(index, 'item');
   }
 }

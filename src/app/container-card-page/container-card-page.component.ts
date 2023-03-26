@@ -230,30 +230,56 @@ export class ContainerCardPageComponent implements OnInit {
     });
   }
 
-  openConfirmDialog(index: number) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '250px',
-      data: { name: this.items[index].ItemName },
-    });
+  openConfirmDialog(index: number, type: string) {
+    if (type == 'item') {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '250px',
+        data: { name: this.items[index].ItemName },
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.removeItem(index);
-      }
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.removeItem(index);
+        }
+      });
+    } else if (type == 'container') {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '250px',
+        data: { name: this.containers[index].Name },
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.removeContainer(index);
+        }
+      });
+    }
   }
 
-  openRenameDialog(index: number) {
-    const dialogRef = this.dialog.open(RenameDialogComponent, {
-      width: '300px',
-      data: { name: this.items[index].ItemName },
-    });
+  openRenameDialog(index: number, type: string) {
+    if (type == 'item') {
+      const dialogRef = this.dialog.open(RenameDialogComponent, {
+        width: '300px',
+        data: { name: this.items[index].ItemName },
+      });
 
-    dialogRef.afterClosed().subscribe((newName: string) => {
-      if (newName) {
-        this.renameItem(index, newName);
-      }
-    });
+      dialogRef.afterClosed().subscribe((newName: string) => {
+        if (newName) {
+          this.renameItem(index, newName);
+        }
+      });
+    } else if (type == 'container') {
+      const dialogRef = this.dialog.open(RenameDialogComponent, {
+        width: '300px',
+        data: { name: this.containers[index].Name },
+      });
+
+      dialogRef.afterClosed().subscribe((newName: string) => {
+        if (newName) {
+          this.renameContainer(index, newName);
+        }
+      });
+    }
   }
 
   renameItem(index: number, newName: string) {
@@ -278,6 +304,65 @@ export class ContainerCardPageComponent implements OnInit {
 
     this.http.put('/api/inventory', newItem, options).subscribe((response) => {
       console.log(response);
+    });
+
+    this.getInventory();
+  }
+
+  renameContainer(index: number, newName: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+    const rootLoc: string = localStorage.getItem('rootloc')!;
+
+    const updateContainer = {
+      Authorization: authToken,
+      Kind: 'Container',
+      ID: this.containers[index].LocID,
+      Cont: parseInt(rootLoc),
+      Name: newName,
+      Type: 'Rename',
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: updateContainer.Authorization,
+      }),
+    };
+
+    this.http
+      .put('/api/inventory', updateContainer, httpOptions)
+      .subscribe((response) => {
+        console.log(response);
+        this.getInventory();
+      });
+  }
+
+  removeContainer(index: number) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const authorization = {
+      Authorization: authToken,
+    };
+
+    const containerName = {
+      token: authToken,
+      type: 'container',
+      id: this.containers[index].LocID,
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: authorization.Authorization,
+      }),
+      body: containerName,
+    };
+
+    this.http.delete('/api/inventory', httpOptions).subscribe((response) => {
+      console.log(response);
+      this.containers.splice(index, 1);
     });
 
     this.getInventory();

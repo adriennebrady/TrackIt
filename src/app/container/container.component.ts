@@ -25,7 +25,7 @@ export class ContainerComponent {
   ) {}
 
   deleteContainer(index: number) {
-    this.containerPage.openConfirmDialog(index);
+    this.containerPage.openConfirmDialog(index, 'container');
   }
 
   seeInside(id: number) {
@@ -35,6 +35,6 @@ export class ContainerComponent {
   }
 
   renameContainer(index: number) {
-    this.containerPage.openRenameDialog(index);
+    this.containerPage.openRenameDialog(index, 'container');
   }
 }
