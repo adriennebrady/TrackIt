@@ -65,24 +65,3 @@ func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 
 	}
 }
-
-/*
-
-await fetch('/inventory', {
-    method: 'POST',
-    headers: {'content-type': 'application/json'},
-    body: JSON.stringify({
-        Name: 'brush',
-        Location: 'brusher',
-        Type: 'Rename'
-    })
-})
-
-curl http://localhost:8080/inventory \
-    --include \
-    --header "Content-Type: application/json" \
-    --request "POST" \
-    --data '{"Name": "Brush","Location": "Cabinet"}'
-
-curl http://localhost:8080/inventory \ --header "Content-Type: application/json" \ --request "GET"
-*/

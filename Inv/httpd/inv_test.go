@@ -17,7 +17,7 @@ func TestSearchGet(t *testing.T) {
 	r.GET("/search", handler.SearchGet(db))
 
 	// Create a test request with a valid token and item name
-	req, err := http.NewRequest("GET", "/search?Authorization=5f4c95220bca728a95264264bf3eoe09&Item=Where", nil)
+	req, err := http.NewRequest("GET", "/search?Authorization=8fe7eOc922e768ed97132ac2ab8c06fd&Item=Where", nil)
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
 	}
@@ -29,4 +29,60 @@ func TestSearchGet(t *testing.T) {
 	// Verify the response code and body
 	assert.Equal(t, http.StatusOK, resp.Code)
 	assert.Equal(t, "[]", resp.Body.String())
+}
+
+func TestSearchGet(t *testing.T) {
+	InitializeDB()
+
+	r := gin.Default()
+	r.GET("/search", handler.SearchGet(db))
+
+}
+
+func TestSearchGet(t *testing.T) {
+	InitializeDB()
+
+	r := gin.Default()
+	r.GET("/search", handler.SearchGet(db))
+
+}
+func TestSearchGet(t *testing.T) {
+	InitializeDB()
+
+	r := gin.Default()
+	r.GET("/search", handler.SearchGet(db))
+
+}
+func TestSearchGet(t *testing.T) {
+	InitializeDB()
+
+	r := gin.Default()
+	r.GET("/search", handler.SearchGet(db))
+
+}
+func TestSearchGet(t *testing.T) {
+	InitializeDB()
+
+	r := gin.Default()
+	r.GET("/search", handler.SearchGet(db))
+
+}
+func TestInventoryPost(t *testing.T) {
+	InitializeDB()
+
+	r := gin.Default()
+	r.POST("/inventory", handler.InventoryPost(db))
+	//todo: implement
+
+}
+func TestNameGet(t *testing.T) {
+	//todo: implement
+
+}
+func testPingGet(t *testing.T) {
+	//todo: implement
+
+}
+func TesthashAndSalt(t *testing.T) {
+	//TODO implement
 }
