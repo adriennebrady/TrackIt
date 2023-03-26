@@ -19,6 +19,7 @@ interface Item {
 })
 export class SearchComponent implements OnInit {
   query: string = '';
+  queryValue: string = '';
   results: Item[] = [];
 
   constructor(
@@ -33,10 +34,12 @@ export class SearchComponent implements OnInit {
     if (this.route.snapshot.queryParamMap.get('q') != null) {
       this.query = decodeURI(this.route.snapshot.queryParamMap.get('q')!);
       this.search();
+      this.queryValue = this.query;
     }
   }
 
   onSubmit() {
+    this.queryValue = this.query;
     this.router.navigate(['/search'], { queryParams: { q: this.query } });
     this.search();
   }
