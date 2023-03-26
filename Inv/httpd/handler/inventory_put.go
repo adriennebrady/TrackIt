@@ -69,7 +69,7 @@ func ContainerPut(requestBody InvRequest, db *gorm.DB, username string) string {
 func ItemPut(requestBody InvRequest, db *gorm.DB, username string) string {
 	// Look up the item in the database by ID.
 	var item Item
-	result := db.First(&item, "item_id = ? AND username = ?", requestBody.ID, username)
+	result := db.First(&item, "ItemID = ? AND username = ?", requestBody.ID, username)
 	if result.Error != nil {
 		return "Item not found"
 	}
