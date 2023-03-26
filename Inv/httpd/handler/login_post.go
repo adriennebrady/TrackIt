@@ -20,7 +20,7 @@ type Account struct { //gorm.Model?
 }
 
 type Item struct {
-	ItemID   int    `gorm:"primaryKey;column:id"`
+	ItemID   int    `gorm:"primaryKey;column:ItemID"`
 	User     string `gorm:"column:username"`
 	ItemName string `gorm:"column:itemName"`
 	LocID    int    `gorm:"column:LocID"`
