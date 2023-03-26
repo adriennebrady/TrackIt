@@ -28,10 +28,16 @@
     >
       Create new container
     </button>
-    <form>
+    <form (ngSubmit)="onSubmit()">
       <mat-form-field>
         <mat-label>Search</mat-label>
-        <input type="search" matInput placeholder="Ex. iPhone Charger" />
+        <input
+          type="search"
+          matInput
+          placeholder="Ex. iPhone Charger"
+          name="q"
+          [(ngModel)]="query"
+        />
       </mat-form-field>
     </form>
   </div>

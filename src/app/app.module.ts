@@ -32,6 +32,8 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { ItemDialogComponent } from './inventory-page/item-dialog/item-dialog.component';
 import { InvContainerComponent } from './inventory-page/inv-container/inv-container.component';
+import { SearchComponent } from './search/search.component';
+import { SearchItemComponent } from './search/search-item/search-item.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { InvContainerComponent } from './inventory-page/inv-container/inv-contai
     RenameDialogComponent,
     ItemDialogComponent,
     InvContainerComponent,
+    SearchComponent,
+    SearchItemComponent,
   ],
   imports: [
     BrowserModule,

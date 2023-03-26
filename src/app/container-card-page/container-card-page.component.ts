@@ -35,6 +35,7 @@ export class ContainerCardPageComponent implements OnInit {
   items: Item[] = [];
   containers: Container[] = [];
   containerName: string = '';
+  query: string = '';
 
   constructor(
     public dialog: MatDialog,
@@ -70,7 +71,7 @@ export class ContainerCardPageComponent implements OnInit {
     };
 
     this.http
-      .get<any>(`/api/inventory?Container_id=${this.containerId}`, httpOptions)
+      .get<any>(`/api/inventory?container_id=${this.containerId}`, httpOptions)
       .subscribe((response) => {
         if (response != null) {
           const result = response.reduce(
@@ -153,12 +154,8 @@ export class ContainerCardPageComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.containerId = params['id'];
+      this.getContainerName();
       this.getInventory();
-      const name = sessionStorage.getItem('containerName');
-      if (name) {
-        this.containerName = name;
-        sessionStorage.removeItem('containerName');
-      }
     });
 
     this.router.events.subscribe((event) => {
@@ -166,6 +163,24 @@ export class ContainerCardPageComponent implements OnInit {
         this.cdRef.detectChanges();
       }
     });
+  }
+
+  getContainerName() {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: authToken,
+      }),
+    };
+
+    this.http
+      .get<string>(`/api/name?Container_id=${this.containerId}`, httpOptions)
+      .subscribe((response) => {
+        this.containerName = response;
+        this.cdRef.detectChanges();
+      });
   }
 
   openDialog(): void {
@@ -266,5 +281,9 @@ export class ContainerCardPageComponent implements OnInit {
     });
 
     this.getInventory();
+  }
+
+  onSubmit() {
+    this.router.navigate(['/search'], { queryParams: { q: this.query } });
   }
 }

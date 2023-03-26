@@ -1,0 +1,53 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.inventoryButton {
+  margin-left: 5px;
+}
+
+.navbar {
+  background-color: white;
+}
+
+.logo {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.heading {
+  text-align: center;
+  padding-top: 5%;
+}
+
+.backNav {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.inventoryHeading h1 {
+  font-weight: 500;
+}
+
+.actionField {
+  padding-top: 2%;
+  justify-content: center;
+  display: flex;
+}
+
+.actionField button {
+  height: 55px;
+  margin-right: 20px;
+  width: 20%;
+}
+
+.noResults {
+  text-align: center;
+  padding-top: 10%;
+  font-weight: 500;
+  font-size: large;
+}
+
+app-container {
+  width: 90%;
+}

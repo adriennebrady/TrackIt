@@ -8,6 +8,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
 import { InventoryPageComponent } from './inventory-page/inventory-page.component';
 import { ContainerCardPageComponent } from './container-card-page/container-card-page.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, title: 'TrackIt | Home' },
@@ -35,6 +36,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {
+    path: 'search',
+    component: SearchComponent,
+    title: 'TrackIt | Search',
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
