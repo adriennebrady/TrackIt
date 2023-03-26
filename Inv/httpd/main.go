@@ -67,9 +67,9 @@ func main() {
 		api.GET("/name", handler.NameGet(db))
 		api.POST("/register", handler.RegisterPost(db))
 		api.GET(name, handler.InventoryGet(db))
-		api.POST("name", handler.InventoryPost(db))
-		api.PUT("name", handler.InventoryPut(db))
-		api.DELETE("name", handler.InventoryDelete(db))
+		api.POST(name, handler.InventoryPost(db))
+		api.PUT(name, handler.InventoryPut(db))
+		api.DELETE(name, handler.InventoryDelete(db))
 		api.DELETE("/account", handler.AccountDelete(db))
 	}
 

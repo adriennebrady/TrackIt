@@ -310,9 +310,12 @@ export class ContainerCardPageComponent implements OnInit {
     };
 
     const newItem = {
-      name: this.items[index].ItemName,
-      location: newName,
+      Authorization: authToken,
+      name: newName,
       type: 'Rename',
+      kind: 'Item',
+      ID: this.items[index].ItemID,
+      Cont: this.items[index].LocID,
     };
 
     this.http.put('/api/inventory', newItem, options).subscribe((response) => {
