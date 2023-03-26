@@ -57,6 +57,7 @@ func main() {
 	InitializeDB()
 
 	r := gin.Default()
+	name := "/inventory"
 
 	api := r.Group("/api")
 	{
@@ -65,10 +66,10 @@ func main() {
 		api.POST("/search", handler.SearchGet(db))
 		api.GET("/name", handler.NameGet(db))
 		api.POST("/register", handler.RegisterPost(db))
-		api.GET("/inventory", handler.InventoryGet(db))
-		api.POST("/inventory", handler.InventoryPost(db))
-		api.PUT("/inventory", handler.InventoryPut(db))
-		api.DELETE("/inventory", handler.InventoryDelete(db))
+		api.GET(name, handler.InventoryGet(db))
+		api.POST("name", handler.InventoryPost(db))
+		api.PUT("name", handler.InventoryPut(db))
+		api.DELETE("name", handler.InventoryDelete(db))
 		api.DELETE("/account", handler.AccountDelete(db))
 	}
 
