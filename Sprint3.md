@@ -78,11 +78,11 @@ This API handles registration of new users by accepting HTTP POST requests with 
 
 * ####  &emsp; Request:
 The request is a POST HTTP request to the endpoint /register, containing a JSON payload with the following fields:
-
+***
   * username: a string representing the user's desired username
   * password: a string representing the user's desired password
   * password_confirmation: a string representing the user's password confirmation
-
+***
 * ####  &emsp; Errors:
 The API returns the following error responses:
 
