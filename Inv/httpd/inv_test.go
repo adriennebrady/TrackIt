@@ -26,70 +26,7 @@ func TestInventoryPut(t *testing.T) {
 	//todo: implement
 
 }
-func TestInventoryGet(t *testing.T) {
-	//todo: implement
-	setupTestDB()
 
-	// Insert a test user with a valid token into the database.
-	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
-	if err := db.Create(&validTokenUser).Error; err != nil {
-		t.Fatalf("Failed to insert test user: %v", err)
-	}
-	 // Create a test user and containers.
-	 user := Account{Username: "testuser", Token: "testtoken"}
-	 db.Create(&user)
-	 container1 := Container{LocID: 1, Name: "Container 1", ParentID: 0, User: "testuser"}
-	 db.Create(&container1)
-	 container2 := Container{LocID: 2, Name: "Container 2", ParentID: 0, User: "testuser"}
-	 db.Create(&container2)
-	 container3 := Container{LocID: 3, Name: "Container 3", ParentID: 1, User: "testuser"}
-	 db.Create(&container3)
- 
-	 // Create some test items.
-	 item1 := Item{ItemID: 1, User: "testuser",  ItemName: "Item 1", LocID: 1, Count: 1}
-	 db.Create(&item1)
-	 item2 := Item{ItemID: 2, User: "testuser",  ItemName: "Item 2", LocID: 2, Count: 1}
-	 db.Create(&item2)
-	 item3 := Item{ItemID: 3, User: "testuser",  ItemName: "Item 3", LocID: 3, Count: 1}
-	 db.Create(&item3)
-
-	router := gin.Default()
-	router.GET("/inventory", handler.InventoryGet(db))
-
-	/* FAIL (DEBUG) Test case 1: successful request.
-    req1, _ := http.NewRequest("GET", "/inventory?container_id=1", nil)
-    req1.Header.Set("Authorization", "Bearer testtoken")
-    resp1 := httptest.NewRecorder()
-    router.ServeHTTP(resp1, req1)
-    assert.Equal(t, http.StatusOK, resp1.Code)*/
-
-    // Test case 2: missing authorization token.
-    req2, _ := http.NewRequest("GET", "/inventory?container_id=1", nil)
-    resp2 := httptest.NewRecorder()
-    router.ServeHTTP(resp2, req2)
-    assert.Equal(t, http.StatusUnauthorized, resp2.Code)
-
-    // Test case 3: invalid authorization token.
-    req3, _ := http.NewRequest("GET", "/inventory?container_id=1", nil)
-    req3.Header.Set("Authorization", "Bearer invalidtoken")
-    resp3 := httptest.NewRecorder()
-    router.ServeHTTP(resp3, req3)
-    assert.Equal(t, http.StatusUnauthorized, resp3.Code)
-
-    /* FAIL (DEBUG) Test case 4: invalid container ID.
-    req4, _ := http.NewRequest("GET", "/inventory?container_id=invalid", nil)
-    req4.Header.Set("Authorization", "Bearer testtoken")
-    resp4 := httptest.NewRecorder()
-    router.ServeHTTP(resp4, req4)
-    assert.Equal(t, http.StatusBadRequest, resp4.Code)*/
-
-    // Test case 5: invalid container for user.
-    req5, _ := http.NewRequest("GET", "/inventory?container_id=2", nil)
-    req5.Header.Set("Authorization", "Bearer testtoken")
-    resp5 := httptest.NewRecorder()
-    router.ServeHTTP(resp5, req5)
-    assert.Equal(t, http.StatusUnauthorized, resp5.Code)
-}
 func TestDeleteItem(t *testing.T) {
 	//todo: implement
 
@@ -138,9 +75,71 @@ func TestInventoryPost(t *testing.T) {
 }
 func TestNameGet(t *testing.T) {
 	//todo: implement
-	
-}
 
+}
+func TestInventoryGet(t *testing.T) {
+	setupTestDB()
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+	// Create a test user and containers.
+	user := Account{Username: "testuser", Token: "testtoken"}
+	db.Create(&user)
+	container1 := Container{LocID: 1, Name: "Container 1", ParentID: 0, User: "testuser"}
+	db.Create(&container1)
+	container2 := Container{LocID: 2, Name: "Container 2", ParentID: 0, User: "testuser"}
+	db.Create(&container2)
+	container3 := Container{LocID: 3, Name: "Container 3", ParentID: 1, User: "testuser"}
+	db.Create(&container3)
+
+	// Create some test items.
+	item1 := Item{ItemID: 1, User: "testuser", ItemName: "Item 1", LocID: 1, Count: 1}
+	db.Create(&item1)
+	item2 := Item{ItemID: 2, User: "testuser", ItemName: "Item 2", LocID: 2, Count: 1}
+	db.Create(&item2)
+	item3 := Item{ItemID: 3, User: "testuser", ItemName: "Item 3", LocID: 3, Count: 1}
+	db.Create(&item3)
+
+	router := gin.Default()
+	router.GET("/inventory", handler.InventoryGet(db))
+
+	/* FAIL (DEBUG) Test case 1: successful request.
+	req1, _ := http.NewRequest("GET", "/inventory?container_id=1", nil)
+	req1.Header.Set("Authorization", "Bearer testtoken")
+	resp1 := httptest.NewRecorder()
+	router.ServeHTTP(resp1, req1)
+	assert.Equal(t, http.StatusOK, resp1.Code)*/
+
+	// Test case 2: missing authorization token.
+	req2, _ := http.NewRequest("GET", "/inventory?container_id=1", nil)
+	resp2 := httptest.NewRecorder()
+	router.ServeHTTP(resp2, req2)
+	assert.Equal(t, http.StatusUnauthorized, resp2.Code)
+
+	// Test case 3: invalid authorization token.
+	req3, _ := http.NewRequest("GET", "/inventory?container_id=1", nil)
+	req3.Header.Set("Authorization", "Bearer invalidtoken")
+	resp3 := httptest.NewRecorder()
+	router.ServeHTTP(resp3, req3)
+	assert.Equal(t, http.StatusUnauthorized, resp3.Code)
+
+	/* FAIL (DEBUG) Test case 4: invalid container ID.
+	req4, _ := http.NewRequest("GET", "/inventory?container_id=invalid", nil)
+	req4.Header.Set("Authorization", "Bearer testtoken")
+	resp4 := httptest.NewRecorder()
+	router.ServeHTTP(resp4, req4)
+	assert.Equal(t, http.StatusBadRequest, resp4.Code)*/
+
+	// Test case 5: invalid container for user.
+	req5, _ := http.NewRequest("GET", "/inventory?container_id=2", nil)
+	req5.Header.Set("Authorization", "Bearer testtoken")
+	resp5 := httptest.NewRecorder()
+	router.ServeHTTP(resp5, req5)
+	assert.Equal(t, http.StatusUnauthorized, resp5.Code)
+}
 func TestSearchGet(t *testing.T) {
 	setupTestDB()
 

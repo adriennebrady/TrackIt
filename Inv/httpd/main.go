@@ -78,13 +78,3 @@ func main() {
 
 //https://www.youtube.com/watch?v=pHRHJCYBqxw possible problem
 //https://go.dev/tour/moretypes/13 go tutorial
-/*
-	var account Account
-	db.First(&account, "username =?", "user")
-
-	db.Model(&account).Update("username", "Bob")
-	db.Model(&account).Updates(Account{Username: "Genius", Token: "sampletoken"})
-	db.Delete(&account, "username =?", "Genius")
-
-	db.Commit()
-*/
