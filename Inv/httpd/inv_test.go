@@ -56,7 +56,7 @@ func TestInventoryGet(t *testing.T) {
 	router := gin.Default()
 	router.GET("/inventory", handler.InventoryGet(db))
 
-	/* Test case 1: successful request.
+	/* (DEBUG) Test case 1: successful request.
     req1, _ := http.NewRequest("GET", "/inventory?container_id=1", nil)
     req1.Header.Set("Authorization", "Bearer testtoken")
     resp1 := httptest.NewRecorder()
@@ -76,7 +76,7 @@ func TestInventoryGet(t *testing.T) {
     router.ServeHTTP(resp3, req3)
     assert.Equal(t, http.StatusUnauthorized, resp3.Code)
 
-    /*Test case 4: invalid container ID.
+    /* (DEBUG) Test case 4: invalid container ID.
     req4, _ := http.NewRequest("GET", "/inventory?container_id=invalid", nil)
     req4.Header.Set("Authorization", "Bearer testtoken")
     resp4 := httptest.NewRecorder()
