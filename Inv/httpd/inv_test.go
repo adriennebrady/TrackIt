@@ -29,12 +29,10 @@ func TestInventoryPut(t *testing.T) {
 
 func TestDeleteItem(t *testing.T) {
 	//todo: implement
-
 }
 
 func TestDDestroyContainer(t *testing.T) {
 	//todo: implement
-
 }
 
 func TestLoginPost(t *testing.T) {
