@@ -41,19 +41,15 @@ func TestItemPut(t *testing.T) {
 	//todo: implement
 
 }
-func TestContainerPut(t *testing.T) {
-	//todo: implement
 
-}
 func TestLoginPost(t *testing.T) {
 	//todo: implement
 }
 
 func TestRegisterPost(t *testing.T) {
+
 	setupTestDB()
-
 	//todo: implement
-
 }
 func TestAccountDelete(t *testing.T) {
 	setupTestDB()
@@ -73,6 +69,47 @@ func TestInventoryPost(t *testing.T) {
 func TestNameGet(t *testing.T) {
 	//todo: implement
 
+}
+func TestContainerPut(t *testing.T) {
+	// Initialize test data
+	setupTestDB()
+	// Create a test container in the database
+	testContainer := Container{Name: "Test Container", ParentID: 0, User: "testUser"}
+	result := db.Create(&testContainer)
+	if result.Error != nil {
+		t.Errorf("Error creating test container: %s", result.Error.Error())
+	}
+
+	// Call the function to update the container's name
+	requestBody := handler.InvRequest{ID: testContainer.LocID, Type: "Rename", Name: "New Name", Cont: 0}
+	resultMsg := handler.ContainerPut(requestBody, db, "testUser")
+	if resultMsg != "" {
+		t.Errorf("Error updating container: %s", resultMsg)
+	}
+
+	// Check that the container's name was updated in the database
+	var updatedContainer Container
+	result = db.First(&updatedContainer, "LocID = ? AND username = ?", testContainer.LocID, "testUser")
+	if result.Error != nil {
+		t.Errorf("Error retrieving updated container from database: %s", result.Error.Error())
+	} else if updatedContainer.Name != "New Name" {
+		t.Errorf("Container name was not updated correctly")
+	}
+
+	// Call the function to update the container's location
+	requestBody = handler.InvRequest{ID: testContainer.LocID, Type: "Relocate", Name: "", Cont: 1}
+	resultMsg = handler.ContainerPut(requestBody, db, "testUser")
+	if resultMsg != "" {
+		t.Errorf("Error updating container: %s", resultMsg)
+	}
+
+	// Check that the container's location was updated in the database
+	result = db.First(&updatedContainer, "LocID = ? AND username = ?", testContainer.LocID, "testUser")
+	if result.Error != nil {
+		t.Errorf("Error retrieving updated container from database: %s", result.Error.Error())
+	} else if updatedContainer.ParentID != 1 {
+		t.Errorf("Container location was not updated correctly")
+	}
 }
 func TestDestroyContainer(t *testing.T) {
 	// Set up a new in-memory SQLite database for testing.
