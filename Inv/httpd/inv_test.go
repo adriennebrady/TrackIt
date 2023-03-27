@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -140,15 +141,20 @@ func TestInventoryPost(t *testing.T) {
 }
 func TestNameGet(t *testing.T) {
 	//todo: implement
-
 }
 
 func TestHashAndSalt(t *testing.T) {
-	//TODO implement
+	password := []byte("password123")
+	hash := handler.HashAndSalt(password)
+
+	err := bcrypt.CompareHashAndPassword([]byte(hash), password)
+	if err != nil {
+		t.Errorf("HashAndSalt failed: %v", err)
+	}
 }
 
-func setupTestDB() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+func setupTestDB() {
+	db, err = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect to database")
 	}
@@ -157,5 +163,4 @@ func setupTestDB() *gorm.DB {
 	db.AutoMigrate(&handler.Container{})
 	db.AutoMigrate(&handler.Item{})
 
-	return db
 }
