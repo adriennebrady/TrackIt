@@ -4,6 +4,7 @@ import (
 	"Trackit/Inv/httpd/handler"
 	"net/http"
 	"net/http/httptest"
+	"regexp"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -104,11 +105,6 @@ func TestLoginPost(t *testing.T) {
 	//todo: implement
 }
 
-func TestGenerateToken(t *testing.T) {
-	//todo: implement
-
-}
-
 func TestComparePasswords(t *testing.T) {
 	//todo: implement
 
@@ -143,6 +139,14 @@ func TestNameGet(t *testing.T) {
 	//todo: implement
 }
 
+func TestGenerateToken(t *testing.T) {
+	token := handler.GenerateToken()
+
+	match, _ := regexp.MatchString("^[0-9a-f]{32}$", token)
+	if !match {
+		t.Errorf("GenerateToken failed: token %v does not match expected format", token)
+	}
+}
 func TestHashAndSalt(t *testing.T) {
 	password := []byte("password123")
 	hash := handler.HashAndSalt(password)
