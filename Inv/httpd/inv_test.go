@@ -2,6 +2,7 @@ package main
 
 import (
 	"Trackit/Inv/httpd/handler"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
@@ -25,10 +26,6 @@ func TestInventoryPut(t *testing.T) {
 
 	//todo: implement
 
-}
-
-func TestDeleteItem(t *testing.T) {
-	//todo: implement
 }
 
 func TestDDestroyContainer(t *testing.T) {
@@ -62,6 +59,49 @@ func TestInventoryPost(t *testing.T) {
 func TestNameGet(t *testing.T) {
 	//todo: implement
 
+}
+func TestDeleteItem(t *testing.T) {
+	// Create a new in-memory database for testing purposes.
+	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	if err != nil {
+		t.Fatalf("Failed to open database connection: %v", err)
+	}
+	// Automatically create the necessary tables for testing.
+	db.AutoMigrate(&Account{}, &Item{}, &Container{}, &RecentlyDeletedItem{})
+
+	// Create a test user account and item to be deleted.
+	user := Account{
+		Username: "testuser",
+		Password: "password",
+	}
+	item := Item{
+		ItemID:   1,
+		User:     "testuser",
+		ItemName: "Test Item",
+		LocID:    1,
+		Count:    1,
+	}
+	// Save the test user account and item to the database.
+	db.Create(&user)
+	db.Create(&item)
+
+	// Call the DeleteItem function to delete the test item.
+	err = handler.DeleteItem(db, item.ItemID, user.Username)
+	if err != nil {
+		t.Fatalf("Failed to delete item: %v", err)
+	}
+
+	// Verify that the item has been deleted from the database.
+	var deletedItem Item
+	if result := db.Where("ItemID = ? AND username = ?", item.ItemID, user.Username).First(&deletedItem); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		t.Fatalf("Expected item to be deleted, but found: %v", deletedItem)
+	}
+
+	// Verify that the recently deleted item has been added to the database.
+	var recentlyDeleted RecentlyDeletedItem
+	if result := db.Where("deleted_item_id = ? AND account_id = ?", item.ItemID, user.Username).First(&recentlyDeleted); result.Error != nil {
+		t.Fatalf("Expected recently deleted item to be created, but found error: %v", result.Error)
+	}
 }
 func TestItemPut(t *testing.T) {
 	// Set up the test database.
