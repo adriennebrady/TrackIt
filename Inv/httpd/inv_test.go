@@ -37,11 +37,6 @@ func TestDDestroyContainer(t *testing.T) {
 
 }
 
-func TestItemPut(t *testing.T) {
-	//todo: implement
-
-}
-
 func TestLoginPost(t *testing.T) {
 	//todo: implement
 }
@@ -69,6 +64,55 @@ func TestInventoryPost(t *testing.T) {
 func TestNameGet(t *testing.T) {
 	//todo: implement
 
+}
+func TestItemPut(t *testing.T) {
+	// Set up the test database.
+	setupTestDB()
+
+	// Add some test data.
+	username := "testuser"
+	item := Item{
+		ItemID:   1,
+		User:     username,
+		ItemName: "Test Item",
+		LocID:    1,
+		Count:    1,
+	}
+	db.Create(&item)
+
+	// Test renaming the item.
+	requestBody := handler.InvRequest{
+		Type: "Rename",
+		ID:   1,
+		Name: "New Item Name",
+	}
+	result := handler.ItemPut(requestBody, db, username)
+	if result != "" {
+		t.Errorf("Unexpected error: %s", result)
+	}
+	var updatedItem Item
+	db.First(&updatedItem, "ItemID = ? AND username = ?", 1, username)
+	if updatedItem.ItemName != "New Item Name" {
+		t.Errorf("Item name was not updated correctly: expected '%s', got '%s'", "New Item Name", updatedItem.ItemName)
+	}
+
+	// Test relocating the item.
+	requestBody = handler.InvRequest{
+		Type: "Relocate",
+		ID:   1,
+		Cont: 2,
+	}
+	result = handler.ItemPut(requestBody, db, username)
+	if result != "" {
+		t.Errorf("Unexpected error: %s", result)
+	}
+	db.First(&updatedItem, "ItemID = ? AND username = ?", 1, username)
+	if updatedItem.LocID != 2 {
+		t.Errorf("Item location was not updated correctly: expected %d, got %d", 2, updatedItem.LocID)
+	}
+
+	// Clean up.
+	db.Unscoped().Delete(&item)
 }
 func TestContainerPut(t *testing.T) {
 	// Initialize test data
