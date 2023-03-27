@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -116,9 +118,20 @@ func DestroyContainer(db *gorm.DB, locID int, username string) error {
 func DDestroyContainer(db *gorm.DB, locID int, username string) error {
 	// Look up the container in the database by ID.
 	var container Container
-	if result := db.First(&container, "LocID = ? AND username = ?", locID, username); result.Error != nil {
-		return result.Error
+	if err := db.First(&container, "LocID = ? AND username = ?", locID, username).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("container not found")
+		}
+		return fmt.Errorf("failed to retrieve container: %w", err)
 	}
+
+	// Use a transaction to wrap the delete queries.
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
 
 	// Use a recursive CTE to delete all containers and sub-containers in a single query.
 	query := `
@@ -127,12 +140,21 @@ func DDestroyContainer(db *gorm.DB, locID int, username string) error {
 			UNION ALL
 			SELECT LocID FROM containers WHERE ParentID IN (SELECT LocID FROM cte)
 		)
-		DELETE FROM items WHERE LocID IN (SELECT LocID FROM cte);
-		DELETE FROM containers WHERE LocID IN (SELECT LocID FROM cte);
 	`
 
-	if result := db.Exec(query, locID); result.Error != nil {
-		return result.Error
+	if err := tx.Exec(query+"DELETE FROM items WHERE LocID IN (SELECT LocID FROM cte)", locID).Error; err != nil {
+		tx.Rollback()
+		return fmt.Errorf("failed to delete items: %w", err)
+	}
+
+	if err := tx.Exec(query+"DELETE FROM containers WHERE LocID IN (SELECT LocID FROM cte)", locID).Error; err != nil {
+		tx.Rollback()
+		return fmt.Errorf("failed to delete containers: %w", err)
+	}
+
+	// Commit the transaction.
+	if err := tx.Commit().Error; err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
 	}
 
 	return nil
