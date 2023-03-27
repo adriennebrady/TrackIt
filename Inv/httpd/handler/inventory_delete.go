@@ -85,11 +85,6 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 		return result.Error
 	}
 
-	// Delete the item.
-	if result := db.Table("items").Delete(&item); result.Error != nil {
-		return result.Error
-	}
-
 	return nil
 }
 
