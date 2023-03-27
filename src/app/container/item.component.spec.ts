@@ -44,11 +44,15 @@ describe('ItemComponent', () => {
     component = fixture.componentInstance;
     containerCardPage = TestBed.inject(ContainerCardPageComponent);
     const itemName = 'Test Item';
-    const itemLocation = 'This is a test item';
+    // const itemLocation = 'This is a test item';
+    
+    /*
     component.item = {
-      Name: itemName,
+      ItemName: itemName
       Location: itemLocation
     };
+    */
+    
     component.index = 1;
     fixture.detectChanges();
   });

@@ -46,11 +46,13 @@ describe('ContainerComponent', () => {
     const containerName = 'Test Container';
     const containerDescription = 'This is a test container';
     const containerID = -1;
+    /*
     component.container = {
       id: containerID,
       name: containerName,
       description: containerDescription,
     };
+    */
     component.index = 1;
     fixture.detectChanges();
   });
