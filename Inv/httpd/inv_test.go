@@ -14,27 +14,6 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestSearchGet(t *testing.T) {
-	setupTestDB()
-
-	r := gin.Default()
-	r.GET("/search", handler.SearchGet(db))
-
-	// Create a test request with a valid token and item name
-	req, err := http.NewRequest("GET", "/search?Authorization=8fe7eOc922e768ed97132ac2ab8c06fd&Item=Where", nil)
-	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
-	}
-
-	// Perform the request using the test router
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-
-	// Verify the response code and body
-	assert.Equal(t, http.StatusOK, resp.Code)
-	assert.Equal(t, "[]", resp.Body.String())
-}
-
 func TestInventoryDelete(t *testing.T) {
 	setupTestDB()
 
@@ -105,14 +84,39 @@ func TestNameGet(t *testing.T) {
 	//todo: implement
 }
 
-func TestIsValidToken(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+func TestSearchGet(t *testing.T) {
+	setupTestDB()
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+	// Insert a test item with a valid token into the database.
+	validItem := Item{ItemID: 1, User: "testuser", ItemName: "Where"}
+	if err := db.Create(&validItem).Error; err != nil {
+		t.Fatalf("Failed to insert test item: %v", err)
+	}
+
+	r := gin.Default()
+	r.GET("/search", handler.SearchGet(db))
+
+	// Create a test request with a valid token and item name
+	req, err := http.NewRequest("GET", "/search?Authorization=validtoken&Item=Where", nil)
 	if err != nil {
-		t.Fatalf("Failed to open database connection: %v", err)
+		t.Fatalf("Failed to create request: %v", err)
 	}
-	if err := db.AutoMigrate(&Account{}); err != nil {
-		t.Fatalf("Failed to migrate database: %v", err)
-	}
+
+	// Perform the request using the test router
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+
+	// Verify the response code and body
+	assert.Equal(t, http.StatusOK, resp.Code)
+	assert.Equal(t, "[{\"ItemID\":1,\"User\":\"testuser\",\"ItemName\":\"Where\",\"LocID\":0,\"Count\":0}]", resp.Body.String())
+}
+func TestIsValidToken(t *testing.T) {
+	setupTestDB()
 
 	// Insert a test user with a valid token into the database.
 	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
