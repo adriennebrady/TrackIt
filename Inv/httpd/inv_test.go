@@ -63,7 +63,7 @@ func TestDestroyContainer(t *testing.T) {
 	//todo: implement
 
 }
-func TestDdestroyContainer(t *testing.T) {
+func TestDDestroyContainer(t *testing.T) {
 	//todo: implement
 
 }

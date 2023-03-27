@@ -118,7 +118,7 @@ func DestroyContainer(db *gorm.DB, locID int, username string) error {
 	return nil
 }
 
-func destroyContainer(db *gorm.DB, locID int, username string) error {
+func DDestroyContainer(db *gorm.DB, locID int, username string) error {
 	// Look up the container in the database by ID.
 	var container Container
 	if result := db.First(&container, "LocID = ? AND username = ?", locID, username); result.Error != nil {
