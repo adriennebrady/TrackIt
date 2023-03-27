@@ -14,31 +14,6 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestPingGet(t *testing.T) {
-	// Create a new HTTP request and response recorder
-	req, err := http.NewRequest("GET", "/ping", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	w := httptest.NewRecorder()
-
-	// Create a new Gin context from the response recorder
-	c, r := gin.CreateTestContext(w)
-	r.GET("/ping", handler.PingGet())
-	_ = c
-
-	// Perform the HTTP request and check the response status code
-	r.ServeHTTP(w, req)
-	if w.Code != http.StatusOK {
-		t.Errorf("unexpected status code: got %v want %v", w.Code, http.StatusOK)
-	}
-
-	// Check the response body
-	expectedBody := `{"hello":"Found me"}`
-	if w.Body.String() != expectedBody {
-		t.Errorf("unexpected response body: got %v want %v", w.Body.String(), expectedBody)
-	}
-}
 func TestSearchGet(t *testing.T) {
 	setupTestDB()
 
@@ -139,6 +114,31 @@ func TestNameGet(t *testing.T) {
 	//todo: implement
 }
 
+func TestPingGet(t *testing.T) {
+	// Create a new HTTP request and response recorder
+	req, err := http.NewRequest("GET", "/ping", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	w := httptest.NewRecorder()
+
+	// Create a new Gin context from the response recorder
+	c, r := gin.CreateTestContext(w)
+	r.GET("/ping", handler.PingGet())
+	_ = c
+
+	// Perform the HTTP request and check the response status code
+	r.ServeHTTP(w, req)
+	if w.Code != http.StatusOK {
+		t.Errorf("unexpected status code: got %v want %v", w.Code, http.StatusOK)
+	}
+
+	// Check the response body
+	expectedBody := `{"hello":"Found me"}`
+	if w.Body.String() != expectedBody {
+		t.Errorf("unexpected response body: got %v want %v", w.Body.String(), expectedBody)
+	}
+}
 func TestGenerateToken(t *testing.T) {
 	token := handler.GenerateToken()
 
