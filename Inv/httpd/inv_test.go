@@ -93,10 +93,6 @@ func TestAccountDelete(t *testing.T) {
 
 }
 
-func TestIsValidToken(t *testing.T) {
-	//todo: implement
-
-}
 func TestInventoryPost(t *testing.T) {
 	setupTestDB()
 
@@ -109,6 +105,36 @@ func TestNameGet(t *testing.T) {
 	//todo: implement
 }
 
+func TestIsValidToken(t *testing.T) {
+	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	if err != nil {
+		t.Fatalf("Failed to open database connection: %v", err)
+	}
+	if err := db.AutoMigrate(&Account{}); err != nil {
+		t.Fatalf("Failed to migrate database: %v", err)
+	}
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+
+	// Test with a valid token.
+	validToken := "Bearer validtoken"
+	username := handler.IsValidToken(validToken, db)
+	assert.Equal(t, "testuser", username)
+
+	// Test with an invalid token.
+	invalidToken := "Bearer invalidtoken"
+	username = handler.IsValidToken(invalidToken, db)
+	assert.Empty(t, username)
+
+	// Test with no token.
+	noToken := ""
+	username = handler.IsValidToken(noToken, db)
+	assert.Empty(t, username)
+}
 func TestComparePasswords(t *testing.T) {
 	password := []byte("password123")
 	hash, _ := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
