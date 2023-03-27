@@ -80,11 +80,6 @@ func TestLoginPost(t *testing.T) {
 	//todo: implement
 }
 
-func TestComparePasswords(t *testing.T) {
-	//todo: implement
-
-}
-
 func TestRegisterPost(t *testing.T) {
 	setupTestDB()
 
@@ -114,6 +109,20 @@ func TestNameGet(t *testing.T) {
 	//todo: implement
 }
 
+func TestComparePasswords(t *testing.T) {
+	password := []byte("password123")
+	hash, _ := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
+
+	match := handler.ComparePasswords(string(hash), password)
+	if !match {
+		t.Errorf("ComparePasswords failed: expected true but got false")
+	}
+
+	match = handler.ComparePasswords(string(hash), []byte("wrongpassword"))
+	if match {
+		t.Errorf("ComparePasswords failed: expected false but got true")
+	}
+}
 func TestPingGet(t *testing.T) {
 	// Create a new HTTP request and response recorder
 	req, err := http.NewRequest("GET", "/ping", nil)
