@@ -8,6 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func TestPingGet(t *testing.T) {
@@ -36,7 +38,7 @@ func TestPingGet(t *testing.T) {
 	}
 }
 func TestSearchGet(t *testing.T) {
-	InitializeDB()
+	setupTestDB()
 
 	r := gin.Default()
 	r.GET("/search", handler.SearchGet(db))
@@ -57,19 +59,19 @@ func TestSearchGet(t *testing.T) {
 }
 
 func TestInventoryDelete(t *testing.T) {
-	InitializeDB()
+	setupTestDB()
 
 	//todo: implement
 
 }
 func TestInventoryPut(t *testing.T) {
-	InitializeDB()
+	setupTestDB()
 
 	//todo: implement
 
 }
 func TestInventoryGet(t *testing.T) {
-	InitializeDB()
+	setupTestDB()
 
 	r := gin.Default()
 	r.GET("/inventory", handler.InventoryGet(db))
@@ -98,10 +100,7 @@ func TestContainerPut(t *testing.T) {
 
 }
 func TestLoginPost(t *testing.T) {
-	InitializeDB()
-
 	//todo: implement
-
 }
 
 func TestGenerateToken(t *testing.T) {
@@ -115,13 +114,13 @@ func TestComparePasswords(t *testing.T) {
 }
 
 func TestRegisterPost(t *testing.T) {
-	InitializeDB()
+	setupTestDB()
 
 	//todo: implement
 
 }
 func TestAccountDelete(t *testing.T) {
-	InitializeDB()
+	setupTestDB()
 
 	//todo: implement
 
@@ -132,7 +131,7 @@ func TestIsValidToken(t *testing.T) {
 
 }
 func TestInventoryPost(t *testing.T) {
-	InitializeDB()
+	setupTestDB()
 
 	r := gin.Default()
 	r.POST("/inventory", handler.InventoryPost(db))
@@ -146,4 +145,17 @@ func TestNameGet(t *testing.T) {
 
 func TestHashAndSalt(t *testing.T) {
 	//TODO implement
+}
+
+func setupTestDB() *gorm.DB {
+	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect to database")
+	}
+
+	db.AutoMigrate(&handler.Account{})
+	db.AutoMigrate(&handler.Container{})
+	db.AutoMigrate(&handler.Item{})
+
+	return db
 }
