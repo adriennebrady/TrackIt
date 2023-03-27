@@ -31,10 +31,7 @@ func TestDeleteItem(t *testing.T) {
 	//todo: implement
 
 }
-func TestDestroyContainer(t *testing.T) {
-	//todo: implement
 
-}
 func TestDDestroyContainer(t *testing.T) {
 	//todo: implement
 
@@ -76,6 +73,46 @@ func TestInventoryPost(t *testing.T) {
 func TestNameGet(t *testing.T) {
 	//todo: implement
 
+}
+func TestDestroyContainer(t *testing.T) {
+	// Set up a new in-memory SQLite database for testing.
+	setupTestDB()
+
+	// Create a test user and container.
+	testUser := Account{Username: "testuser", Password: "password123", Token: "token123"}
+	testContainer := Container{Name: "Test Container", User: "testuser"}
+	if result := db.Create(&testUser); result.Error != nil {
+		t.Fatalf("failed to create test user: %v", result.Error)
+	}
+	if result := db.Create(&testContainer); result.Error != nil {
+		t.Fatalf("failed to create test container: %v", result.Error)
+	}
+
+	// Create a test item inside the test container.
+	testItem := Item{ItemName: "Test Item", Count: 5, LocID: testContainer.LocID, User: "testuser"}
+	if result := db.Create(&testItem); result.Error != nil {
+		t.Fatalf("failed to create test item: %v", result.Error)
+	}
+
+	// Call the function under test.
+	if err := handler.DestroyContainer(db, testContainer.LocID, "testuser"); err != nil {
+		t.Errorf("DestroyContainer returned an error: %v", err)
+	}
+
+	// Verify that the container and item were deleted from the database.
+	var count int64
+	if result := db.Table("containers").Where("LocID = ?", testContainer.LocID).Count(&count); result.Error != nil {
+		t.Fatalf("failed to query database: %v", result.Error)
+	}
+	if count != 0 {
+		t.Errorf("DestroyContainer did not delete the container from the database")
+	}
+	if result := db.Table("items").Where("LocID = ?", testContainer.LocID).Count(&count); result.Error != nil {
+		t.Fatalf("failed to query database: %v", result.Error)
+	}
+	if count != 0 {
+		t.Errorf("DestroyContainer did not delete the items from the database")
+	}
 }
 func TestInventoryGet(t *testing.T) {
 	setupTestDB()
