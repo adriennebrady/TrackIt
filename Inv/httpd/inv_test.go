@@ -2,11 +2,13 @@ package main
 
 import (
 	"Trackit/Inv/httpd/handler"
+	"bytes"
 	"errors"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
 	"testing"
+	"encoding/json"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -37,13 +39,43 @@ func TestLoginPost(t *testing.T) {
 }
 
 func TestRegisterPost(t *testing.T) {
-
-	setupTestDB()
+	//(NEEDS DEBUGGING)
 	//todo: implement
+	// Set up a test Gin context.
+    router := gin.Default()
+    DB, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+    router.POST("/register", handler.RegisterPost(DB))
+
+    // Create a request body for registering a new user.
+    requestBody := handler.RegisterRequest{
+        Username:             "testuser",
+        Password:             "password",
+        PasswordConfirmation: "password",
+    }
+    requestBodyBytes, _ := json.Marshal(requestBody)
+
+    // Create a POST request to the /register endpoint with the request body.
+    req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(requestBodyBytes))
+    req.Header.Set("Content-Type", "application/json")
+
+    // Make the request.
+    resp := httptest.NewRecorder()
+    router.ServeHTTP(resp, req)
+
+    // Check that the response status code is correct.
+    if resp.Code != http.StatusOK {
+        t.Errorf("Expected status code %d but got %d", http.StatusOK, resp.Code)
+    }
+
+    // Check that the response body contains the expected token.
+    var response handler.LoginResponse
+    json.Unmarshal(resp.Body.Bytes(), &response)
+    if response.Token == "" {
+        t.Error("Expected non-empty token but got empty token")
+    }
+
 }
 func TestAccountDelete(t *testing.T) {
-	setupTestDB()
-
 	//todo: implement
 
 }
