@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { InventoryPageComponent } from '../inventory-page.component';
 import { Router } from '@angular/router';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 interface Container {
   LocID: number;
@@ -20,7 +19,6 @@ export class InvContainerComponent {
   @Input() index: number = -1;
 
   constructor(
-    public dialogRef: MatDialogRef<InvContainerComponent>,
     private inventoryPage: InventoryPageComponent,
     private router: Router
   ) {}
@@ -36,9 +34,5 @@ export class InvContainerComponent {
 
   renameContainer(index: number) {
     this.inventoryPage.openRenameDialog(index);
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }
