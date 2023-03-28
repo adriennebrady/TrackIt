@@ -17,12 +17,7 @@ import (
 
 func TestDeleteItem(t *testing.T) {
 	// Create a new in-memory database for testing purposes.
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
-	if err != nil {
-		t.Fatalf("Failed to open database connection: %v", err)
-	}
-	// Automatically create the necessary tables for testing.
-	db.AutoMigrate(&Account{}, &Item{}, &Container{}, &RecentlyDeletedItem{})
+	setupTestDB()
 
 	// Create a test user account and item to be deleted.
 	user := Account{
@@ -223,6 +218,7 @@ func TestInventoryGet(t *testing.T) {
 	resp1 := httptest.NewRecorder()
 	router.ServeHTTP(resp1, req1)
 	assert.Equal(t, http.StatusOK, resp1.Code)*/
+	/* FAIL (DEBUG) Test case 4: invalid container ID.*/
 
 	// Test case 2: missing authorization token.
 	req2, _ := http.NewRequest("GET", "/inventory?container_id=1", nil)
@@ -236,13 +232,6 @@ func TestInventoryGet(t *testing.T) {
 	resp3 := httptest.NewRecorder()
 	router.ServeHTTP(resp3, req3)
 	assert.Equal(t, http.StatusUnauthorized, resp3.Code)
-
-	/* FAIL (DEBUG) Test case 4: invalid container ID.
-	req4, _ := http.NewRequest("GET", "/inventory?container_id=invalid", nil)
-	req4.Header.Set("Authorization", "Bearer testtoken")
-	resp4 := httptest.NewRecorder()
-	router.ServeHTTP(resp4, req4)
-	assert.Equal(t, http.StatusBadRequest, resp4.Code)*/
 
 	// Test case 5: invalid container for user.
 	req5, _ := http.NewRequest("GET", "/inventory?container_id=2", nil)
@@ -372,5 +361,6 @@ func setupTestDB() {
 	db.AutoMigrate(&handler.Account{})
 	db.AutoMigrate(&handler.Container{})
 	db.AutoMigrate(&handler.Item{})
+	db.AutoMigrate(&handler.RecentlyDeletedItem{})
 
 }
