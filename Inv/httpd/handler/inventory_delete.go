@@ -113,31 +113,6 @@ func DestroyContainer(db *gorm.DB, locID int, username string) error {
 	return nil
 }
 
-func DDestroyContainer(db *gorm.DB, locID int, username string) error {
-	// Look up the container in the database by ID.
-	var container Container
-	if result := db.First(&container, "LocID = ? AND username = ?", locID, username); result.Error != nil {
-		return result.Error
-	}
-
-	// Use a recursive CTE to delete all containers and sub-containers in a single query.
-	query := `
-		WITH RECURSIVE cte AS (
-			SELECT LocID FROM containers WHERE LocID = ?
-			UNION ALL
-			SELECT LocID FROM containers WHERE ParentID IN (SELECT LocID FROM cte)
-		)
-		DELETE FROM items WHERE LocID IN (SELECT LocID FROM cte);
-		DELETE FROM containers WHERE LocID IN (SELECT LocID FROM cte);
-	`
-
-	if result := db.Exec(query, locID); result.Error != nil {
-		return result.Error
-	}
-
-	return nil
-}
-
 /*
 The DestroyContainer function expects the ID of a top-level container to be passed in as an argument, but there is no validation that the container is actually a top-level container. If an ID of a non-top-level container is passed in, the function will delete all items and sub-containers associated with that container, but leave the container itself intact.
 
