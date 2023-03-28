@@ -28,10 +28,6 @@ func TestInventoryPut(t *testing.T) {
 
 }
 
-func TestDDestroyContainer(t *testing.T) {
-	//todo: implement
-}
-
 func TestLoginPost(t *testing.T) {
 	//todo: implement
 }
