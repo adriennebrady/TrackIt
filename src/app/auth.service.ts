@@ -67,6 +67,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('rootloc');
     this.token = '';
+    this.rootloc = -1;
   }
 
   isAuthenticated() {
