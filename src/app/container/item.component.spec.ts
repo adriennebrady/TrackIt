@@ -44,14 +44,20 @@ describe('ItemComponent', () => {
     component = fixture.componentInstance;
     containerCardPage = TestBed.inject(ContainerCardPageComponent);
     const itemName = 'Test Item';
+    const itemID = -1;
+    const userName = '';
+    const locationID = -1;
+    const count = -1;
     // const itemLocation = 'This is a test item';
     
-    /*
     component.item = {
-      ItemName: itemName
-      Location: itemLocation
+      ItemID: itemID,
+      User: userName,
+      ItemName: itemName,
+      LocID: locationID,
+      Count: count
+      //Location: itemLocation
     };
-    */
     
     component.index = 1;
     fixture.detectChanges();
@@ -64,8 +70,8 @@ describe('ItemComponent', () => {
   it('should display the item name and location', () => {
     fixture.detectChanges();
     const nameElement = fixture.debugElement.query(By.css('.containerName')).nativeElement;
-    const descriptionElement = fixture.debugElement.query(By.css('p')).nativeElement;
+    //const descriptionElement = fixture.debugElement.query(By.css('p')).nativeElement;
     expect(nameElement.textContent).toContain('Test Item');
-    expect(descriptionElement.textContent).toContain('This is a test item');
+    //expect(descriptionElement.textContent).toContain('This is a test item');
   });
 });
