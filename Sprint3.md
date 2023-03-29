@@ -17,7 +17,11 @@
 * Fixed previously successful unit tests that failed due to restructure.
 
 ### Back-End
-* (List here)
+* Restructured HTTP requests
+* Created Post request to create/login to accounts
+* Created Delete requests to delete account, inventory, and items
+* Created SALT/Hashing for passowrd encryption
+* Created a recently deleted table in database
 <p>&nbsp;</p>
 
 ## List frontend unit tests
