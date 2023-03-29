@@ -82,12 +82,17 @@ describe('ContainerComponent', () => {
     );*/
   });
 
-  it('should call openConfirmDialog on click of delete button', () => {
-    const openConfirmDialogSpy = spyOn(inventoryPage, 'openConfirmDialog');
+  it('should call deleteContainer on click of delete button', () => {
+    /*const openConfirmDialogSpy = spyOn(inventoryPage, 'openConfirmDialog');
     const deleteButton = fixture.debugElement.query(
       By.css('.deleteButton')
     ).nativeElement;
     deleteButton.click();
-    expect(openConfirmDialogSpy).toHaveBeenCalledWith(1);
+    expect(openConfirmDialogSpy).toHaveBeenCalledWith(1);*/
+    fixture.detectChanges();
+    spyOn(component, 'deleteContainer');
+    const newContainerButton = fixture.debugElement.query(By.css('.deleteButton')).nativeElement;
+    newContainerButton.click();
+    expect(component.deleteContainer).toHaveBeenCalled();
   });
 });
