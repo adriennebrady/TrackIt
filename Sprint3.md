@@ -21,7 +21,7 @@
 <p>&nbsp;</p>
 
 ## List frontend unit tests
-* #### Sprint 3
+### Sprint 3
 * ContainerCardPageComponent
   * should call backClicked on click of back button
   * should display the correct navigation
@@ -49,7 +49,7 @@
   * should display the item name
   * should display the item count
 
-* #### Sprint 2
+### Sprint 2
 * ContainerComponent
   * should create
   * should call openConfirmDialog on click of delete button
