@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemDialogComponent } from './item-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -42,5 +43,17 @@ describe('ItemDialogComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display add item dialog title', () => {
+    expect(fixture.nativeElement.querySelector('h1').textContent).toContain('Add Item');
+  });
+  
+  it('should call cancel() when cancel button is clicked', () => {
+    fixture.detectChanges();
+    spyOn(component, 'onNoClick');
+    const cancelButton = fixture.debugElement.query(By.css('.cancelButton')).nativeElement;
+    cancelButton.click();
+    expect(component.onNoClick).toHaveBeenCalled();
   });
 });

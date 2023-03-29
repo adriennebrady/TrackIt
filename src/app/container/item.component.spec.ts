@@ -67,11 +67,16 @@ describe('ItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the item name and location', () => {
+  it('should display the item name', () => {
     fixture.detectChanges();
     const nameElement = fixture.debugElement.query(By.css('.containerName')).nativeElement;
     //const descriptionElement = fixture.debugElement.query(By.css('p')).nativeElement;
     expect(nameElement.textContent).toContain('Test Item');
     //expect(descriptionElement.textContent).toContain('This is a test item');
+  });
+
+  it('should display the item count', () => {
+    const countElement = fixture.debugElement.query(By.css('.countAmount')).nativeElement;
+    expect(countElement.textContent).toContain('Count: ' + component.item.Count);
   });
 });
