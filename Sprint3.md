@@ -21,6 +21,19 @@
 <p>&nbsp;</p>
 
 ## List frontend unit tests
+### Cypress Tests
+* Visit TrackIt Home Page
+* Visit About Page from Home Page
+* Visit Login Page from Home Page
+* Visit Signup Page from Home Page
+* Login Authentication
+* Visit About Page from My Inventory Page
+* Login, visit About Page, then return to My Inventory Page
+* Signout Authentication
+* Login, then sign out
+* Create Container
+* Login, click Create New Container button and fill out dialog form
+
 ### Sprint 3
 * ContainerCardPageComponent
   * should call backClicked on click of back button
