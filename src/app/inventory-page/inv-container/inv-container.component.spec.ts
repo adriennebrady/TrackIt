@@ -44,4 +44,8 @@ describe('InvContainerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should display see inside button', () => {
+    expect(fixture.nativeElement.querySelector('.seeInsideButton').textContent).toContain('See Inside >');
+  });
 });
