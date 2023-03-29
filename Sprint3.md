@@ -32,13 +32,13 @@
 * Visit Signup Page from Home Page
 * Login Authentication
 * Visit About Page from My Inventory Page
-* Login, visit About Page, then return to My Inventory Page
+  * Login, visit About Page, then return to My Inventory Page
 * Signout Authentication
-* Login, then sign out
+  * Login, then sign out
 * Create Container
-* Login, click Create New Container button and fill out dialog form
+  * Login, click Create New Container button and fill out dialog form
 
-### Sprint 3
+### Sprint 3 - Jasmine Unit Tests
 * ContainerCardPageComponent
   * should call backClicked on click of back button
   * should display the correct navigation
@@ -66,7 +66,7 @@
   * should display the item name
   * should display the item count
 
-### Sprint 2
+### Sprint 2 - Jasmine Unit Tests
 * ContainerComponent
   * should create
   * should call openConfirmDialog on click of delete button
