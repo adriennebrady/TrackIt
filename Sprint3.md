@@ -29,7 +29,17 @@
   * TestDeleteContainer
 
 * #### Sprint 3
-  * (List more...)
+  * TestDeleteItem
+  * TestItemPut
+  * TestContainerPut
+  * TestDestroyContainer
+  * TestInventoryGet
+  * TestSearchGet
+  * TestIsValidToken
+  * TestComparePasswords
+  * TestPingGet
+  * TestGenerateToken
+  * TestHashAndSalt
 <p>&nbsp;</p>
 
 ## Show updated documentation for your backend API 
