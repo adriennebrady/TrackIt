@@ -7,20 +7,117 @@
 ### Front-End
 * Restructured HTTP requests to match backend restructure.
 * Added new search functionality to search for items in any container and see where they are located.
-* Implemented unique user inventory with root container ID & authorization token stored in local storage.
+* Implemented unique user inventory with root container ID and authorization token stored in local storage.
 * Authorization token now sent with every HTTP request to verify user identity.
 * Database integration to save user inventories and persist data.
 * Fixed delete and rename HTTP requests for containers and items.
 * Added ability to create containers in containers for efficient organization.
 * Implemented rename functionality on container page to prevent having to go up a level to rename the container.
-* Changed container name display on container card page to be obtained with a get request
+* Changed container name display on container card page to be obtained with a get request.
+* Fixed previously successful unit tests that failed due to restructure.
 
 ### Back-End
 * (List here)
 <p>&nbsp;</p>
 
 ## List frontend unit tests
-* (List here)
+### Sprint 3
+* ContainerCardPageComponent
+  * should call backClicked on click of back button
+  * should display the correct navigation
+  * should display the correct page title
+  * should call openDialog on click of add container button
+  * should call openItemDialog on click of add item button
+* SearchItemComponent
+  * should display the item name and location
+  * should create
+* ItemDialogComponent
+  * should call cancel() when cancel button is clicked
+  * should display add item dialog title
+  * should create
+* SearchComponent
+  * should call backButton on click of back button
+  * should create
+  * should display the correct page title
+  * should display the correct navigation
+* InvContainerComponent
+  * should call deleteContainer on click of delete button
+  * should create
+  * should display see inside button
+  * should call seeInside on click of see inside button
+* ItemComponent
+  * should display the item name
+  * should display the item count
+
+### Sprint 2
+* ContainerComponent
+  * should create
+  * should call openConfirmDialog on click of delete button
+  * should display the container name and description
+* ItemComponent
+  * should create
+  * should display the item name and location
+* AuthService
+  * should logout a user
+  * should signup a user
+  * should be created
+  * should login a user
+  * should return true if the user is authenticated
+  * should return the token
+* ContainerCardPageComponent
+  * should create
+* HomeComponent
+  * should display the home page description
+  * should display the home page title
+  * should have a button to get started
+  * should have a button for Login
+  * should have a button for About
+  * should have a button for Sign Up
+  * should display the TRACKIT logo
+* AuthGuard
+  * canActivate
+    * should return true for user with token in localStorage
+    * should return true for authenticated user
+    * should redirect to login page for unauthenticated user
+  * checkLogin
+    * should return true for authenticated user
+    * should return true for user with token in localStorage
+    * should redirect to login page for unauthenticated user
+* ConfirmDialogComponent
+  * should create
+  * should display confirm dialog title
+* SignUpPageComponent
+  * should create
+  * onSubmit() should not navigate to inventory page if passwords do not match
+  * constructor should navigate to inventory page if user is already authenticated
+  * onSubmit() should call authService.signup() and navigate to inventory page on successful sign-up
+* AppComponent
+  * should have as title 'cen3031-project'
+  * should create the app
+* AboutComponent
+  * should create
+  * should display the correct content when user is logged out
+  * should display the correct content when user is logged in
+* InventoryPageComponent
+  * should display the correct page title and description
+  * should create
+  * should display the correct navigation
+  * should call openDialog on click of new container button
+* DialogComponent
+  * should call onNoClick() when cancel button is clicked
+  * should display rename dialog title
+  * should create
+* RenameDialogComponent
+  * should call cancel() when cancel button is clicked
+  * should display rename dialog title
+  * should create
+* LoginPageComponent
+  * should create
+  * onSubmit
+    * should navigate to /inventory on successful login and no redirect URL is set
+    * should navigate to the redirect URL on successful login and a redirect URL is set
+    * should call authService.loginSuccess on successful login
+    * should call authService.login with the correct user
 
 ## List backend unit tests
 ### (Included in the video)
