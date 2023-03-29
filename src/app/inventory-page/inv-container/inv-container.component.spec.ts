@@ -4,6 +4,7 @@ import { InvContainerComponent } from './inv-container.component';
 import { InventoryPageComponent } from '../../inventory-page/inventory-page.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -47,5 +48,21 @@ describe('InvContainerComponent', () => {
 
   it('should display see inside button', () => {
     expect(fixture.nativeElement.querySelector('.seeInsideButton').textContent).toContain('See Inside >');
+  });
+
+  it('should call seeInside on click of see inside button', () => {
+    fixture.detectChanges();
+    spyOn(component, 'seeInside');
+    const seeInsideButton = fixture.debugElement.query(By.css('.seeInsideButton')).nativeElement;
+    seeInsideButton.click();
+    expect(component.seeInside).toHaveBeenCalled();
+  });
+
+  it('should call deleteContainer on click of delete button', () => {
+    fixture.detectChanges();
+    spyOn(component, 'deleteContainer');
+    const newContainerButton = fixture.debugElement.query(By.css('.deleteButton')).nativeElement;
+    newContainerButton.click();
+    expect(component.deleteContainer).toHaveBeenCalled();
   });
 });
