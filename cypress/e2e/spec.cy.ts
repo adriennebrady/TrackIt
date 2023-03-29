@@ -41,10 +41,10 @@ describe('Login Authentication', () => {
     cy.contains('Login').click()
 
     // Enter username
-    cy.get('#mat-input-0').type('test1')
+    cy.get('#mat-input-0').type('test')
 
     // Enter password
-    cy.get('#mat-input-1').type('testing')
+    cy.get('#mat-input-1').type('test')
 
     // Click Login button
     cy.get('form.ng-dirty > .mdc-button > .mdc-button__label').click()
@@ -68,8 +68,8 @@ describe('Register User', () => {
     cy.contains('Sign Up').click()
 
     cy.url().should('include', '/signup')
-    cy.get('mat-label.ng-tns-c79-0').type('test1')
-    cy.get('mat-label.ng-tns-c79-1').type('testing')
+    cy.get('mat-label.ng-tns-c79-0').type('test')
+    cy.get('mat-label.ng-tns-c79-1').type('test')
     cy.get('mat-label.ng-tns-c79-2').type('testing')
 
     cy.get('form.ng-dirty > .mdc-button > .mdc-button__label').click()
@@ -89,10 +89,10 @@ describe('Valid User Navigation', () => {
     cy.contains('Login').click()
 
     // Enter username
-    cy.get('#mat-input-0').type('test1')
+    cy.get('#mat-input-0').type('test')
 
     // Enter password
-    cy.get('#mat-input-1').type('testing')
+    cy.get('#mat-input-1').type('test')
 
     // Click Login button
     cy.get('form.ng-dirty > .mdc-button > .mdc-button__label').click()
@@ -127,5 +127,10 @@ describe('Valid User Navigation', () => {
       cy.wrap($dialog).get('.descriptionField').type('Hello World');
       cy.wrap($dialog).find('button').contains('Save').click();
     });
+  })
+  
+  // Search item
+  it('User searches for an item', () => {
+    cy.get('.searchItemInput').type('Charger{enter}')
   })
 })
