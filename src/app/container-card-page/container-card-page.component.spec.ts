@@ -47,10 +47,46 @@ describe('ContainerCardPageComponent', () => {
 
     fixture = TestBed.createComponent(ContainerCardPageComponent);
     component = fixture.componentInstance;
+    
+    component.containerName = 'Test Container';
+    
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display the correct navigation', () => {
+    expect(fixture.nativeElement.querySelector('.logo').textContent).toContain('TRACKIT');
+    expect(fixture.nativeElement.querySelector('.inventoryButton').textContent).toContain('My Inventory');
+  });
+
+  it('should display the correct page title', () => {
+    expect(fixture.nativeElement.querySelector('h1').textContent).toContain(component.containerName);
+  });
+
+  it('should call openDialog on click of add container button', () => {
+    fixture.detectChanges();
+    spyOn(component, 'openDialog');
+    const newContainerButton = fixture.debugElement.query(By.css('.newContainerButton')).nativeElement;
+    newContainerButton.click();
+    expect(component.openDialog).toHaveBeenCalled();
+  });
+
+  it('should call openItemDialog on click of add item button', () => {
+    fixture.detectChanges();
+    spyOn(component, 'openItemDialog');
+    const newItemButton = fixture.debugElement.query(By.css('.newItemButton')).nativeElement;
+    newItemButton.click();
+    expect(component.openItemDialog).toHaveBeenCalled();
+  });
+
+  it('should call backClicked on click of back button', () => {
+    fixture.detectChanges();
+    spyOn(component, 'backClicked');
+    const backButtonClick = fixture.debugElement.query(By.css('.backButton')).nativeElement;
+    backButtonClick.click();
+    expect(component.backClicked).toHaveBeenCalled();
   });
 });
