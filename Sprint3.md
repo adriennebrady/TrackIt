@@ -31,12 +31,11 @@
 * Visit Login Page from Home Page
 * Visit Signup Page from Home Page
 * Login Authentication
-* Visit About Page from My Inventory Page
-  * Login, visit About Page, then return to My Inventory Page
-* Signout Authentication
-  * Login, then sign out
-* Create Container
-  * Login, click Create New Container button and fill out dialog form
+* Valid User Navigation
+  * Navigates from My Inventory page to About page then back
+  * Signout authentication
+  * Create new container
+  * Search for item
 
 ### Sprint 3 - Jasmine Unit Tests
 * ContainerCardPageComponent
