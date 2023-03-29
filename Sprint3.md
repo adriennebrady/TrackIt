@@ -5,7 +5,15 @@
 ## Detail work you've completed in Sprint 3
 
 ### Front-End
-* (List here)
+* Restructured HTTP requests to match backend restructure.
+* Added new search functionality to search for items in any container and see where they are located.
+* Implemented unique user inventory with root container ID & authorization token stored in local storage.
+* Authorization token now sent with every HTTP request to verify user identity.
+* Database integration to save user inventories and persist data.
+* Fixed delete and rename HTTP requests for containers and items.
+* Added ability to create containers in containers for efficient organization.
+* Implemented rename functionality on container page to prevent having to go up a level to rename the container.
+* Changed container name display on container card page to be obtained with a get request
 
 ### Back-End
 * (List here)
@@ -338,3 +346,7 @@ The API first parses the request body and ensures that the provided username and
 If the username and password are correct, the API begins a database transaction to ensure atomicity. It then calls the 'destroyUserResources' function to delete any resources associated with the user, such as files or directories. If this step fails, an appropriate error response is returned and the transaction is rolled back.
 
 Finally, the API deletes the user's account from the database, commits the transaction, and returns a success response.
+
+  
+## Front end documentation: 
+https://github.com/evaeia/TrackIt/wiki/Frontend-Usage-Documentation
