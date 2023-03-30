@@ -22,6 +22,7 @@ describe('AuthService', () => {
   afterEach(() => {
     httpMock.verify();
     localStorage.removeItem('token');
+    localStorage.removeItem('rootloc');
   });
 
   it('should be created', () => {
@@ -38,11 +39,12 @@ describe('AuthService', () => {
     authService.signup(user).subscribe((result) => {
       expect(result).toBeTruthy();
       expect(localStorage.getItem('token')).toBeTruthy();
+      expect(localStorage.getItem('rootloc')).toBeTruthy();
     });
 
     const req = httpMock.expectOne('/api/register');
     expect(req.request.method).toBe('POST');
-    req.flush({ token: 'testtoken' });
+    req.flush({ token: 'testtoken', LocID: 1 });
   });
 
   it('should login a user', () => {
@@ -54,11 +56,12 @@ describe('AuthService', () => {
     authService.login(user).subscribe((result) => {
       expect(result).toBeTruthy();
       expect(localStorage.getItem('token')).toBeTruthy();
+      expect(localStorage.getItem('rootloc')).toBeTruthy();
     });
 
     const req = httpMock.expectOne('/api/login');
     expect(req.request.method).toBe('POST');
-    req.flush({ token: 'testtoken' });
+    req.flush({ token: 'testtoken', LocID: 1 });
   });
 
   it('should logout a user', () => {
@@ -66,11 +69,15 @@ describe('AuthService', () => {
     authService.token = 'testtoken';
     localStorage.setItem('token', authService.token);
 
+    authService.rootloc = 1;
+    localStorage.setItem('rootloc', authService.rootloc.toString());
+
     authService.logout();
 
     expect(authService.isLoggedIn).toBeFalsy();
     expect(authService.token).toBeFalsy();
     expect(localStorage.getItem('token')).toBeFalsy();
+    expect(localStorage.getItem('rootloc')).toBeFalsy();
   });
 
   it('should return true if the user is authenticated', () => {

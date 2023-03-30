@@ -1,21 +1,157 @@
 # TrackIt Sprint 3
 
 ## Video Link
+https://drive.google.com/file/d/1vAdBSvirUzECrjmLRt5Fqrn5dVKPeZDp/view?usp=sharing
 
 ## Detail work you've completed in Sprint 3
 
 ### Front-End
-* (List here)
+* Restructured HTTP requests to match backend restructure.
+* Added new search functionality to search for items in any container and see where they are located.
+* Implemented unique user inventory with root container ID and authorization token stored in local storage.
+* Authorization token now sent with every HTTP request to verify user identity.
+* Database integration to save user inventories and persist data.
+* Fixed delete and rename HTTP requests for containers and items.
+* Added ability to create containers in containers for efficient organization.
+* Implemented rename functionality on container page to prevent having to go up a level to rename the container.
+* Changed container name display on container card page to be obtained with a get request.
+* Fixed previously successful unit tests that failed due to restructure.
 
 ### Back-End
-* (List here)
+* Restructured HTTP requests
+* Created Post request to create/login to accounts
+* Created Delete requests to delete account, inventory, and items
+* Created SALT/Hashing for password encryption
+* Created a recently deleted table in database
 <p>&nbsp;</p>
 
 ## List frontend unit tests
-* (List here)
+### Cypress Tests
+* Visit TrackIt Home Page
+* Visit About Page from Home Page
+* Visit Login Page from Home Page
+* Visit Signup Page from Home Page
+* Login Authentication
+* Valid User Navigation
+  * Navigates from My Inventory page to About page then back
+  * Signout authentication
+  * Create new container
+  * Search for item
+
+### Sprint 3 - Jasmine Unit Tests
+* ContainerCardPageComponent
+  * should call backClicked on click of back button
+  * should display the correct navigation
+  * should display the correct page title
+  * should call openDialog on click of add container button
+  * should call openItemDialog on click of add item button
+* SearchItemComponent
+  * should display the item name and location
+  * should create
+* ItemDialogComponent
+  * should call cancel() when cancel button is clicked
+  * should display add item dialog title
+  * should create
+* SearchComponent
+  * should call backButton on click of back button
+  * should create
+  * should display the correct page title
+  * should display the correct navigation
+* InvContainerComponent
+  * should call deleteContainer on click of delete button
+  * should create
+  * should display see inside button
+  * should call seeInside on click of see inside button
+* ItemComponent
+  * should display the item name
+  * should display the item count
+
+### Sprint 2 - Jasmine Unit Tests
+* ContainerComponent
+  * should create
+  * should call openConfirmDialog on click of delete button
+  * should display the container name and description
+* ItemComponent
+  * should create
+  * should display the item name and location
+* AuthService
+  * should logout a user
+  * should signup a user
+  * should be created
+  * should login a user
+  * should return true if the user is authenticated
+  * should return the token
+* ContainerCardPageComponent
+  * should create
+* HomeComponent
+  * should display the home page description
+  * should display the home page title
+  * should have a button to get started
+  * should have a button for Login
+  * should have a button for About
+  * should have a button for Sign Up
+  * should display the TRACKIT logo
+* AuthGuard
+  * canActivate
+    * should return true for user with token in localStorage
+    * should return true for authenticated user
+    * should redirect to login page for unauthenticated user
+  * checkLogin
+    * should return true for authenticated user
+    * should return true for user with token in localStorage
+    * should redirect to login page for unauthenticated user
+* ConfirmDialogComponent
+  * should create
+  * should display confirm dialog title
+* SignUpPageComponent
+  * should create
+  * onSubmit() should not navigate to inventory page if passwords do not match
+  * constructor should navigate to inventory page if user is already authenticated
+  * onSubmit() should call authService.signup() and navigate to inventory page on successful sign-up
+* AppComponent
+  * should have as title 'cen3031-project'
+  * should create the app
+* AboutComponent
+  * should create
+  * should display the correct content when user is logged out
+  * should display the correct content when user is logged in
+* InventoryPageComponent
+  * should display the correct page title and description
+  * should create
+  * should display the correct navigation
+  * should call openDialog on click of new container button
+* DialogComponent
+  * should call onNoClick() when cancel button is clicked
+  * should display rename dialog title
+  * should create
+* RenameDialogComponent
+  * should call cancel() when cancel button is clicked
+  * should display rename dialog title
+  * should create
+* LoginPageComponent
+  * should create
+  * onSubmit
+    * should navigate to /inventory on successful login and no redirect URL is set
+    * should navigate to the redirect URL on successful login and a redirect URL is set
+    * should call authService.loginSuccess on successful login
+    * should call authService.login with the correct user
 
 ## List backend unit tests
 ### (Included in the video)
+
+* #### Sprint 3
+  * TestDeleteItem
+  * TestItemPut
+  * TestContainerPut
+  * TestDestroyContainer
+  * TestInventoryGet
+  * TestSearchGet
+  * TestIsValidToken
+  * TestComparePasswords
+  * TestPingGet
+  * TestGenerateToken
+  * TestHashAndSalt
+  
 * #### Sprint 2
   * TestAdd
   * TestGetAll
@@ -27,9 +163,6 @@
   * TestRenameContainer
   * TestRelocateContainer
   * TestDeleteContainer
-
-* #### Sprint 3
-  * (List more...)
 <p>&nbsp;</p>
 
 ## Show updated documentation for your backend API 
@@ -328,3 +461,7 @@ The API first parses the request body and ensures that the provided username and
 If the username and password are correct, the API begins a database transaction to ensure atomicity. It then calls the 'destroyUserResources' function to delete any resources associated with the user, such as files or directories. If this step fails, an appropriate error response is returned and the transaction is rolled back.
 
 Finally, the API deletes the user's account from the database, commits the transaction, and returns a success response.
+
+  
+## Front end documentation: 
+https://github.com/evaeia/TrackIt/wiki/Frontend-Usage-Documentation

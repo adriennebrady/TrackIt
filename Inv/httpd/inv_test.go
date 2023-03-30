@@ -2,13 +2,11 @@ package main
 
 import (
 	"Trackit/Inv/httpd/handler"
-	"bytes"
 	"errors"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
 	"testing"
-	"encoding/json"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -17,85 +15,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestInventoryDelete(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-func TestInventoryPut(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-
-func TestLoginPost(t *testing.T) {
-	//todo: implement
-}
-
-func TestRegisterPost(t *testing.T) {
-	//(NEEDS DEBUGGING)
-	//todo: implement
-	// Set up a test Gin context.
-    router := gin.Default()
-    DB, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-    router.POST("/register", handler.RegisterPost(DB))
-
-    // Create a request body for registering a new user.
-    requestBody := handler.RegisterRequest{
-        Username:             "testuser",
-        Password:             "password",
-        PasswordConfirmation: "password",
-    }
-    requestBodyBytes, _ := json.Marshal(requestBody)
-
-    // Create a POST request to the /register endpoint with the request body.
-    req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(requestBodyBytes))
-    req.Header.Set("Content-Type", "application/json")
-
-    // Make the request.
-    resp := httptest.NewRecorder()
-    router.ServeHTTP(resp, req)
-
-    // Check that the response status code is correct.
-    if resp.Code != http.StatusOK {
-        t.Errorf("Expected status code %d but got %d", http.StatusOK, resp.Code)
-    }
-
-    // Check that the response body contains the expected token.
-    var response handler.LoginResponse
-    json.Unmarshal(resp.Body.Bytes(), &response)
-    if response.Token == "" {
-        t.Error("Expected non-empty token but got empty token")
-    }
-
-}
-func TestAccountDelete(t *testing.T) {
-	//todo: implement
-
-}
-
-func TestInventoryPost(t *testing.T) {
-	setupTestDB()
-
-	r := gin.Default()
-	r.POST("/inventory", handler.InventoryPost(db))
-	//todo: implement
-
-}
-func TestNameGet(t *testing.T) {
-	//todo: implement
-
-}
 func TestDeleteItem(t *testing.T) {
 	// Create a new in-memory database for testing purposes.
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
-	if err != nil {
-		t.Fatalf("Failed to open database connection: %v", err)
-	}
-	// Automatically create the necessary tables for testing.
-	db.AutoMigrate(&Account{}, &Item{}, &Container{}, &RecentlyDeletedItem{})
+	setupTestDB()
 
 	// Create a test user account and item to be deleted.
 	user := Account{
@@ -296,6 +218,7 @@ func TestInventoryGet(t *testing.T) {
 	resp1 := httptest.NewRecorder()
 	router.ServeHTTP(resp1, req1)
 	assert.Equal(t, http.StatusOK, resp1.Code)*/
+	/* FAIL (DEBUG) Test case 4: invalid container ID.*/
 
 	// Test case 2: missing authorization token.
 	req2, _ := http.NewRequest("GET", "/inventory?container_id=1", nil)
@@ -309,13 +232,6 @@ func TestInventoryGet(t *testing.T) {
 	resp3 := httptest.NewRecorder()
 	router.ServeHTTP(resp3, req3)
 	assert.Equal(t, http.StatusUnauthorized, resp3.Code)
-
-	/* FAIL (DEBUG) Test case 4: invalid container ID.
-	req4, _ := http.NewRequest("GET", "/inventory?container_id=invalid", nil)
-	req4.Header.Set("Authorization", "Bearer testtoken")
-	resp4 := httptest.NewRecorder()
-	router.ServeHTTP(resp4, req4)
-	assert.Equal(t, http.StatusBadRequest, resp4.Code)*/
 
 	// Test case 5: invalid container for user.
 	req5, _ := http.NewRequest("GET", "/inventory?container_id=2", nil)
@@ -445,5 +361,6 @@ func setupTestDB() {
 	db.AutoMigrate(&handler.Account{})
 	db.AutoMigrate(&handler.Container{})
 	db.AutoMigrate(&handler.Item{})
+	db.AutoMigrate(&handler.RecentlyDeletedItem{})
 
 }

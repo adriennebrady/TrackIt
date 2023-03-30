@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectorRef } from '@angular/core';
 import { ContainerComponent } from './container.component';
 import { InventoryPageComponent } from '../inventory-page/inventory-page.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -12,6 +13,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../auth.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterTestingModule } from "@angular/router/testing";
 
 describe('ContainerComponent', () => {
   let component: ContainerComponent;
@@ -30,11 +32,13 @@ describe('ContainerComponent', () => {
         MatDividerModule,
         HttpClientTestingModule,
         HttpClientModule,
+        RouterTestingModule
       ],
       providers: [
         ContainerCardPageComponent,
         InventoryPageComponent,
         AuthService,
+        ChangeDetectorRef
       ],
     }).compileComponents();
   });
@@ -46,13 +50,15 @@ describe('ContainerComponent', () => {
     const containerName = 'Test Container';
     const containerDescription = 'This is a test container';
     const containerID = -1;
-    /*
+    const parentID = -1;
+    
     component.container = {
-      id: containerID,
-      name: containerName,
-      description: containerDescription,
+      LocID: containerID,
+      Name: containerName,
+      ParentID: parentID
+      //description: containerDescription,
     };
-    */
+    
     component.index = 1;
     fixture.detectChanges();
   });
@@ -66,22 +72,27 @@ describe('ContainerComponent', () => {
     const nameElement = fixture.debugElement.query(
       By.css('.containerName')
     ).nativeElement;
-    const descriptionElement = fixture.debugElement.query(
+    /*const descriptionElement = fixture.debugElement.query(
       By.css('p')
-    ).nativeElement;
+    ).nativeElement;*/
 
     expect(nameElement.textContent).toContain('Test Container');
-    expect(descriptionElement.textContent).toContain(
+    /*expect(descriptionElement.textContent).toContain(
       'This is a test container'
-    );
+    );*/
   });
 
-  it('should call openConfirmDialog on click of delete button', () => {
-    const openConfirmDialogSpy = spyOn(inventoryPage, 'openConfirmDialog');
+  it('should call deleteContainer on click of delete button', () => {
+    /*const openConfirmDialogSpy = spyOn(inventoryPage, 'openConfirmDialog');
     const deleteButton = fixture.debugElement.query(
       By.css('.deleteButton')
     ).nativeElement;
     deleteButton.click();
-    expect(openConfirmDialogSpy).toHaveBeenCalledWith(1);
+    expect(openConfirmDialogSpy).toHaveBeenCalledWith(1);*/
+    fixture.detectChanges();
+    spyOn(component, 'deleteContainer');
+    const newContainerButton = fixture.debugElement.query(By.css('.deleteButton')).nativeElement;
+    newContainerButton.click();
+    expect(component.deleteContainer).toHaveBeenCalled();
   });
 });
