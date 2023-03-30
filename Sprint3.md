@@ -21,7 +21,7 @@ https://drive.google.com/file/d/1vAdBSvirUzECrjmLRt5Fqrn5dVKPeZDp/view?usp=shari
 * Restructured HTTP requests
 * Created Post request to create/login to accounts
 * Created Delete requests to delete account, inventory, and items
-* Created SALT/Hashing for passowrd encryption
+* Created SALT/Hashing for password encryption
 * Created a recently deleted table in database
 <p>&nbsp;</p>
 
