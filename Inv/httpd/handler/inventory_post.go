@@ -14,6 +14,7 @@ type InvRequest struct {
 	Cont          int    `json:"Cont"`
 	Name          string `json:"Name"`
 	Type          string `json:"Type"`
+	Count		  int    `json:"Count"` //for items
 }
 
 func InventoryPost(db *gorm.DB) gin.HandlerFunc {
@@ -49,7 +50,7 @@ func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 				User:     username,
 				ItemName: requestBody.Name,
 				LocID:    requestBody.Cont,
-				Count:    1,
+				Count:    requestBody.Count,
 			}
 
 			if result := db.Table("items").Create(&newItem); result.Error != nil {
