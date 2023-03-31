@@ -15,6 +15,67 @@ import (
 	"gorm.io/gorm"
 )
 
+func TestItemsGet(t *testing.T) {
+	setupTestDB()
+	//todo:implement
+}
+func TestContainersGet(t *testing.T) {
+	setupTestDB()
+	//todo:implement
+
+}
+func TestDeleteDelete(t *testing.T) {
+	setupTestDB()
+	//todo:implement
+
+}
+func TestDeleteGet(t *testing.T) {
+	setupTestDB()
+	//todo:implement
+
+}
+func TestInventoryDelete(t *testing.T) {
+	setupTestDB()
+
+	//todo: implement
+
+}
+func TestInventoryPut(t *testing.T) {
+	setupTestDB()
+
+	//todo: implement
+
+}
+
+func TestLoginPost(t *testing.T) {
+	//todo: implement
+}
+
+func TestRegisterPost(t *testing.T) {
+
+	setupTestDB()
+	//todo: implement
+}
+func TestAccountDelete(t *testing.T) {
+	setupTestDB()
+
+	//todo: implement
+
+}
+
+func TestInventoryPost(t *testing.T) {
+	setupTestDB()
+
+	r := gin.Default()
+	r.POST("/inventory", handler.InventoryPost(db))
+	//todo: implement
+
+}
+func TestNameGet(t *testing.T) {
+	//todo: implement
+
+}
+
 func TestDeleteItem(t *testing.T) {
 	// Create a new in-memory database for testing purposes.
 	setupTestDB()
@@ -183,15 +244,7 @@ func TestDestroyContainer(t *testing.T) {
 		t.Errorf("DestroyContainer did not delete the items from the database")
 	}
 }
-func TestItemsGet(t *testing.T) {
-	setupTestDB()
-	//todo:implement
-}
-func TestContainersGet(t *testing.T) {
-	setupTestDB()
-	//todo:implement
 
-}
 func TestSearchGet(t *testing.T) {
 	setupTestDB()
 

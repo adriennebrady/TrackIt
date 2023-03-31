@@ -63,16 +63,18 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.GET("/ping", handler.PingGet())
-		api.POST("/login", handler.LoginPost(db))
-		api.POST("/search", handler.SearchGet(db))
 		api.GET("/name", handler.NameGet(db))
-		api.POST("/register", handler.RegisterPost(db))
 		api.GET("/items", handler.ItemsGet(db))
 		api.GET("/containers", handler.ContainerGet(db))
+		api.GET("/deleted", handler.DeletedGet(db))
+		api.POST("/login", handler.LoginPost(db))
+		api.POST("/search", handler.SearchGet(db))
+		api.POST("/register", handler.RegisterPost(db))
 		api.POST("/inventory", handler.InventoryPost(db))
 		api.PUT("/inventory", handler.InventoryPut(db))
 		api.DELETE("/inventory", handler.InventoryDelete(db))
 		api.DELETE("/account", handler.AccountDelete(db))
+		api.DELETE("/deleted", handler.DeleteDelete(db))
 	}
 
 	r.Run()
