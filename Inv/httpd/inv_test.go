@@ -27,44 +27,64 @@ func TestContainersGet(t *testing.T) {
 
 }
 func TestDeleteDelete(t *testing.T) {
-	setupTestDB()
-	// Create a mock gin context with a valid authorization token and request body.
+	// Set up the test database and create a transaction for the test.
+	var dbe, err = gorm.Open(sqlite.Open("test.sqlite"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect to database")
+	}
+
+	dbe.AutoMigrate(&handler.Account{})
+	dbe.AutoMigrate(&handler.Container{})
+	dbe.AutoMigrate(&handler.Item{})
+	dbe.AutoMigrate(&handler.RecentlyDeletedItem{})
+
+	// Create a mock gin context with a valid authorization token.
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
-	c.Request, _ = http.NewRequest("DELETE", "/delete", strings.NewReader(`{"token": "valid_token"}`))
+	c.Request, _ = http.NewRequest("DELETE", "/delete", strings.NewReader(`{"token": "token"}`))
 	c.Request.Header.Set("Content-Type", "application/json")
 
-	// Create a mock GORM database connection.
-	db, _ := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
-	db.AutoMigrate(&RecentlyDeletedItem{}, &Item{})
-	db.Create(&RecentlyDeletedItem{
-		AccountID:           "valid_user",
+	tx := dbe.Begin()
+	defer func() {
+		// Roll back the transaction to undo any changes made during the test.
+		tx.Rollback()
+	}()
+
+	// Create test data.
+	tx.Create(&RecentlyDeletedItem{
+		AccountID:           "valid",
 		DeletedItemID:       1,
 		DeletedItemName:     "item_name",
 		DeletedItemLocation: 1,
 		DeletedItemCount:    1,
 		Timestamp:           time.Now(),
 	})
-	db.Create(&Item{
-		ID:       1,
-		Name:     "item_name",
-		Location: 1,
-		Count:    1,
+	tx.Create(&Account{
+		Username: "valid",
+		Token:    "token",
 	})
 
-	// Call the handler function with the mock context and database connection.
-	DeleteDelete(db)(c)
+	// Commit the transaction to persist the test data to the database.
+	handlerWithTx := handler.DeleteDelete(tx)
+	handlerWithTx(c)
 
 	// Check that the response status code is 204 No Content.
 	if w.Code != http.StatusNoContent {
 		t.Errorf("Expected status code %d, but got %d", http.StatusNoContent, w.Code)
 	}
+	tx.Commit()
 
-	// Check that the item has been deleted from the database.
-	var item Item
-	if result := db.Table("items").Where("id = ?", 1).First(&item); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		t.Errorf("Expected item to be deleted, but got %+v", item)
+	// Check that the item was deleted from the database.
+	var count int64
+	if result := dbe.Table("recently_deleted_items").Where("account_id = ?", "valid").Count(&count); result.Error != nil {
+		t.Errorf("Failed to get count of items: %s", result.Error.Error())
 	}
+	if count != 0 {
+		t.Errorf("Expected 0 items, but got %d", count)
+	}
+
+	// Roll back the transaction to undo any changes made during the test.
+	tx.Rollback()
 }
 func TestDeleteGet(t *testing.T) {
 	setupTestDB()

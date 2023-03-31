@@ -10,8 +10,8 @@ import (
 
 type DeleteRequest struct {
 	Token string `json:"token"`
-	Type  string `json:"type"`
 	ID    int    `json:"id"`
+	Type  string `json:"type"`
 }
 
 // recently delete
