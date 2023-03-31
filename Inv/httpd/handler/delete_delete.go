@@ -30,7 +30,7 @@ func DeleteDelete(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Delete the item.
-		if result := db.Table("items").Delete(&item); result.Error != nil {
+		if result := db.Table("recently_deleted_items").Delete(&item); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Couldn't delete item"})
 			return
 		}

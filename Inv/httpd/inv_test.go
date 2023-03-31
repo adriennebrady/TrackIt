@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"regexp"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -26,8 +28,43 @@ func TestContainersGet(t *testing.T) {
 }
 func TestDeleteDelete(t *testing.T) {
 	setupTestDB()
-	//todo:implement
+	// Create a mock gin context with a valid authorization token and request body.
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request, _ = http.NewRequest("DELETE", "/delete", strings.NewReader(`{"token": "valid_token"}`))
+	c.Request.Header.Set("Content-Type", "application/json")
 
+	// Create a mock GORM database connection.
+	db, _ := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	db.AutoMigrate(&RecentlyDeletedItem{}, &Item{})
+	db.Create(&RecentlyDeletedItem{
+		AccountID:           "valid_user",
+		DeletedItemID:       1,
+		DeletedItemName:     "item_name",
+		DeletedItemLocation: 1,
+		DeletedItemCount:    1,
+		Timestamp:           time.Now(),
+	})
+	db.Create(&Item{
+		ID:       1,
+		Name:     "item_name",
+		Location: 1,
+		Count:    1,
+	})
+
+	// Call the handler function with the mock context and database connection.
+	DeleteDelete(db)(c)
+
+	// Check that the response status code is 204 No Content.
+	if w.Code != http.StatusNoContent {
+		t.Errorf("Expected status code %d, but got %d", http.StatusNoContent, w.Code)
+	}
+
+	// Check that the item has been deleted from the database.
+	var item Item
+	if result := db.Table("items").Where("id = ?", 1).First(&item); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		t.Errorf("Expected item to be deleted, but got %+v", item)
+	}
 }
 func TestDeleteGet(t *testing.T) {
 	setupTestDB()
