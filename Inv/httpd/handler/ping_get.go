@@ -15,10 +15,10 @@ func PingGet() gin.HandlerFunc {
 }
 
 //TODO: recently deleted page make get and delete handlers
-//TODO: separate inventory get for sidebar
 //TODO: ITEM count
 //TODO: account deletion page front end
 //TODO: remove container description front end
+//TODO: separate inventory get for sidebar front end
 
 //TODO: solve tests/create tests for new functions
 //TODO: import/export inventories
