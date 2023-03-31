@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func InventoryGet(db *gorm.DB) gin.HandlerFunc {
+func ContainerGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		// Verify that the token is valid.
@@ -40,23 +40,7 @@ func InventoryGet(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Get all items that are in the requested container.
-		var items []Item
-		if result := db.Table("Items").Where("locID = ?", Container_id).Find(&items); result.Error != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
-			return
-		}
-
-		// Merge the containers and items into a single slice.
-		var results []interface{}
-		for _, container := range containers {
-			results = append(results, container)
-		}
-		for _, item := range items {
-			results = append(results, item)
-		}
-
-		c.JSON(http.StatusOK, results)
+		c.JSON(http.StatusOK, containers)
 	}
 }
 

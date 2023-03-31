@@ -34,12 +34,12 @@ type Container struct {
 
 // recently delete
 type RecentlyDeletedItem struct {
-	AccountID     string
-	DeletedItemID int `gorm:"primaryKey"`
-	DeletedItemName string `gorm:"column:itemName"`
+	AccountID           string
+	DeletedItemID       int    `gorm:"primaryKey"`
+	DeletedItemName     string `gorm:"column:itemName"`
 	DeletedItemLocation int    `gorm:"column:LocID"`
-	DeletedItemCount	int    `gorm:"column:count"`
-	Timestamp     time.Time
+	DeletedItemCount    int    `gorm:"column:count"`
+	Timestamp           time.Time
 }
 
 var db *gorm.DB
@@ -60,8 +60,6 @@ func main() {
 	InitializeDB()
 
 	r := gin.Default()
-	name := "/inventory"
-
 	api := r.Group("/api")
 	{
 		api.GET("/ping", handler.PingGet())
@@ -69,10 +67,11 @@ func main() {
 		api.POST("/search", handler.SearchGet(db))
 		api.GET("/name", handler.NameGet(db))
 		api.POST("/register", handler.RegisterPost(db))
-		api.GET(name, handler.InventoryGet(db))
-		api.POST(name, handler.InventoryPost(db))
-		api.PUT(name, handler.InventoryPut(db))
-		api.DELETE(name, handler.InventoryDelete(db))
+		api.GET("/items", handler.ItemsGet(db))
+		api.GET("/containers", handler.ContainerGet(db))
+		api.POST("/inventory", handler.InventoryPost(db))
+		api.PUT("/inventory", handler.InventoryPut(db))
+		api.DELETE("/inventory", handler.InventoryDelete(db))
 		api.DELETE("/account", handler.AccountDelete(db))
 	}
 
