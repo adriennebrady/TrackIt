@@ -56,6 +56,7 @@ func ContainerPut(requestBody InvRequest, db *gorm.DB, username string) string {
 	} else if requestBody.Type == "Relocate" {
 		container.ParentID = requestBody.Cont
 	}
+	
 
 	// Save the changes to the database.
 	result = db.Save(&container)
@@ -79,6 +80,8 @@ func ItemPut(requestBody InvRequest, db *gorm.DB, username string) string {
 		item.ItemName = requestBody.Name
 	} else if requestBody.Type == "Relocate" {
 		item.LocID = requestBody.Cont
+	} else if requestBody.Type == "Recount" { //change count
+		item.Count = requestBody.Count
 	}
 
 	// Save the changes to the database.
