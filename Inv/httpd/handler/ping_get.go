@@ -14,15 +14,15 @@ func PingGet() gin.HandlerFunc {
 	}
 }
 
-//TODO: recently deleted page make get and delete handlers
+//TODO: recently deleted page make get and delete handlers front end
 //TODO: ITEM count front end
 //TODO: account deletion page front end
 //TODO: remove container description front end
 //TODO: separate inventory get for sidebar front end
 
-//TODO: solve tests/create tests for new functions
+//TODO: solve tests/create tests for new functions Tana
+//TODO: More complex recursive version of get container name Izzy
 //TODO: import/export inventories
-//TODO: More complex recursive version of get container name
 
 //TODO: possible cards
 //TODO: add item tags
