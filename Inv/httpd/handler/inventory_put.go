@@ -22,32 +22,33 @@ func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		if requestBody.Kind == "Container" {
-			if message := ContainerPut(requestBody, db, username); message != "" {
+		switch requestBody.Kind {
+		case "Container":
+			if message := ContainerPut(requestBody, db, username); message != nil {
 				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": message})
 				return
 			}
-		} else if requestBody.Kind == "Item" {
-			if message := ItemPut(requestBody, db, username); message != "" {
+		case "Item":
+			if message := ItemPut(requestBody, db, username); message != nil {
 				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": message})
 				return
 			}
-		} else {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid Kind"})
-			return
+		default:
+			{
+				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid Kind"})
+				return
+			}
 		}
-
-		c.Status(http.StatusNoContent)
-
 	}
 }
 
-func ContainerPut(requestBody InvRequest, db *gorm.DB, username string) string {
+func ContainerPut(requestBody InvRequest, db *gorm.DB, username string) *string {
 	// Look up the container in the database by ID.
 	var container Container
 	result := db.First(&container, "LocID = ? AND username = ?", requestBody.ID, username)
 	if result.Error != nil {
-		return "Container not found"
+		message := "Container not found"
+		return &message
 	}
 
 	// Update the container's name or location if requested.
@@ -56,23 +57,24 @@ func ContainerPut(requestBody InvRequest, db *gorm.DB, username string) string {
 	} else if requestBody.Type == "Relocate" {
 		container.ParentID = requestBody.Cont
 	}
-	
 
 	// Save the changes to the database.
 	result = db.Save(&container)
 	if result.Error != nil {
-		return "Database error"
+		message := "Database error"
+		return &message
 	}
 
-	return ""
+	return nil
 }
 
-func ItemPut(requestBody InvRequest, db *gorm.DB, username string) string {
+func ItemPut(requestBody InvRequest, db *gorm.DB, username string) *string {
 	// Look up the item in the database by ID.
 	var item Item
 	result := db.First(&item, "ItemID = ? AND username = ?", requestBody.ID, username)
 	if result.Error != nil {
-		return "Item not found"
+		message := "Item not found"
+		return &message
 	}
 
 	// Update the item's name or location if requested.
@@ -87,7 +89,8 @@ func ItemPut(requestBody InvRequest, db *gorm.DB, username string) string {
 	// Save the changes to the database.
 	result = db.Save(&item)
 	if result.Error != nil {
-		return "Database error"
+		message := "Database error"
+		return &message
 	}
-	return ""
+	return nil
 }
