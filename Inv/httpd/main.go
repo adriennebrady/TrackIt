@@ -67,6 +67,7 @@ func main() {
 		api.GET("/items", handler.ItemsGet(db))
 		api.GET("/containers", handler.ContainersGet(db))
 		api.GET("/deleted", handler.DeletedGet(db))
+		api.GET("/tree", handler.TreeGet(db))
 		api.POST("/login", handler.LoginPost(db))
 		api.POST("/search", handler.SearchGet(db))
 		api.POST("/register", handler.RegisterPost(db))

@@ -18,12 +18,11 @@ func PingGet() gin.HandlerFunc {
 //TODO ITEM count front end
 //TODO account deletion page front end
 //TODO remove container description front end
-//TODO separate inventory get for sidebar front end
+//TODO treeget for sidebar front end
 //TODO alternative list view front end
 
 //TODO auto delete after 30 days
 //TODO solve tests/create tests for new functions Tana
-//TODO More complex recursive version of get container name Izzy
 
 //TODO add item tags
 //TODO import/export inventories
