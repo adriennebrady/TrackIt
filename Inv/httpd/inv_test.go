@@ -133,6 +133,32 @@ func TestNameGet(t *testing.T) {
 
 }
 
+func TestGetChildren(t *testing.T) {
+	// Create a mock database.
+	setupTestDB()
+	db.Create(&Container{LocID: 1, Name: "Parent"})
+	db.Create(&Container{LocID: 2, Name: "Child1", ParentID: 1})
+	db.Create(&Container{LocID: 3, Name: "Child2", ParentID: 1})
+
+	// Test with a parent ID that has children.
+	result := handler.GetChildren(1, "", db)
+	if len(result) != 2 {
+		t.Errorf("Expected 2 children, but got %d", len(result))
+	}
+	if result[0].Container.Name != "Child1" {
+		t.Errorf("Expected first child name to be \"Child1\", but got %s", result[0].Container.Name)
+	}
+	if result[1].Container.Name != "Child2" {
+		t.Errorf("Expected second child name to be \"Child2\", but got %s", result[1].Container.Name)
+	}
+
+	// Test with a parent ID that has no children.
+	result = handler.GetChildren(2, "", db)
+	if len(result) != 0 {
+		t.Errorf("Expected 0 children, but got %d", len(result))
+	}
+}
+
 func TestDeleteItem(t *testing.T) {
 	// Create a new in-memory database for testing purposes.
 	setupTestDB()
@@ -414,6 +440,7 @@ func TestHashAndSalt(t *testing.T) {
 	}
 }
 
+// file::memory:?cache=shared or try this?
 func setupTestDB() {
 	db, err = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	if err != nil {

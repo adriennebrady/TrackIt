@@ -32,14 +32,14 @@ func TreeGet(db *gorm.DB) gin.HandlerFunc {
 		// Recursively add children containers with their path to the result.
 		containerTree := &ContainerTree{
 			Container: Container{LocID: existingUser.RootLoc},
-			Children:  getChildren(existingUser.RootLoc, "", db),
+			Children:  GetChildren(existingUser.RootLoc, "", db),
 		}
 
 		c.JSON(http.StatusOK, containerTree)
 	}
 }
 
-func getChildren(parentID int, parentPath string, db *gorm.DB) []*ContainerTree {
+func GetChildren(parentID int, parentPath string, db *gorm.DB) []*ContainerTree {
 	var containers []Container
 	if result := db.Table("Containers").Where("parentID = ?", parentID).Find(&containers); result.Error != nil {
 		return nil
@@ -52,7 +52,7 @@ func getChildren(parentID int, parentPath string, db *gorm.DB) []*ContainerTree 
 			Container: container,
 			Children:  nil, // initialize to nil in case there are no children
 		}
-		children := getChildren(container.LocID, childPath, db)
+		children := GetChildren(container.LocID, childPath, db)
 		if children != nil {
 			childTree.Children = children
 		}
