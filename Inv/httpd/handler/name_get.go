@@ -35,10 +35,23 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		var names string
-		if result := db.Table("Containers").Select("name").Where("LocID = ? AND username = ?", containerID, username).Scan(&names); result.Error != nil {
+		// Retrieve the container with the specified ID and username.
+		var container Container
+		if result := db.Table("Containers").Where("LocID = ? AND username = ?", containerID, username).First(&container); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get container"})
 			return
+		}
+
+		// Add the name of the current container to the response.
+		names := container.Name
+
+		// Traverse the parent containers until ParentID equals 1.
+		for container.ParentID != 0 {
+			if result := db.Table("Containers").Where("LocID = ? AND username = ?", container.ParentID, username).First(&container); result.Error != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get container"})
+				return
+			}
+			names = container.Name + "/" + names
 		}
 
 		c.JSON(http.StatusOK, names)
