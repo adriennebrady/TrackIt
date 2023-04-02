@@ -193,8 +193,8 @@ func TestItemPut(t *testing.T) {
 		Name: "New Item Name",
 	}
 	result := handler.ItemPut(requestBody, db, username)
-	if result != "" {
-		t.Errorf("Unexpected error: %s", result)
+	if result != nil {
+		t.Errorf("Unexpected error: %v", result)
 	}
 	var updatedItem Item
 	db.First(&updatedItem, "ItemID = ? AND username = ?", 1, username)
@@ -209,8 +209,8 @@ func TestItemPut(t *testing.T) {
 		Cont: 2,
 	}
 	result = handler.ItemPut(requestBody, db, username)
-	if result != "" {
-		t.Errorf("Unexpected error: %s", result)
+	if result != nil {
+		t.Errorf("Unexpected error: %v", result)
 	}
 	db.First(&updatedItem, "ItemID = ? AND username = ?", 1, username)
 	if updatedItem.LocID != 2 {
@@ -233,8 +233,8 @@ func TestContainerPut(t *testing.T) {
 	// Call the function to update the container's name
 	requestBody := handler.InvRequest{ID: testContainer.LocID, Type: "Rename", Name: "New Name", Cont: 0}
 	resultMsg := handler.ContainerPut(requestBody, db, "testUser")
-	if resultMsg != "" {
-		t.Errorf("Error updating container: %s", resultMsg)
+	if resultMsg != nil {
+		t.Errorf("Error updating container: %v", resultMsg)
 	}
 
 	// Check that the container's name was updated in the database
@@ -249,8 +249,8 @@ func TestContainerPut(t *testing.T) {
 	// Call the function to update the container's location
 	requestBody = handler.InvRequest{ID: testContainer.LocID, Type: "Relocate", Name: "", Cont: 1}
 	resultMsg = handler.ContainerPut(requestBody, db, "testUser")
-	if resultMsg != "" {
-		t.Errorf("Error updating container: %s", resultMsg)
+	if resultMsg != nil {
+		t.Errorf("Error updating container: %v", resultMsg)
 	}
 
 	// Check that the container's location was updated in the database
