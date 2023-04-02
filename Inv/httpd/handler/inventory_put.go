@@ -52,9 +52,10 @@ func ContainerPut(requestBody InvRequest, db *gorm.DB, username string) *string 
 	}
 
 	// Update the container's name or location if requested.
-	if requestBody.Type == "Rename" {
+	switch requestBody.Type {
+	case "Rename":
 		container.Name = requestBody.Name
-	} else if requestBody.Type == "Relocate" {
+	case "Relocate":
 		container.ParentID = requestBody.Cont
 	}
 
@@ -78,11 +79,12 @@ func ItemPut(requestBody InvRequest, db *gorm.DB, username string) *string {
 	}
 
 	// Update the item's name or location if requested.
-	if requestBody.Type == "Rename" {
+	switch requestBody.Type {
+	case "Rename":
 		item.ItemName = requestBody.Name
-	} else if requestBody.Type == "Relocate" {
+	case "Relocate":
 		item.LocID = requestBody.Cont
-	} else if requestBody.Type == "Recount" { //change count
+	case "Recount":
 		item.Count = requestBody.Count
 	}
 
