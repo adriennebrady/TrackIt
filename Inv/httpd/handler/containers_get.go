@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ContainerGet(db *gorm.DB) gin.HandlerFunc {
+func ContainersGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		// Verify that the token is valid.

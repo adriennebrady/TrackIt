@@ -65,7 +65,7 @@ func main() {
 		api.GET("/ping", handler.PingGet())
 		api.GET("/name", handler.NameGet(db))
 		api.GET("/items", handler.ItemsGet(db))
-		api.GET("/containers", handler.ContainerGet(db))
+		api.GET("/containers", handler.ContainersGet(db))
 		api.GET("/deleted", handler.DeletedGet(db))
 		api.POST("/login", handler.LoginPost(db))
 		api.POST("/search", handler.SearchGet(db))
