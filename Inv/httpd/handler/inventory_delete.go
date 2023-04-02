@@ -40,27 +40,25 @@ func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		if requestBody.Type != "item" && requestBody.Type != "container" {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid type"})
-			return
-		}
-
-		if requestBody.Type == "item" {
+		switch requestBody.Type {
+		case "item":
 			if err := DeleteItem(db, requestBody.ID, username); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 				return
 			}
-		} else if requestBody.Type == "container" {
-			// Delete all items and sub-containers associated with the container.
+		case "container": // Delete all items and sub-containers associated with the container.
 			if err := DestroyContainer(db, requestBody.ID, username); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 				return
 			}
-
+		default:
+			{
+				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid type"})
+				return
+			}
 		}
 
 		c.Status(http.StatusNoContent)
-
 	}
 }
 
