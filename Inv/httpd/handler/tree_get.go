@@ -9,7 +9,7 @@ import (
 
 type ContainerTree struct {
 	Container Container
-	Children  []ContainerTree
+	Children  []*ContainerTree
 }
 
 func TreeGet(db *gorm.DB) gin.HandlerFunc {
@@ -30,7 +30,7 @@ func TreeGet(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Recursively add children containers with their path to the result.
-		containerTree := ContainerTree{
+		containerTree := &ContainerTree{
 			Container: Container{LocID: existingUser.RootLoc},
 			Children:  getChildren(existingUser.RootLoc, "", db),
 		}
@@ -39,16 +39,16 @@ func TreeGet(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func getChildren(parentID int, parentPath string, db *gorm.DB) []ContainerTree {
+func getChildren(parentID int, parentPath string, db *gorm.DB) []*ContainerTree {
 	var containers []Container
 	if result := db.Table("Containers").Where("parentID = ?", parentID).Find(&containers); result.Error != nil {
 		return nil
 	}
 
-	containerTree := make([]ContainerTree, 0)
+	containerTree := make([]*ContainerTree, 0, len(containers))
 	for _, container := range containers {
 		childPath := parentPath + "/" + container.Name
-		childTree := ContainerTree{
+		childTree := &ContainerTree{
 			Container: container,
 			Children:  nil, // initialize to nil in case there are no children
 		}
