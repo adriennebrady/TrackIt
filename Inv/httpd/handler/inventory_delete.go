@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"log"
 )
 
 type DeleteRequest struct {
@@ -90,16 +89,14 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 		return result.Error
 	}
 
-	// Schedule the recently deleted item for automatic deletion after 30 days.
-	go func() {
-		time.Sleep(30 * 24 * time.Hour) // Wait for 30 days.
-		if result := db.Table("recently_deleted_items").Where("DeletedItemID = ?", item.ItemID).Delete(&RecentlyDeletedItem{}); result.Error != nil {
-			log.Printf("Failed to delete recently deleted item with ID %d: %v", item.ItemID, result.Error)
-		}
-	}()
+	// Delete old recently deleted items.
+	if result := db.Where("Timestamp < ?", time.Now().Add(-30*24*time.Hour)).Delete(&RecentlyDeletedItem{}); result.Error != nil {
+		return result.Error
+	}
 
 	return nil
 }
+
 
 func DestroyContainer(db *gorm.DB, locID int, username string) error {
 	// Look up the container in the database by ID.
@@ -125,6 +122,7 @@ func DestroyContainer(db *gorm.DB, locID int, username string) error {
 
 	return nil
 }
+
 
 /*
 The DestroyContainer function expects the ID of a top-level container to be passed in as an argument, but there is no validation that the container is actually a top-level container. If an ID of a non-top-level container is passed in, the function will delete all items and sub-containers associated with that container, but leave the container itself intact.

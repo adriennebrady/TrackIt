@@ -10,6 +10,9 @@ import (
 	"testing"
 	"time"
 
+	"bytes"
+    "encoding/json"
+
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/bcrypt"
@@ -26,6 +29,123 @@ func TestContainersGet(t *testing.T) {
 	//todo:implement
 
 }
+
+func TestDeleteGet(t *testing.T) {
+	setupTestDB()
+	//todo:implement
+
+}
+func TestInventoryDelete(t *testing.T) {
+	setupTestDB()
+
+	//todo: implement
+
+}
+func TestInventoryPut(t *testing.T) {
+	setupTestDB()
+
+	//todo: implement
+
+}
+
+func TestLoginPost(t *testing.T) {
+	//todo: implement
+}
+
+func TestRegisterPost(t *testing.T) {
+
+	setupTestDB()
+	//todo: implement
+}
+func TestAccountDelete(t *testing.T) {
+	setupTestDB()
+
+	//todo: implement
+
+}
+
+func TestInventoryPost(t *testing.T) {
+	setupTestDB()
+
+	r := gin.Default()
+	r.POST("/inventory", handler.InventoryPost(db))
+	//todo: implement
+
+}
+func TestNameGet(t *testing.T) {
+	//todo: implement
+
+}
+
+func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+
+	Handler := handler.InventoryDelete(db)
+	router := gin.Default()
+	router.POST("/delete", Handler)
+
+	// Add a recently deleted item with a timestamp more than 30 days ago.
+	oldDeletedItem := RecentlyDeletedItem {
+		AccountID:           "testuser",
+		DeletedItemID:       1,
+		DeletedItemName:     "test item",
+		DeletedItemLocation: 1,
+		DeletedItemCount:    1,
+		Timestamp:           time.Now().AddDate(0, 0, -31),
+	}
+
+
+	if result := db.Table("recently_deleted_items").Create(&oldDeletedItem); result.Error != nil {
+		t.Fatalf("failed to create recently deleted item: %v", result.Error)
+	}
+
+	// Add a recently deleted item with a timestamp less than 30 days ago.
+	newDeletedItem := RecentlyDeletedItem{
+		AccountID:           "testuser",
+		DeletedItemID:       2,
+		DeletedItemName:     "test item",
+		DeletedItemLocation: 1,
+		DeletedItemCount:    1,
+		Timestamp:           time.Now(),
+	}
+	if result := db.Table("recently_deleted_items").Create(&newDeletedItem); result.Error != nil {
+		t.Fatalf("failed to create recently deleted item: %v", result.Error)
+	}
+
+
+	// Call the API endpoint to trigger auto-delete.
+	reqBody := handler.DeleteRequest {
+		Token: "testtoken",
+		ID:    2,
+		Type:  "item",
+	}
+	reqBodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf("failed to marshal request body: %v", err)
+	}
+	req, err := http.NewRequest("POST", "/delete", bytes.NewBuffer(reqBodyBytes))
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	// Verify that the recently deleted item with a timestamp less than 30 days ago still exists.
+	var deletedItem handler.RecentlyDeletedItem
+	if result := db.Table("recently_deleted_items").First(&deletedItem, newDeletedItem.DeletedItemID); result.Error != nil {
+		t.Fatalf("failed to find recently deleted item: %v", result.Error)
+	}
+
+	// Verify that the recently deleted item with a timestamp more than 30 days ago was deleted.
+	if result := db.Table("recently_deleted_items").First(&deletedItem, oldDeletedItem.DeletedItemID); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		t.Errorf("expected recently deleted item to be deleted, but found: %v", deletedItem)
+	}
+}
+
+
 func TestDeleteDelete(t *testing.T) {
 	// Set up the test database and create a transaction for the test.
 	var dbe, err = gorm.Open(sqlite.Open("test.sqlite"), &gorm.Config{})
@@ -85,52 +205,6 @@ func TestDeleteDelete(t *testing.T) {
 
 	// Roll back the transaction to undo any changes made during the test.
 	tx.Rollback()
-}
-func TestDeleteGet(t *testing.T) {
-	setupTestDB()
-	//todo:implement
-
-}
-func TestInventoryDelete(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-func TestInventoryPut(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-
-func TestLoginPost(t *testing.T) {
-	//todo: implement
-}
-
-func TestRegisterPost(t *testing.T) {
-
-	setupTestDB()
-	//todo: implement
-}
-func TestAccountDelete(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-
-func TestInventoryPost(t *testing.T) {
-	setupTestDB()
-
-	r := gin.Default()
-	r.POST("/inventory", handler.InventoryPost(db))
-	//todo: implement
-
-}
-func TestNameGet(t *testing.T) {
-	//todo: implement
-
 }
 
 func TestGetChildren(t *testing.T) {

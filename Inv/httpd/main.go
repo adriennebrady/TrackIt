@@ -3,11 +3,11 @@ package main
 import (
 	"Trackit/Inv/httpd/handler"
 	"time"
-
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
+
 )
 
 type Account struct { //gorm.Model?
@@ -55,6 +55,7 @@ func InitializeDB() {
 	db.AutoMigrate(&Container{}) // create the recently deleted items table
 	db.AutoMigrate(&RecentlyDeletedItem{})
 }
+
 
 func main() {
 	InitializeDB()
