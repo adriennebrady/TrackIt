@@ -21,7 +21,7 @@ func PingGet() gin.HandlerFunc {
 //TODO treeget for sidebar front end
 //TODO alternative list view front end
 
-//TODO auto delete after 30 days
+//TODO auto delete after 30 days //done - Tana
 //TODO solve tests/create tests for new functions Tana
 
 //TODO add item tags
