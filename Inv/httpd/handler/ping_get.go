@@ -21,7 +21,7 @@ func PingGet() gin.HandlerFunc {
 //TODO treeGet for sidebar front end
 //TODO alternative list view front end
 
-//TODO solve tests/create tests for new functions Tana
+//TODO solve tests/create tests for new functions - Tana
 
 //TODO add item tags
 //TODO import/export inventories

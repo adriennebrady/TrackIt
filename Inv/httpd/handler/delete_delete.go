@@ -23,14 +23,20 @@ func DeleteDelete(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		var item Item
-		if result := db.Table("recently_deleted_items").Where("deleted_item_id = ? AND account_id = ?", requestBody.ID, username).First(&item); result.Error != nil {
+		/*
+		if result := db.Table("recently_deleted_items").Where("deleted_item_id = ? AND account_id = ?", requestBody.ID, username); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
+			return
+		}*/
+
+		var recentlyDeletedItem RecentlyDeletedItem
+		if result := db.Table("recently_deleted_items").Where("deleted_item_id = ? AND account_id = ?", requestBody.ID, username).First(&recentlyDeletedItem); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}
 
 		// Delete the item.
-		if result := db.Table("recently_deleted_items").Delete(&RecentlyDeletedItem{}); result.Error != nil {
+		if result := db.Table("recently_deleted_items").Delete(&recentlyDeletedItem); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Couldn't delete item"})
 			return
 		}
