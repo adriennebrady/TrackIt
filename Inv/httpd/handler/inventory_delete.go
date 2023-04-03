@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"log"
 )
 
 type DeleteRequest struct {
@@ -88,6 +89,14 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 	if result := db.Table("recently_deleted_items").Create(&deletedItem); result.Error != nil {
 		return result.Error
 	}
+
+	// Schedule the recently deleted item for automatic deletion after 30 days.
+	go func() {
+		time.Sleep(30 * 24 * time.Hour) // Wait for 30 days.
+		if result := db.Table("recently_deleted_items").Where("DeletedItemID = ?", item.ItemID).Delete(&RecentlyDeletedItem{}); result.Error != nil {
+			log.Printf("Failed to delete recently deleted item with ID %d: %v", item.ItemID, result.Error)
+		}
+	}()
 
 	return nil
 }
