@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -74,9 +75,17 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		// Delete old recently deleted items.
+		if result := DB.Where("Timestamp < ?", time.Now().Add(-30*24*time.Hour)).Delete(&RecentlyDeletedItem{}); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Error deleting items with timestamps greater than 30 days"})
+			return
+		}
+
 		// Return the token to the user.
 		response := LoginResponse{Token: token, RootLoc: user.RootLoc}
 		c.JSON(http.StatusOK, response)
+
+
 	}
 }
 
