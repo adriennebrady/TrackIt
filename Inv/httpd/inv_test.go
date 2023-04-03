@@ -2,6 +2,8 @@ package main
 
 import (
 	"Trackit/Inv/httpd/handler"
+	"bytes"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -9,9 +11,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	"bytes"
-    "encoding/json"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -81,13 +80,12 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
 
-
 	Handler := handler.InventoryDelete(db)
 	router := gin.Default()
 	router.POST("/delete", Handler)
 
 	// Add a recently deleted item with a timestamp more than 30 days ago.
-	oldDeletedItem := RecentlyDeletedItem {
+	oldDeletedItem := RecentlyDeletedItem{
 		AccountID:           "testuser",
 		DeletedItemID:       1,
 		DeletedItemName:     "test item",
@@ -95,7 +93,6 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 		DeletedItemCount:    1,
 		Timestamp:           time.Now().AddDate(0, 0, -31),
 	}
-
 
 	if result := db.Table("recently_deleted_items").Create(&oldDeletedItem); result.Error != nil {
 		t.Fatalf("failed to create recently deleted item: %v", result.Error)
@@ -114,9 +111,8 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 		t.Fatalf("failed to create recently deleted item: %v", result.Error)
 	}
 
-
 	// Call the API endpoint to trigger auto-delete.
-	reqBody := handler.DeleteRequest {
+	reqBody := handler.DeleteRequest{
 		Token: "testtoken",
 		ID:    2,
 		Type:  "item",
@@ -144,7 +140,6 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 		t.Errorf("expected recently deleted item to be deleted, but found: %v", deletedItem)
 	}
 }
-
 
 func TestDeleteDelete(t *testing.T) {
 	// Set up the test database and create a transaction for the test.
