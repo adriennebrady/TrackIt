@@ -66,7 +66,7 @@ func TestNameGet(t *testing.T) {
 	//todo: implement
 
 }
-//
+//////////////////////* GOOD *////////////////////////////////
 func TestRegisterPost(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -409,6 +409,7 @@ func TestDeleteItem(t *testing.T) {
 		t.Fatalf("Expected recently deleted item to be created, but found error: %v", result.Error)
 	}
 }
+
 func TestItemPut(t *testing.T) {
 	// Set up the test database.
 	setupTestDB()
@@ -458,6 +459,7 @@ func TestItemPut(t *testing.T) {
 	// Clean up.
 	db.Unscoped().Delete(&item)
 }
+
 func TestContainerPut(t *testing.T) {
 	// Initialize test data
 	setupTestDB()
@@ -499,6 +501,7 @@ func TestContainerPut(t *testing.T) {
 		t.Errorf("Container location was not updated correctly")
 	}
 }
+
 func TestDestroyContainer(t *testing.T) {
 	// Set up a new in-memory SQLite database for testing.
 	setupTestDB()
@@ -571,6 +574,7 @@ func TestSearchGet(t *testing.T) {
 	assert.Equal(t, http.StatusOK, resp.Code)
 	assert.Equal(t, "[{\"ItemID\":1,\"User\":\"testuser\",\"ItemName\":\"Where\",\"LocID\":0,\"Count\":0}]", resp.Body.String())
 }
+
 func TestIsValidToken(t *testing.T) {
 	setupTestDB()
 
@@ -595,6 +599,7 @@ func TestIsValidToken(t *testing.T) {
 	username = handler.IsValidToken(noToken, db)
 	assert.Empty(t, username)
 }
+
 func TestComparePasswords(t *testing.T) {
 	password := []byte("password123")
 	hash, _ := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
@@ -609,6 +614,7 @@ func TestComparePasswords(t *testing.T) {
 		t.Errorf("ComparePasswords failed: expected false but got true")
 	}
 }
+
 func TestPingGet(t *testing.T) {
 	// Create a new HTTP request and response recorder
 	req, err := http.NewRequest("GET", "/ping", nil)
@@ -634,6 +640,7 @@ func TestPingGet(t *testing.T) {
 		t.Errorf("unexpected response body: got %v want %v", w.Body.String(), expectedBody)
 	}
 }
+
 func TestGenerateToken(t *testing.T) {
 	token := handler.GenerateToken()
 
@@ -642,6 +649,7 @@ func TestGenerateToken(t *testing.T) {
 		t.Errorf("GenerateToken failed: token %v does not match expected format", token)
 	}
 }
+
 func TestHashAndSalt(t *testing.T) {
 	password := []byte("password123")
 	hash := handler.HashAndSalt(password)
