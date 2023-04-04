@@ -26,6 +26,7 @@ type RegisterRequest struct {
 	PasswordConfirmation string `json:"password_confirmation"`
 }
 
+
 func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Parse the request body.
@@ -54,12 +55,24 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 			Password: HashAndSalt([]byte(request.Password)), //replaced with hash and salt password,
 			Token:    GenerateToken(),
 		}
-		// Create a new container object with a unique LocID.
+
+		//check if container is empty
 		var maxLocID int64
-		err := DB.Table("containers").Select("MAX(LocID)").Row().Scan(&maxLocID)
-		if err != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get max LocID"})
-			return
+		mpty := false
+		var cont Container
+		if result := DB.Table("items").Where("container_id = ?", cont.LocID).Count(&maxLocID); result.Error != nil {
+			// Handle error
+			mpty = true
+			maxLocID = 0;
+		}
+
+		// Create a new container object with a unique LocID.
+		if mpty == false {
+			err := DB.Table("containers").Select("MAX(LocID)").Row().Scan(&maxLocID)
+			if err != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get max LocID"})
+				return
+			}
 		}
 
 		newContainer := Container{

@@ -47,15 +47,6 @@ func TestInventoryPut(t *testing.T) {
 
 }
 
-func TestLoginPost(t *testing.T) {
-	//todo: implement
-}
-
-func TestRegisterPost(t *testing.T) {
-
-	setupTestDB()
-	//todo: implement
-}
 func TestAccountDelete(t *testing.T) {
 	setupTestDB()
 
@@ -76,6 +67,149 @@ func TestNameGet(t *testing.T) {
 
 }
 
+func TestRegisterPost(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.RegisterPost(db)
+	router := gin.Default()
+	router.POST("/register", Handler)
+
+	// Call the API endpoint to trigger auto-delete.
+	reqBody := handler.RegisterRequest{
+		Username: "testuser",
+		Password: "password",
+		PasswordConfirmation: "password",
+	}
+
+
+	reqBodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf("failed to marshal request body: %v", err)
+	}
+	req, err := http.NewRequest("POST", "/register", bytes.NewBuffer(reqBodyBytes))
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+
+	// Check that the response has a 200 status code.
+	if status := w.Code; status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	// Check that the response body contains a token and root location ID.
+	var responseBody handler.LoginResponse
+	if err := json.Unmarshal(w.Body.Bytes(), &responseBody); err != nil {
+		t.Fatalf("Failed to unmarshal response body to JSON: %s", err)
+	}
+
+	if responseBody.Token == "" {
+		t.Error("Response body did not contain a token")
+	}
+
+	if responseBody.RootLoc == 0 {
+		t.Error("Response body did not contain a root location ID")
+	}
+
+	//Check that the token was saved to the database.
+	var account handler.Account
+	result := db.Table("accounts").Where("username = ?", "testuser").First(&account)
+	assert.NoError(t, result.Error)
+	assert.NotEmpty(t, account.Token)
+
+}
+
+func TestLoginPost(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.LoginPost(db)
+	router := gin.Default()
+	router.POST("/login", Handler)
+
+	user := Account{
+		Username: "testuser",
+		Password: "password",
+		Token: "AB",
+		RootLoc: 0,
+	}
+	// Save the test user account and item to the database.
+	db.Create(&user)
+
+	// Add a recently deleted item with a timestamp less than 30 days ago.
+	newDeletedItem := RecentlyDeletedItem{
+		AccountID:           "testuser",
+		DeletedItemID:       2,
+		DeletedItemName:     "test item",
+		DeletedItemLocation: 1,
+		DeletedItemCount:    1,
+		Timestamp:           time.Now(),
+	}
+	if result := db.Table("recently_deleted_items").Create(&newDeletedItem); result.Error != nil {
+		t.Fatalf("failed to create recently deleted item: %v", result.Error)
+	}
+
+	// Call the API endpoint to trigger auto-delete.
+	reqBody := handler.LoginRequest{
+		Username: "testuser",
+		Password: "password",
+	}
+
+	expectedToken := ""
+	// expectedCode := http.StatusOK
+/*
+	testCase := struct {
+		name          string
+		requestBody   interface{}
+		expectedCode  int
+		expectedToken string
+	}{
+		name: "valid login",
+		requestBody: map[string]string{
+			"username": "testuser",
+			"password": "testpass",
+		},
+		expectedCode:  http.StatusOK,
+		expectedToken: "",
+	}*/
+
+	reqBodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf("failed to marshal request body: %v", err)
+	}
+	req, err := http.NewRequest("POST", "/login", bytes.NewBuffer(reqBodyBytes))
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code == http.StatusOK {
+		responseBody := struct {
+			Token string `json:"token"`
+		}{}
+		err = json.Unmarshal(w.Body.Bytes(), &responseBody)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.NotEmpty(t, responseBody.Token)
+		expectedToken = responseBody.Token
+	}
+
+	// Check that the token was saved to the database.
+	var account handler.Account
+	result := db.Table("accounts").Where("username = ?", "testuser").First(&account)
+	assert.NoError(t, result.Error)
+	assert.Equal(t, expectedToken, account.Token)
+
+}
+/////
 func TestDeleteDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
