@@ -34,6 +34,7 @@ import { ItemDialogComponent } from './inventory-page/item-dialog/item-dialog.co
 import { InvContainerComponent } from './inventory-page/inv-container/inv-container.component';
 import { SearchComponent } from './search/search.component';
 import { SearchItemComponent } from './search/search-item/search-item.component';
+import { RecountDialogComponent } from './container-card-page/recount-dialog/recount-dialog.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { SearchItemComponent } from './search/search-item/search-item.component'
     InvContainerComponent,
     SearchComponent,
     SearchItemComponent,
+    RecountDialogComponent,
   ],
   imports: [
     BrowserModule,

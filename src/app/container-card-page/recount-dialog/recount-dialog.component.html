@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Update Item Count</h1>
+<mat-dialog-content>
+  <form #form="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="New count"
+        name="count"
+        [(ngModel)]="data.count"
+        required
+      />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="cancelButton" (click)="cancel()">Cancel</button>
+  <span class="spacer"></span>
+  <button
+    mat-raised-button
+    color="primary"
+    class="recountButton"
+    [disabled]="!form.valid"
+    (click)="updateCount()"
+  >
+    Update
+  </button>
+</mat-dialog-actions>

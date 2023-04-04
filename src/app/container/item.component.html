@@ -2,6 +2,12 @@
   <mat-card-header>
     <mat-card-title class="containerName">{{ item.ItemName }}</mat-card-title>
     <span class="spacer"></span>
+    <button mat-icon-button (click)="incrementItem(index)">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-icon-button (click)="decrementItem(index)">
+      <mat-icon>horizontal_rule</mat-icon>
+    </button>
     <button
       mat-icon-button
       [matMenuTriggerFor]="menu"
@@ -13,6 +19,10 @@
       <button mat-menu-item (click)="renameItem(index)">
         <mat-icon>border_color</mat-icon>
         <span>Rename</span>
+      </button>
+      <button mat-menu-item (click)="updateCount(index)">
+        <mat-icon>numbers</mat-icon>
+        <span>Update Count</span>
       </button>
       <button mat-menu-item>
         <mat-icon>open_with</mat-icon>
@@ -26,6 +36,6 @@
   </mat-card-header>
   <mat-card-content>
     <br />
-    <p class="countAmount">Count: {{ item.Count }}</p>
+    <span class="countAmount">Count: {{ item.Count }}</span>
   </mat-card-content>
 </mat-card>

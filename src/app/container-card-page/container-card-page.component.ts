@@ -10,6 +10,7 @@ import { AuthService } from '../auth.service';
 import { Location } from '@angular/common';
 import { ItemDialogComponent } from '../inventory-page/item-dialog/item-dialog.component';
 import { NavigationEnd } from '@angular/router';
+import { RecountDialogComponent } from './recount-dialog/recount-dialog.component';
 
 interface Item {
   ItemID: number;
@@ -71,27 +72,17 @@ export class ContainerCardPageComponent implements OnInit {
     };
 
     this.http
-      .get<any>(`/api/inventory?container_id=${this.containerId}`, httpOptions)
+      .get<any>(`/api/containers?container_id=${this.containerId}`, httpOptions)
       .subscribe((response) => {
-        if (response != null) {
-          const result = response.reduce(
-            (acc: { containers: Container[]; items: Item[] }, item: any) => {
-              if (item.ParentID) {
-                acc.containers.push(item);
-              } else if (item.ItemID) {
-                acc.items.push(item);
-              }
-              return acc;
-            },
-            { containers: [], items: [] }
-          );
+        this.containers = response as Container[];
+        this.cdRef.detectChanges();
+      });
 
-          this.containers = result.containers;
-          this.items = result.items;
-        } else {
-          this.containers = [];
-          this.items = [];
-        }
+    this.http
+      .get<any>(`/api/items?container_id=${this.containerId}`, httpOptions)
+      .subscribe((response) => {
+        this.items = response as Item[];
+        this.cdRef.detectChanges();
       });
   }
 
@@ -106,6 +97,7 @@ export class ContainerCardPageComponent implements OnInit {
       ID: Math.floor(Math.random() * 100000) + 28,
       Type: 'Add',
       Cont: +this.containerId,
+      Count: -1,
     };
 
     const httpOptions = {
@@ -134,6 +126,7 @@ export class ContainerCardPageComponent implements OnInit {
       ID: Math.floor(Math.random() * 100000) + 28,
       Type: 'Add',
       Cont: +this.containerId,
+      Count: +count,
     };
 
     const httpOptions = {
@@ -202,7 +195,12 @@ export class ContainerCardPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.createItem(result.name, result.count);
+        // if user doesn't set a count, default is 1
+        if (result.count == undefined) {
+          this.createItem(result.name, 1);
+        } else {
+          this.createItem(result.name, result.count);
+        }
       }
     });
   }
@@ -415,5 +413,114 @@ export class ContainerCardPageComponent implements OnInit {
 
   onSubmit() {
     this.router.navigate(['/search'], { queryParams: { q: this.query } });
+  }
+
+  incrementItemCount(index: number) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + authToken
+    );
+
+    // Set the HTTP options with the headers
+    const options = {
+      headers: headers,
+    };
+
+    const newItem = {
+      Authorization: authToken,
+      name: this.items[index].ItemName,
+      type: 'Recount',
+      kind: 'Item',
+      ID: this.items[index].ItemID,
+      Cont: this.items[index].LocID,
+      Count: this.items[index].Count + 1,
+    };
+
+    this.http.put('/api/inventory', newItem, options).subscribe((response) => {
+      console.log(response);
+      this.getInventory();
+    });
+  }
+
+  decrementItemCount(index: number) {
+    // first check if decrementing will make count < 1, if so, decrementing deletes item
+    if (this.items[index].Count == 1) {
+      this.removeItem(index);
+      return;
+    }
+
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + authToken
+    );
+
+    // Set the HTTP options with the headers
+    const options = {
+      headers: headers,
+    };
+
+    const newItem = {
+      Authorization: authToken,
+      name: this.items[index].ItemName,
+      type: 'Recount',
+      kind: 'Item',
+      ID: this.items[index].ItemID,
+      Cont: this.items[index].LocID,
+      Count: this.items[index].Count - 1,
+    };
+
+    this.http.put('/api/inventory', newItem, options).subscribe((response) => {
+      console.log(response);
+      this.getInventory();
+    });
+  }
+
+  updateItemCount(index: number, newCount: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + authToken
+    );
+
+    // Set the HTTP options with the headers
+    const options = {
+      headers: headers,
+    };
+
+    const newItem = {
+      Authorization: authToken,
+      name: this.items[index].ItemName,
+      type: 'Recount',
+      kind: 'Item',
+      ID: this.items[index].ItemID,
+      Cont: this.items[index].LocID,
+      Count: parseInt(newCount),
+    };
+
+    this.http.put('/api/inventory', newItem, options).subscribe((response) => {
+      console.log(response);
+      this.getInventory();
+    });
+  }
+
+  openRecountDialog(index: number) {
+    const dialogRef = this.dialog.open(RecountDialogComponent, {
+      width: '300px',
+      data: { count: this.items[index].Count },
+    });
+
+    dialogRef.afterClosed().subscribe((newCount: string) => {
+      if (newCount) {
+        this.updateItemCount(index, newCount);
+      }
+    });
   }
 }
