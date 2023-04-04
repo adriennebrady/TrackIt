@@ -71,27 +71,17 @@ export class ContainerCardPageComponent implements OnInit {
     };
 
     this.http
-      .get<any>(`/api/inventory?container_id=${this.containerId}`, httpOptions)
+      .get<any>(`/api/containers?container_id=${this.containerId}`, httpOptions)
       .subscribe((response) => {
-        if (response != null) {
-          const result = response.reduce(
-            (acc: { containers: Container[]; items: Item[] }, item: any) => {
-              if (item.ParentID) {
-                acc.containers.push(item);
-              } else if (item.ItemID) {
-                acc.items.push(item);
-              }
-              return acc;
-            },
-            { containers: [], items: [] }
-          );
+        this.containers = response as Container[];
+        this.cdRef.detectChanges();
+      });
 
-          this.containers = result.containers;
-          this.items = result.items;
-        } else {
-          this.containers = [];
-          this.items = [];
-        }
+    this.http
+      .get<any>(`/api/items?container_id=${this.containerId}`, httpOptions)
+      .subscribe((response) => {
+        this.items = response as Item[];
+        this.cdRef.detectChanges();
       });
   }
 

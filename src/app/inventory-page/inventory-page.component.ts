@@ -55,11 +55,9 @@ export class InventoryPageComponent implements OnInit {
     };
 
     this.http
-      .get<any>('/api/inventory?container_id=' + rootLoc, httpOptions)
+      .get<any>('/api/containers?container_id=' + rootLoc, httpOptions)
       .subscribe((response) => {
-        this.containers = response.filter(
-          (item: any) => 'ParentID' in item
-        ) as Container[];
+        this.containers = response as Container[];
         this.cdRef.detectChanges();
         console.log(this.containers);
       });
