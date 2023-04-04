@@ -2,6 +2,9 @@
   <mat-card-header>
     <mat-card-title class="containerName">{{ item.ItemName }}</mat-card-title>
     <span class="spacer"></span>
+    <button mat-icon-button (click)="incrementItem(index)">
+      <mat-icon>add</mat-icon>
+    </button>
     <button
       mat-icon-button
       [matMenuTriggerFor]="menu"
@@ -26,6 +29,6 @@
   </mat-card-header>
   <mat-card-content>
     <br />
-    <p class="countAmount">Count: {{ item.Count }}</p>
+    <span class="countAmount">Count: {{ item.Count }}</span>
   </mat-card-content>
 </mat-card>

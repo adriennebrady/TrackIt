@@ -34,4 +34,6 @@ export class ItemComponent {
   renameItem(index: number) {
     this.ContainerCardPage.openRenameDialog(index, 'item');
   }
+
+  incrementItem(index: number) {}
 }

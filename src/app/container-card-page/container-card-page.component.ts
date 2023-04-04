@@ -96,6 +96,7 @@ export class ContainerCardPageComponent implements OnInit {
       ID: Math.floor(Math.random() * 100000) + 28,
       Type: 'Add',
       Cont: +this.containerId,
+      Count: -1,
     };
 
     const httpOptions = {
@@ -124,6 +125,7 @@ export class ContainerCardPageComponent implements OnInit {
       ID: Math.floor(Math.random() * 100000) + 28,
       Type: 'Add',
       Cont: +this.containerId,
+      Count: +count,
     };
 
     const httpOptions = {
@@ -192,7 +194,12 @@ export class ContainerCardPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.createItem(result.name, result.count);
+        // if user doesn't set a count, default is 1
+        if (result.count == undefined) {
+          this.createItem(result.name, 1);
+        } else {
+          this.createItem(result.name, result.count);
+        }
       }
     });
   }
