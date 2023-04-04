@@ -10,6 +10,7 @@ import { AuthService } from '../auth.service';
 import { Location } from '@angular/common';
 import { ItemDialogComponent } from '../inventory-page/item-dialog/item-dialog.component';
 import { NavigationEnd } from '@angular/router';
+import { RecountDialogComponent } from './recount-dialog/recount-dialog.component';
 
 interface Item {
   ItemID: number;
@@ -477,6 +478,49 @@ export class ContainerCardPageComponent implements OnInit {
     this.http.put('/api/inventory', newItem, options).subscribe((response) => {
       console.log(response);
       this.getInventory();
+    });
+  }
+
+  updateItemCount(index: number, newCount: string) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + authToken
+    );
+
+    // Set the HTTP options with the headers
+    const options = {
+      headers: headers,
+    };
+
+    const newItem = {
+      Authorization: authToken,
+      name: this.items[index].ItemName,
+      type: 'Recount',
+      kind: 'Item',
+      ID: this.items[index].ItemID,
+      Cont: this.items[index].LocID,
+      Count: parseInt(newCount),
+    };
+
+    this.http.put('/api/inventory', newItem, options).subscribe((response) => {
+      console.log(response);
+      this.getInventory();
+    });
+  }
+
+  openRecountDialog(index: number) {
+    const dialogRef = this.dialog.open(RecountDialogComponent, {
+      width: '300px',
+      data: { count: this.items[index].Count },
+    });
+
+    dialogRef.afterClosed().subscribe((newCount: string) => {
+      if (newCount) {
+        this.updateItemCount(index, newCount);
+      }
     });
   }
 }

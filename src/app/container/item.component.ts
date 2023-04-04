@@ -42,4 +42,8 @@ export class ItemComponent {
   decrementItem(index: number) {
     this.ContainerCardPage.decrementItemCount(index);
   }
+
+  updateCount(index: number) {
+    this.ContainerCardPage.openRecountDialog(index);
+  }
 }
