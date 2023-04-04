@@ -413,4 +413,70 @@ export class ContainerCardPageComponent implements OnInit {
   onSubmit() {
     this.router.navigate(['/search'], { queryParams: { q: this.query } });
   }
+
+  incrementItemCount(index: number) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + authToken
+    );
+
+    // Set the HTTP options with the headers
+    const options = {
+      headers: headers,
+    };
+
+    const newItem = {
+      Authorization: authToken,
+      name: this.items[index].ItemName,
+      type: 'Recount',
+      kind: 'Item',
+      ID: this.items[index].ItemID,
+      Cont: this.items[index].LocID,
+      Count: this.items[index].Count + 1,
+    };
+
+    this.http.put('/api/inventory', newItem, options).subscribe((response) => {
+      console.log(response);
+      this.getInventory();
+    });
+  }
+
+  decrementItemCount(index: number) {
+    // first check if decrementing will make count < 1, if so, decrementing deletes item
+    if (this.items[index].Count == 1) {
+      this.removeItem(index);
+      return;
+    }
+
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + authToken
+    );
+
+    // Set the HTTP options with the headers
+    const options = {
+      headers: headers,
+    };
+
+    const newItem = {
+      Authorization: authToken,
+      name: this.items[index].ItemName,
+      type: 'Recount',
+      kind: 'Item',
+      ID: this.items[index].ItemID,
+      Cont: this.items[index].LocID,
+      Count: this.items[index].Count - 1,
+    };
+
+    this.http.put('/api/inventory', newItem, options).subscribe((response) => {
+      console.log(response);
+      this.getInventory();
+    });
+  }
 }

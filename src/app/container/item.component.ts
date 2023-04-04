@@ -35,5 +35,11 @@ export class ItemComponent {
     this.ContainerCardPage.openRenameDialog(index, 'item');
   }
 
-  incrementItem(index: number) {}
+  incrementItem(index: number) {
+    this.ContainerCardPage.incrementItemCount(index);
+  }
+
+  decrementItem(index: number) {
+    this.ContainerCardPage.decrementItemCount(index);
+  }
 }
