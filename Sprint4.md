@@ -20,6 +20,8 @@
   *  Fixed manual deletion of recently deleted items
   *  Fixed unit test for manual deletion of recently deleted items
   *  Changed recently deleted to include 'location' and 'Count' to help when restoring a recently deleted item
+  *  Edited RegisterPost to check if container is empty
+  *  Created Unit test for registerPost
 * Israel Solano
   *  Created manual deletion of recently deleted items
   *  Created Unit test for manual deletion of recently deleted items
