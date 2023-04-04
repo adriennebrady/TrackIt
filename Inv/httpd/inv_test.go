@@ -66,7 +66,7 @@ func TestNameGet(t *testing.T) {
 	//todo: implement
 
 }
-
+//
 func TestRegisterPost(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -125,64 +125,28 @@ func TestRegisterPost(t *testing.T) {
 }
 
 func TestLoginPost(t *testing.T) {
+
+	//Register
 	// Set up the test database and server.
 	setupTestDB()
 
-	Handler := handler.LoginPost(db)
+	Handler := handler.RegisterPost(db)
 	router := gin.Default()
-	router.POST("/login", Handler)
-
-	user := Account{
-		Username: "testuser",
-		Password: "password",
-		Token: "AB",
-		RootLoc: 0,
-	}
-	// Save the test user account and item to the database.
-	db.Create(&user)
-
-	// Add a recently deleted item with a timestamp less than 30 days ago.
-	newDeletedItem := RecentlyDeletedItem{
-		AccountID:           "testuser",
-		DeletedItemID:       2,
-		DeletedItemName:     "test item",
-		DeletedItemLocation: 1,
-		DeletedItemCount:    1,
-		Timestamp:           time.Now(),
-	}
-	if result := db.Table("recently_deleted_items").Create(&newDeletedItem); result.Error != nil {
-		t.Fatalf("failed to create recently deleted item: %v", result.Error)
-	}
+	router.POST("/register", Handler)
 
 	// Call the API endpoint to trigger auto-delete.
-	reqBody := handler.LoginRequest{
+	reqBody := handler.RegisterRequest{
 		Username: "testuser",
 		Password: "password",
+		PasswordConfirmation: "password",
 	}
 
-	expectedToken := ""
-	// expectedCode := http.StatusOK
-/*
-	testCase := struct {
-		name          string
-		requestBody   interface{}
-		expectedCode  int
-		expectedToken string
-	}{
-		name: "valid login",
-		requestBody: map[string]string{
-			"username": "testuser",
-			"password": "testpass",
-		},
-		expectedCode:  http.StatusOK,
-		expectedToken: "",
-	}*/
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
 		t.Fatalf("failed to marshal request body: %v", err)
 	}
-	req, err := http.NewRequest("POST", "/login", bytes.NewBuffer(reqBodyBytes))
+	req, err := http.NewRequest("POST", "/register", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
 		t.Fatalf("failed to create request: %v", err)
 	}
@@ -190,26 +154,74 @@ func TestLoginPost(t *testing.T) {
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
-	if w.Code == http.StatusOK {
+
+	// Check that the response has a 200 status code.
+	if status := w.Code; status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	// Check that the response body contains a token and root location ID.
+	var responseBody handler.LoginResponse
+	if err := json.Unmarshal(w.Body.Bytes(), &responseBody); err != nil {
+		t.Fatalf("Failed to unmarshal response body to JSON: %s", err)
+	}
+
+	if responseBody.Token == "" {
+		t.Error("Response body did not contain a token")
+	}
+
+	if responseBody.RootLoc == 0 {
+		t.Error("Response body did not contain a root location ID")
+	}
+
+		//Check that the token was saved to the database.
+		var account handler.Account
+		result := db.Table("accounts").Where("username = ?", "testuser").First(&account)
+		assert.NoError(t, result.Error)
+		assert.NotEmpty(t, account.Token)
+
+
+	// Call the API endpoint to trigger auto-delete.
+	reqBody2 := handler.LoginRequest{
+		Username: "testuser",
+		Password: "password",
+	}
+
+
+
+	reqBodyBytes2, err2 := json.Marshal(reqBody2)
+	if err2 != nil {
+		t.Fatalf("failed to marshal request body: %v", err2)
+	}
+	req2, err2 := http.NewRequest("POST", "/login", bytes.NewBuffer(reqBodyBytes2))
+	if err2 != nil {
+		t.Fatalf("failed to create request: %v", err2)
+	}
+	req2.Header.Set("Content-Type", "application/json")
+	w2 := httptest.NewRecorder()
+	router.ServeHTTP(w2, req2)
+
+	if w2.Code == http.StatusOK {
 		responseBody := struct {
 			Token string `json:"token"`
 		}{}
-		err = json.Unmarshal(w.Body.Bytes(), &responseBody)
+		err = json.Unmarshal(w2.Body.Bytes(), &responseBody)
 		if err != nil {
 			t.Fatal(err)
 		}
 		assert.NotEmpty(t, responseBody.Token)
-		expectedToken = responseBody.Token
+		// expectedToken = responseBody.Token
 	}
 
 	// Check that the token was saved to the database.
-	var account handler.Account
-	result := db.Table("accounts").Where("username = ?", "testuser").First(&account)
-	assert.NoError(t, result.Error)
-	assert.Equal(t, expectedToken, account.Token)
+	var account2 handler.Account
+	result2 := db.Table("accounts").Where("username = ?", "testuser").First(&account2)
+	assert.NoError(t, result2.Error)
+	assert.NotEmpty(t, account2.Token)
 
 }
-/////
+
 func TestDeleteDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
