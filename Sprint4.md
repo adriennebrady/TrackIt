@@ -4,7 +4,12 @@
 
 ### Front-End
 * Adrienne Brady
-  * (List here)
+  * Added new functionality to allow user to update the item count with a pop-up dialog
+  * Added new functionality & increment/decrement buttons to allow user to quickly increase/decrease an item's count by 1
+  * Updated item component to now display actual item count
+  * Updated item HTTP POST request to send "1" as the default item count if user doesn't input a value
+  * Fixed container and item GET requests to account for new container and item GET handlers in the backend
+
 * Sara Winner
   * (List here)
 
