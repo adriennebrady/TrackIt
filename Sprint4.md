@@ -11,7 +11,7 @@
   * Fixed container and item GET requests to account for new container and item GET handlers in the backend
 
 * Sara Winner
-  * (List here)
+  * Remove instances of description from container and item
 
 ### Back-End
 * Tana Desir
