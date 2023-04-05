@@ -48,7 +48,7 @@ describe('ContainerComponent', () => {
     component = fixture.componentInstance;
     inventoryPage = TestBed.inject(InventoryPageComponent);
     const containerName = 'Test Container';
-    const containerDescription = 'This is a test container';
+    // const containerDescription = 'This is a test container';
     const containerID = -1;
     const parentID = -1;
     
