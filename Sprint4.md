@@ -11,7 +11,9 @@
   * Fixed container and item GET requests to account for new container and item GET handlers in the backend
 
 * Sara Winner
-  * Remove instances of description from container and item
+  * Remove description from containers
+  * Remove description field from pop-up dialog
+  * Update existing Cypress tests to succeed without container description 
 
 ### Back-End
 * Tana Desir
