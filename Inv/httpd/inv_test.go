@@ -18,6 +18,56 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
+func TestAccountDelete(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.RegisterPost(db)
+	router := gin.Default()
+	router.POST("/account", Handler)
+
+	// Seed the database with a test user.
+	testUser := Account{
+		Username: "testuser",
+		Password: handler.HashAndSalt([]byte("password")),
+	}
+	db.Table("accounts").Create(&testUser)
+
+	// Call the API endpoint to trigger auto-delete.
+	reqBody := handler.RegisterRequest{
+		Username: "testuser",
+		Password: "password",
+		PasswordConfirmation: "password",
+	}
+
+
+	reqBodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf("failed to marshal request body: %v", err)
+	}
+	req, err := http.NewRequest("DELETE", "/account", bytes.NewBuffer(reqBodyBytes))
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.DELETE("/account", handler.AccountDelete(db))
+	router.ServeHTTP(w, req)
+
+
+	// Check that the response has a 200 status code.
+	if status := w.Code; status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	// Check that the test user was deleted from the database.
+	var deletedUser Account
+	if result := db.Table("accounts").Where("username = ?", "test_user").First(&deletedUser); result.Error == nil {
+		t.Errorf("Expected user to be deleted from the database but found user: %v", deletedUser)
+	}
+
+}
 
 func TestItemsGet(t *testing.T) {
 	setupTestDB()
@@ -34,20 +84,7 @@ func TestDeleteGet(t *testing.T) {
 	//todo:implement
 
 }
-func TestInventoryDelete(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
 func TestInventoryPut(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-
-func TestAccountDelete(t *testing.T) {
 	setupTestDB()
 
 	//todo: implement
@@ -66,7 +103,108 @@ func TestNameGet(t *testing.T) {
 	//todo: implement
 
 }
+
 //////////////////////* GOOD *////////////////////////////////
+func TestInventoryDelete(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.InventoryDelete(db)
+	router := gin.Default()
+	router.DELETE("/inventory", Handler)
+
+	//Create container
+	cont := Container{
+		LocID:	1,    
+		Name:    "testcont",
+		ParentID: 0 , 
+		User:     "testuser",
+	}
+
+	if result := db.Table("containers").Create(&cont); result.Error != nil {
+		t.Fatalf("failed to create recently deleted item: %v", result.Error)
+	}
+
+	cont2 := Container{
+		LocID:	2,    
+		Name:    "testcont2",
+		ParentID: 0 , 
+		User:     "testuser",
+	}
+
+	if result := db.Table("containers").Create(&cont2); result.Error != nil {
+		t.Fatalf("failed to create recently deleted item: %v", result.Error)
+	}
+
+	// Add a recently deleted item with a timestamp more than 30 days ago.
+	oldItem := Item{
+		ItemID:           1,
+		User :       "testuser",
+		ItemName:     "old test item",
+		LocID: 1,
+		Count:    1,
+	}
+
+	if result := db.Table("items").Create(&oldItem); result.Error != nil {
+		t.Fatalf("failed to create item: %v", result.Error)
+	}
+
+
+	newItem := Item{
+		ItemID:           2,
+		User :       "testuser",
+		ItemName:     "new test item",
+		LocID: 2,
+		Count:    2,
+	}
+
+	if result := db.Table("items").Create(&newItem); result.Error != nil {
+		t.Fatalf("failed to create item: %v", result.Error)
+	}
+
+
+
+	// Call the API endpoint to trigger auto-delete.
+	reqBody := handler.DeleteRequest{
+		Token: "testtoken",
+		ID:    2,
+		Type:  "container",
+	}
+
+	reqBodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf("failed to marshal request body: %v", err)
+	}
+	req, err := http.NewRequest("POST", "/delete", bytes.NewBuffer(reqBodyBytes))
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	// Verify that the new  item and container still exists.
+	var deletedItem handler.Item
+	if result := db.Table("items").First(&deletedItem, oldItem.ItemID); result.Error != nil {
+		t.Fatalf("failed to find recently deleted item: %v", result.Error)
+	}
+
+	var deletedCont handler.Container
+	if result := db.Table("containers").First(&deletedCont, cont.LocID); result.Error != nil {
+		t.Fatalf("failed to find recently deleted item: %v", result.Error)
+	}
+
+	// Verify that the new  item and container was deleted.
+	if result := db.Table("items").First(&deletedItem, newItem.ItemID); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		t.Errorf("expected recently deleted item to be deleted, but found: %v", deletedItem)
+	}
+
+	if result := db.Table("containers").First(&deletedCont, cont2.LocID); result.Error == nil {
+		t.Fatalf("failed to find recently deleted item: %v", result.Error)
+	}
+
+}
+
 func TestRegisterPost(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -182,6 +320,7 @@ func TestLoginPost(t *testing.T) {
 		assert.NotEmpty(t, account.Token)
 
 
+	// LOGIN
 	// Call the API endpoint to trigger auto-delete.
 	reqBody2 := handler.LoginRequest{
 		Username: "testuser",
