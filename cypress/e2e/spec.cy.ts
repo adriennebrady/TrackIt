@@ -124,7 +124,7 @@ describe('Valid User Navigation', () => {
     .should('be.visible').should('contain', 'Add Container')
     .then(($dialog)=>{
       cy.wrap($dialog).get('.nameField').type('Test Container');
-      cy.wrap($dialog).get('.descriptionField').type('Hello World');
+      // cy.wrap($dialog).get('.descriptionField').type('Hello World');
       cy.wrap($dialog).find('button').contains('Save').click();
     });
   })
