@@ -28,8 +28,7 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		containerIDStr := c.Query("Container_id")
-		containerID, err := strconv.Atoi(containerIDStr)
+		containerID, err := strconv.Atoi(c.Query("container_id"))
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid container ID"})
 			return
