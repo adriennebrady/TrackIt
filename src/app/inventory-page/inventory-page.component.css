@@ -15,6 +15,10 @@
   font-weight: bold;
 }
 
+mat-sidenav {
+  padding-right: 5%;
+}
+
 .inventoryHeading {
   text-align: center;
   padding-top: 5%;

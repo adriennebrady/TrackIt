@@ -137,9 +137,8 @@ export class InventoryPageComponent implements OnInit {
     this.http.delete('/api/inventory', httpOptions).subscribe((response) => {
       console.log(response);
       this.containers.splice(index, 1);
+      this.getInventory();
     });
-
-    this.getInventory();
   }
 
   openConfirmDialog(index: number) {

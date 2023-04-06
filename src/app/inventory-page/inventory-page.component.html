@@ -13,44 +13,55 @@
       My Inventory
     </button>
   </mat-toolbar>
-
-  <div class="inventoryHeading">
-    <h1>Your Inventory</h1>
-    <p>Click a container to view items or create a new container.</p>
-  </div>
-
-  <div class="actionField">
-    <button
-      class="newContainerButton"
-      mat-flat-button
-      color="primary"
-      (click)="openDialog()"
-    >
-      Create new container
+  <div class="container">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
     </button>
-    <form (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input
-          type="search"
-          matInput
-          placeholder="Ex. iPhone Charger"
-          name="q"
-          [(ngModel)]="query"
-          class="searchItemInput"
-        />
-      </mat-form-field>
-    </form>
-  </div>
+    <mat-sidenav-container autosize>
+      <mat-sidenav #sidenav mode="side">
+        <app-sidebar-nav></app-sidebar-nav>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <div class="inventoryHeading">
+          <h1>Your Inventory</h1>
+          <p>Click a container to view items or create a new container.</p>
+        </div>
 
-  <div class="inventoryGrid">
-    <mat-grid-list cols="4" rowHeight="1:1">
-      <mat-grid-tile *ngFor="let container of containers; index as i">
-        <app-inv-container
-          [container]="container"
-          [index]="i"
-        ></app-inv-container>
-      </mat-grid-tile>
-    </mat-grid-list>
+        <div class="actionField">
+          <button
+            class="newContainerButton"
+            mat-flat-button
+            color="primary"
+            (click)="openDialog()"
+          >
+            Create new container
+          </button>
+          <form (ngSubmit)="onSubmit()">
+            <mat-form-field>
+              <mat-label>Search</mat-label>
+              <input
+                type="search"
+                matInput
+                placeholder="Ex. iPhone Charger"
+                name="q"
+                [(ngModel)]="query"
+                class="searchItemInput"
+              />
+            </mat-form-field>
+          </form>
+        </div>
+
+        <div class="inventoryGrid">
+          <mat-grid-list cols="4" rowHeight="1:1">
+            <mat-grid-tile *ngFor="let container of containers; index as i">
+              <app-inv-container
+                [container]="container"
+                [index]="i"
+              ></app-inv-container>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   </div>
 </body>

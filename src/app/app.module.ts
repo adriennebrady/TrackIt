@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -35,6 +37,7 @@ import { InvContainerComponent } from './inventory-page/inv-container/inv-contai
 import { SearchComponent } from './search/search.component';
 import { SearchItemComponent } from './search/search-item/search-item.component';
 import { RecountDialogComponent } from './container-card-page/recount-dialog/recount-dialog.component';
+import { SidebarNavComponent } from './sidebar-nav/sidebar-nav.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +58,7 @@ import { RecountDialogComponent } from './container-card-page/recount-dialog/rec
     SearchComponent,
     SearchItemComponent,
     RecountDialogComponent,
+    SidebarNavComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,6 +76,8 @@ import { RecountDialogComponent } from './container-card-page/recount-dialog/rec
     MatDialogModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MatTreeModule,
+    MatSidenavModule,
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
