@@ -8,11 +8,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type GetRequest struct {
-	Authorization string `json:"Authorization"`
-	Container_id  int    `json:"Container_id"`
-}
-
 func NameGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
