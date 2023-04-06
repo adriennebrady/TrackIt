@@ -23,9 +23,15 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		containerID, err := strconv.Atoi(c.Query("container_id"))
+		containerIDStr := c.Query("Container_id")
+		if containerIDStr == "" {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Missing container ID"})
+			return
+		}
+
+		containerID, err := strconv.Atoi(containerIDStr)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid container ID"})
+			c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"error": "Invalid container ID"})
 			return
 		}
 
@@ -42,7 +48,7 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 		// Traverse the parent containers until ParentID equals 1.
 		for container.ParentID != 0 {
 			if result := db.Table("Containers").Where("ParentID = ? AND username = ?", container.ParentID, username).First(&container); result.Error != nil {
-				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get container"})
+				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Failed to get container"})
 				return
 			}
 			names = container.Name + "/" + names
