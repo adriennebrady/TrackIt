@@ -60,7 +60,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		var maxLocID int64
 		mpty := false
 		var cont Container
-		if result := DB.Table("items").Where("container_id = ?", cont.LocID).Count(&maxLocID); result.Error != nil {
+		if result := DB.Table("items").Where("LocID = ?", cont.LocID).Count(&maxLocID); result.Error != nil {
 			// Handle error
 			mpty = true
 			maxLocID = 0;
