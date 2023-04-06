@@ -61,6 +61,10 @@ func main() {
 
 	r := gin.Default()
 	api := r.Group("/api")
+
+	// Set trusted proxies
+	r.ForwardedByClientIP = true // Set the trusted proxy
+	r.SetTrustedProxies([]string{"127.0.0.1"})
 	{
 		api.GET("/ping", handler.PingGet())
 		api.GET("/name", handler.NameGet(db))
