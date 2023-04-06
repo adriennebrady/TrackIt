@@ -9,6 +9,9 @@
   * Updated item component to now display actual item count
   * Updated item HTTP POST request to send "1" as the default item count if user doesn't input a value
   * Fixed container and item GET requests to account for new container and item GET handlers in the backend
+  * Created new sidebar navigation tree component w/buttons to directly navigate to any container card page
+  * Added new sidebar functionality on the inventory page with a toggle button to hide/display the navigation tree
+
 
 * Sara Winner
   * Remove description from containers
