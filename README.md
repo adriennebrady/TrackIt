@@ -1,4 +1,5 @@
 # CEN3031 Project
+<img src="https://github.com/evaeia/TrackIt/blob/main/logo.png?raw=true" alt="Your image title" width="250"/>
 
 ## Project Name: TrackIt
 
