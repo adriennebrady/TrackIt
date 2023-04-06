@@ -44,16 +44,16 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 
 		// Add the name of the current container to the response.
 		names := container.Name
-
-		// Traverse the parent containers until ParentID equals 1.
-		for container.ParentID != 0 {
-			if result := db.Table("Containers").Where("ParentID = ? AND username = ?", container.ParentID, username).First(&container); result.Error != nil {
-				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Failed to get container"})
-				return
+		/*
+			// Traverse the parent containers until ParentID equals 1.
+			for container.ParentID != 0 {
+				if result := db.Table("Containers").Where("ParentID = ? AND username = ?", container.ParentID, username).First(&container); result.Error != nil {
+					c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Failed to get container"})
+					return
+				}
+				names = container.Name + "/" + names
 			}
-			names = container.Name + "/" + names
-		}
-
+		*/
 		c.JSON(http.StatusOK, names)
 	}
 }
