@@ -3,11 +3,11 @@ package main
 import (
 	"Trackit/Inv/httpd/handler"
 	"time"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
-
 )
 
 type Account struct { //gorm.Model?
@@ -34,7 +34,7 @@ type Container struct {
 
 // recently delete
 type RecentlyDeletedItem struct {
-	AccountID           string 
+	AccountID           string
 	DeletedItemID       int    `gorm:"primaryKey"`
 	DeletedItemName     string `gorm:"column:itemName"`
 	DeletedItemLocation int    `gorm:"column:LocID"`
@@ -55,7 +55,6 @@ func InitializeDB() {
 	db.AutoMigrate(&Container{}) // create the recently deleted items table
 	db.AutoMigrate(&RecentlyDeletedItem{})
 }
-
 
 func main() {
 	InitializeDB()
@@ -79,7 +78,7 @@ func main() {
 		api.DELETE("/deleted", handler.DeleteDelete(db))
 	}
 
-	r.Run()
+	r.Run(":8080")
 }
 
 //https://www.youtube.com/watch?v=pHRHJCYBqxw possible problem
