@@ -47,7 +47,7 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 
 		// Traverse the parent containers until ParentID equals 1.
 		for container.ParentID != 0 {
-			if result := db.Table("Containers").Where("LocID = ? AND username = ?", container.ParentID, username).First(&container); result.Error != nil {
+			if result := db.Table("Containers").Where("ParentID = ? AND username = ?", container.ParentID, username).First(&container); result.Error != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get container"})
 				return
 			}
