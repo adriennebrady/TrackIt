@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   MatTreeFlatDataSource,
@@ -12,6 +12,12 @@ interface Container {
   Name: string;
   ParentID: number;
   User: string;
+}
+
+interface invContainer {
+  LocID: number;
+  Name: string;
+  ParentID: number;
 }
 
 interface ContainerTree {
@@ -31,7 +37,9 @@ interface ContainerFlatNode {
   templateUrl: './sidebar-nav.component.html',
   styleUrls: ['./sidebar-nav.component.css'],
 })
-export class SidebarNavComponent {
+export class SidebarNavComponent implements OnChanges {
+  @Input() invContainers: invContainer[] = [];
+
   private _transformer = (node: ContainerTree, level: number) => {
     return {
       expandable: node.Children && node.Children.length > 0,
@@ -54,7 +62,13 @@ export class SidebarNavComponent {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
+
+  ngOnChanges() {
+    this.updateTree();
+  }
+
+  updateTree() {
     this.getContainerTree().subscribe((data) => {
       this.dataSource.data = data.Children;
     });
