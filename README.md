@@ -9,8 +9,6 @@ Personal inventory tracker that allows users to create virtual furniture, like a
    
 Users will be able to put tags on an item, which allow groups of items to appear when searched. For example, tagging all dairy items in a fridge with the tag "dairy" allows a search for dairy to return all these items together. Or, if the user calls an item "power cable", but forgets and searches for a "power cord", tagging the item with "power" "cord" "cable" "charging" allows for the item to come up with a search containing the tag instead.   
 
-When an item is created, there will be an option for the user to add descriptors to the item. For example, furniture pieces could have descriptors that identify the location of the element within the house, the color, or the size. When searching, the user will be able to list all items per room, furniture piece, or all items in the house.
-
 ## Members:
 **Front End**: Adrienne Brady  
 **Front End**: Sara Winner  
