@@ -26,7 +26,6 @@ type RegisterRequest struct {
 	PasswordConfirmation string `json:"password_confirmation"`
 }
 
-
 func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Parse the request body.
@@ -56,23 +55,10 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 			Token:    GenerateToken(),
 		}
 
-		//check if container is empty
-		var maxLocID int64
-		mpty := false
-		var cont Container
-		if result := DB.Table("items").Where("LocID = ?", cont.LocID).Count(&maxLocID); result.Error != nil {
-			// Handle error
-			mpty = true
-			maxLocID = 0;
-		}
-
-		// Create a new container object with a unique LocID.
-		if mpty == false {
-			err := DB.Table("containers").Select("MAX(LocID)").Row().Scan(&maxLocID)
-			if err != nil {
-				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get max LocID"})
-				return
-			}
+		var maxLocID int
+		if maxLocID = getMaxLocID(DB); maxLocID == -1 {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get max location ID"})
+			return
 		}
 
 		newContainer := Container{
@@ -129,4 +115,26 @@ func HashAndSalt(password []byte) string {
 	}
 	// Convert the hash to a string and return it
 	return string(hash)
+}
+
+func getMaxLocID(DB *gorm.DB) int {
+
+	//check if container is empty
+	var maxLocID int64
+	empty := false
+	var cont Container
+	if result := DB.Table("items").Where("LocID = ?", cont.LocID).Count(&maxLocID); result.Error != nil {
+		// Handle error
+		empty = true
+		maxLocID = 0
+	}
+
+	// Create a new container object with a unique LocID.
+	if !empty {
+		err := DB.Table("containers").Select("MAX(LocID)").Row().Scan(&maxLocID)
+		if err != nil {
+			return -1
+		}
+	}
+	return int(maxLocID)
 }
