@@ -45,7 +45,7 @@ export class SearchItemComponent implements OnInit {
     this.http
       .get<string>(`/api/name?Container_id=${this.item.LocID}`, httpOptions)
       .subscribe((response) => {
-        this.locationName = response;
+        this.locationName = response.replace('container/', '');
       });
   }
 }
