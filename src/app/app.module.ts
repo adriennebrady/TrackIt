@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,6 +39,7 @@ import { SearchComponent } from './search/search.component';
 import { SearchItemComponent } from './search/search-item/search-item.component';
 import { RecountDialogComponent } from './container-card-page/recount-dialog/recount-dialog.component';
 import { SidebarNavComponent } from './sidebar-nav/sidebar-nav.component';
+import { RecentlyDeletedComponent } from './recently-deleted/recently-deleted.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import { SidebarNavComponent } from './sidebar-nav/sidebar-nav.component';
     SearchItemComponent,
     RecountDialogComponent,
     SidebarNavComponent,
+    RecentlyDeletedComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +81,7 @@ import { SidebarNavComponent } from './sidebar-nav/sidebar-nav.component';
     ReactiveFormsModule,
     MatTreeModule,
     MatSidenavModule,
+    MatTooltipModule,
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
