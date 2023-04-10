@@ -380,8 +380,8 @@ func TestDeleteDelete(t *testing.T) {
 
 	// Add a recently deleted item with a timestamp less than 30 days ago.
 	newDeletedItem := RecentlyDeletedItem{
+		ItemID:       		 2,
 		AccountID:           "testuser",
-		DeletedItemID:       2,
 		DeletedItemName:     "test item",
 		DeletedItemLocation: 1,
 		DeletedItemCount:    1,
@@ -414,7 +414,7 @@ func TestDeleteDelete(t *testing.T) {
 	// Verify that the recently deleted item with a timestamp less than 30 days ago still exists.
 	var deletedItem handler.RecentlyDeletedItem
 	// Verify that the recently deleted item with a timestamp more than 30 days ago was deleted.
-	if result := db.Table("recently_deleted_items").First(&deletedItem, newDeletedItem.DeletedItemID); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+	if result := db.Table("recently_deleted_items").First(&deletedItem, newDeletedItem.ItemID); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		t.Errorf("expected recently deleted item to be deleted, but found: %v", deletedItem)
 	}
 }
@@ -429,8 +429,8 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 
 	// Add a recently deleted item with a timestamp more than 30 days ago.
 	oldDeletedItem := RecentlyDeletedItem{
+		ItemID:       		 1,
 		AccountID:           "testuser",
-		DeletedItemID:       1,
 		DeletedItemName:     "test item",
 		DeletedItemLocation: 1,
 		DeletedItemCount:    1,
@@ -443,8 +443,8 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 
 	// Add a recently deleted item with a timestamp less than 30 days ago.
 	newDeletedItem := RecentlyDeletedItem{
+		ItemID:       		2,
 		AccountID:           "testuser",
-		DeletedItemID:       2,
 		DeletedItemName:     "test item",
 		DeletedItemLocation: 1,
 		DeletedItemCount:    1,
@@ -474,12 +474,12 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 
 	// Verify that the recently deleted item with a timestamp less than 30 days ago still exists.
 	var deletedItem handler.RecentlyDeletedItem
-	if result := db.Table("recently_deleted_items").First(&deletedItem, newDeletedItem.DeletedItemID); result.Error != nil {
+	if result := db.Table("recently_deleted_items").First(&deletedItem, newDeletedItem.ItemID); result.Error != nil {
 		t.Fatalf("failed to find recently deleted item: %v", result.Error)
 	}
 
 	// Verify that the recently deleted item with a timestamp more than 30 days ago was deleted.
-	if result := db.Table("recently_deleted_items").First(&deletedItem, oldDeletedItem.DeletedItemID); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+	if result := db.Table("recently_deleted_items").First(&deletedItem, oldDeletedItem.ItemID); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		t.Errorf("expected recently deleted item to be deleted, but found: %v", deletedItem)
 	}
 }
