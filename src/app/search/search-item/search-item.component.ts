@@ -45,6 +45,10 @@ export class SearchItemComponent implements OnInit {
     this.http
       .get<string>(`/api/name?Container_id=${this.item.LocID}`, httpOptions)
       .subscribe((response) => {
+        let arr;
+        arr = response.split('/');
+        arr.shift();
+        response = arr.join('/');
         this.locationName = response;
       });
   }

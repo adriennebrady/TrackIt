@@ -12,69 +12,95 @@
     >
       My Inventory
     </button>
-  </mat-toolbar>
-
-  <div class="backNav">
     <button
-      mat-stroked-button
-      color="basic"
-      class="backButton"
-      (click)="backClicked()"
+      mat-icon-button
+      [routerLink]="['/recentlyDeleted']"
+      matTooltip="Recently deleted items"
     >
-      <mat-icon
-        aria-hidden="false"
-        aria-label="Back"
-        fontIcon="keyboard_arrow_left"
-      ></mat-icon>
-      Back
+      <mat-icon>restore_from_trash</mat-icon>
     </button>
-  </div>
+  </mat-toolbar>
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-sidenav-container autosize>
+    <mat-sidenav #sidenav mode="side">
+      <app-sidebar-nav [invContainers]="containers"></app-sidebar-nav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="backNav">
+        <button
+          mat-stroked-button
+          color="basic"
+          class="backButton"
+          (click)="backClicked()"
+        >
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Back"
+            fontIcon="keyboard_arrow_left"
+          ></mat-icon>
+          Back
+        </button>
+      </div>
 
-  <div class="heading">
-    <h1>
-      {{ containerName }}
-      <mat-icon
-        aria-hidden="false"
-        aria-label="Edit"
-        fontIcon="edit"
-        (click)="renameTopContainerDialog()"
-        class="renameIcon"
-      ></mat-icon>
-    </h1>
-  </div>
+      <div class="heading">
+        <h1>
+          {{ containerName }}
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Edit"
+            fontIcon="edit"
+            (click)="renameTopContainerDialog()"
+            class="renameIcon"
+          ></mat-icon>
+        </h1>
+      </div>
 
-  <div class="actionField">
-    <form (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <mat-label>Search item</mat-label>
-        <input
-          type="search"
-          matInput
-          placeholder="Ex. Cereal"
-          name="q"
-          [(ngModel)]="query"
-        />
-      </mat-form-field>
-    </form>
-  </div>
+      <div class="actionField">
+        <form (ngSubmit)="onSubmit()">
+          <mat-form-field>
+            <mat-label>Search item</mat-label>
+            <input
+              type="search"
+              matInput
+              placeholder="Ex. Cereal"
+              name="q"
+              [(ngModel)]="query"
+            />
+          </mat-form-field>
+        </form>
+      </div>
 
-  <div class="actionField">
-    <button mat-flat-button color="primary" class="newItemButton" (click)="openItemDialog()">
-      Add Item
-    </button>
-    <button mat-flat-button color="primary" class="newContainerButton" (click)="openDialog()">
-      Add Container
-    </button>
-  </div>
+      <div class="actionField">
+        <button
+          mat-flat-button
+          color="primary"
+          class="newItemButton"
+          (click)="openItemDialog()"
+        >
+          Add Item
+        </button>
+        <button
+          mat-flat-button
+          color="primary"
+          class="newContainerButton"
+          (click)="openDialog()"
+        >
+          Add Container
+        </button>
+      </div>
 
-  <div class="inventoryGrid">
-    <mat-grid-list cols="4" rowHeight="1:1">
-      <mat-grid-tile *ngFor="let container of containers; index as i">
-        <app-container [container]="container" [index]="i"></app-container>
-      </mat-grid-tile>
-      <mat-grid-tile *ngFor="let item of items; index as i">
-        <app-item [item]="item" [index]="i"></app-item>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </div>
+      <div class="inventoryGrid">
+        <mat-grid-list cols="4" rowHeight="1:1">
+          <mat-grid-tile *ngFor="let container of containers; index as i">
+            <app-container [container]="container" [index]="i"></app-container>
+          </mat-grid-tile>
+          <mat-grid-tile *ngFor="let item of items; index as i">
+            <app-item [item]="item" [index]="i"></app-item>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </body>

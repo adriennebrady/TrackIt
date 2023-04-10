@@ -23,15 +23,9 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		containerIDStr := c.Query("Container_id")
-		if containerIDStr == "" {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Missing container ID"})
-			return
-		}
-
-		containerID, err := strconv.Atoi(containerIDStr)
+		containerID, err := strconv.Atoi(c.Query("Container_id"))
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"error": "Invalid container ID"})
+			c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"error": "Invalid/Missing container ID"})
 			return
 		}
 
@@ -44,16 +38,29 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 
 		// Add the name of the current container to the response.
 		names := container.Name
+		var name string
+		ParentID := container.ParentID
 
-		// Traverse the parent containers until ParentID equals 1.
-		for container.ParentID != 0 {
-			if result := db.Table("Containers").Where("ParentID = ? AND username = ?", container.ParentID, username).First(&container); result.Error != nil {
-				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Failed to get container"})
+		maxIterations := 10 // Set a maximum number of iterations
+		for i := 0; ParentID != 0 && i < maxIterations; i++ {
+			if name, ParentID = getParent(db, ParentID); name == "" {
+				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Container not found"})
 				return
 			}
-			names = container.Name + "/" + names
+			names = name + "/" + names
 		}
 
 		c.JSON(http.StatusOK, names)
 	}
+}
+
+func getParent(db *gorm.DB, LocID int) (string, int) {
+	// Look up the container in the database by ID.
+	var container Container
+	query := db.Table("Containers").Where("LocID = ?", LocID)
+	if err := query.First(&container).Error; err != nil {
+		return "", 0
+	}
+
+	return container.Name, container.ParentID
 }

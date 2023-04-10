@@ -171,6 +171,10 @@ export class ContainerCardPageComponent implements OnInit {
     this.http
       .get<string>(`/api/name?Container_id=${this.containerId}`, httpOptions)
       .subscribe((response) => {
+        let arr;
+        arr = response.split('/');
+        arr.shift();
+        response = arr.join('/');
         this.containerName = response;
         this.cdRef.detectChanges();
       });
