@@ -17,7 +17,7 @@ type DeleteRequest struct {
 // recently delete
 type RecentlyDeletedItem struct {
 	AccountID           string
-	DeletedItemID       int    `gorm:"primaryKey"`
+	ItemID       int    `gorm:"primaryKey"`
 	DeletedItemName     string `gorm:"column:itemName"`
 	DeletedItemLocation int    `gorm:"column:LocID"`
 	DeletedItemCount    int    `gorm:"column:count"`
@@ -77,7 +77,7 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 	// Create a new RecentlyDeletedItem object with the deleted item's ID and the current timestamp.
 	deletedItem := RecentlyDeletedItem{
 		AccountID:           username,
-		DeletedItemID:       item.ItemID,
+		ItemID:       item.ItemID,
 		DeletedItemName:     item.ItemName,
 		DeletedItemLocation: item.LocID,
 		DeletedItemCount:    item.Count,
