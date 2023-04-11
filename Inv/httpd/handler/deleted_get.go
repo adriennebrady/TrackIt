@@ -17,8 +17,10 @@ func DeletedGet(db *gorm.DB) gin.HandlerFunc {
 		c.Bind(&requestBody)
 
 		// Verify that the token is valid.
+		token := c.GetHeader("Authorization")
+		// Verify that the token is valid.
 		var username string
-		if username = IsValidToken(requestBody.Authorization, db); username == "" {
+		if username = IsValidToken(token, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
