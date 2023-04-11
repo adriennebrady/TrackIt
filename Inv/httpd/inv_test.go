@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"regexp"
+
 	//"strings"
 	"testing"
 	"time"
@@ -18,6 +19,7 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
+
 func TestAccountDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -35,11 +37,10 @@ func TestAccountDelete(t *testing.T) {
 
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.RegisterRequest{
-		Username: "testuser",
-		Password: "password",
+		Username:             "testuser",
+		Password:             "password",
 		PasswordConfirmation: "password",
 	}
-
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
@@ -53,7 +54,6 @@ func TestAccountDelete(t *testing.T) {
 	w := httptest.NewRecorder()
 	router.DELETE("/account", handler.AccountDelete(db))
 	router.ServeHTTP(w, req)
-
 
 	// Check that the response has a 200 status code.
 	if status := w.Code; status != http.StatusOK {
@@ -99,7 +99,6 @@ func TestNameGet(t *testing.T) {
 
 }
 
-
 func TestDeletedGet(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -116,7 +115,7 @@ func TestDeletedGet(t *testing.T) {
 
 	// Insert a test item with a valid token into the database.
 	validItem := RecentlyDeletedItem{ItemID: 1, AccountID: "testuser", DeletedItemName: "Where", DeletedItemLocation: 1,
-	DeletedItemCount:    1, Timestamp:           time.Now()}
+		DeletedItemCount: 1, Timestamp: time.Now()}
 
 	if err := db.Create(&validItem).Error; err != nil {
 		t.Fatalf("Failed to insert test item: %v", err)
@@ -137,7 +136,7 @@ func TestDeletedGet(t *testing.T) {
 
 }
 
-//////////////////////* GOOD *////////////////////////////////
+// ////////////////////* GOOD *////////////////////////////////
 func TestInventoryDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -148,9 +147,9 @@ func TestInventoryDelete(t *testing.T) {
 
 	//Create container
 	cont := Container{
-		LocID:	1,    
-		Name:    "testcont",
-		ParentID: 0 , 
+		LocID:    1,
+		Name:     "testcont",
+		ParentID: 0,
 		User:     "testuser",
 	}
 
@@ -159,9 +158,9 @@ func TestInventoryDelete(t *testing.T) {
 	}
 
 	cont2 := Container{
-		LocID:	2,    
-		Name:    "testcont2",
-		ParentID: 0 , 
+		LocID:    2,
+		Name:     "testcont2",
+		ParentID: 0,
 		User:     "testuser",
 	}
 
@@ -171,10 +170,10 @@ func TestInventoryDelete(t *testing.T) {
 
 	// Add a recently deleted item with a timestamp more than 30 days ago.
 	oldItem := Item{
-		ItemID:           1,
-		User :       "testuser",
-		ItemName:     "old test item",
-		LocID: 1,
+		ItemID:   1,
+		User:     "testuser",
+		ItemName: "old test item",
+		LocID:    1,
 		Count:    1,
 	}
 
@@ -182,20 +181,17 @@ func TestInventoryDelete(t *testing.T) {
 		t.Fatalf("failed to create item: %v", result.Error)
 	}
 
-
 	newItem := Item{
-		ItemID:           2,
-		User :       "testuser",
-		ItemName:     "new test item",
-		LocID: 2,
+		ItemID:   2,
+		User:     "testuser",
+		ItemName: "new test item",
+		LocID:    2,
 		Count:    2,
 	}
 
 	if result := db.Table("items").Create(&newItem); result.Error != nil {
 		t.Fatalf("failed to create item: %v", result.Error)
 	}
-
-
 
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.DeleteRequest{
@@ -248,11 +244,10 @@ func TestRegisterPost(t *testing.T) {
 
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.RegisterRequest{
-		Username: "testuser",
-		Password: "password",
+		Username:             "testuser",
+		Password:             "password",
 		PasswordConfirmation: "password",
 	}
-
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
@@ -265,7 +260,6 @@ func TestRegisterPost(t *testing.T) {
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
-
 
 	// Check that the response has a 200 status code.
 	if status := w.Code; status != http.StatusOK {
@@ -307,11 +301,10 @@ func TestLoginPost(t *testing.T) {
 
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.RegisterRequest{
-		Username: "testuser",
-		Password: "password",
+		Username:             "testuser",
+		Password:             "password",
 		PasswordConfirmation: "password",
 	}
-
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
@@ -324,7 +317,6 @@ func TestLoginPost(t *testing.T) {
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
-
 
 	// Check that the response has a 200 status code.
 	if status := w.Code; status != http.StatusOK {
@@ -346,12 +338,11 @@ func TestLoginPost(t *testing.T) {
 		t.Error("Response body did not contain a root location ID")
 	}
 
-		//Check that the token was saved to the database.
-		var account handler.Account
-		result := db.Table("accounts").Where("username = ?", "testuser").First(&account)
-		assert.NoError(t, result.Error)
-		assert.NotEmpty(t, account.Token)
-
+	//Check that the token was saved to the database.
+	var account handler.Account
+	result := db.Table("accounts").Where("username = ?", "testuser").First(&account)
+	assert.NoError(t, result.Error)
+	assert.NotEmpty(t, account.Token)
 
 	// LOGIN
 	// Call the API endpoint to trigger auto-delete.
@@ -359,8 +350,6 @@ func TestLoginPost(t *testing.T) {
 		Username: "testuser",
 		Password: "password",
 	}
-
-
 
 	reqBodyBytes2, err2 := json.Marshal(reqBody2)
 	if err2 != nil {
@@ -405,15 +394,15 @@ func TestDeleteDelete(t *testing.T) {
 	user := Account{
 		Username: "testuser",
 		Password: "password",
-		Token: "AB",
-		RootLoc: 0,
+		Token:    "AB",
+		RootLoc:  0,
 	}
 	// Save the test user account and item to the database.
 	db.Create(&user)
 
 	// Add a recently deleted item with a timestamp less than 30 days ago.
 	newDeletedItem := RecentlyDeletedItem{
-		ItemID:       		 2,
+		ItemID:              2,
 		AccountID:           "testuser",
 		DeletedItemName:     "test item",
 		DeletedItemLocation: 1,
@@ -471,7 +460,7 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 
 	// Add a recently deleted item with a timestamp more than 30 days ago.
 	oldDeletedItem := RecentlyDeletedItem{
-		ItemID:       		 1,
+		ItemID:              1,
 		AccountID:           "testuser",
 		DeletedItemName:     "test item",
 		DeletedItemLocation: 1,
@@ -485,10 +474,10 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 
 	// Add a recently deleted item with a timestamp less than 30 days ago.
 	newDeletedItem := Item{
-		ItemID:       		2,
-		User:           "testuser",
-		ItemName:     "test item1",
-		LocID: 1,
+		ItemID:   2,
+		User:     "testuser",
+		ItemName: "test item1",
+		LocID:    1,
 		Count:    1,
 	}
 	if result := db.Table("items").Create(&newDeletedItem); result.Error != nil {
@@ -585,7 +574,7 @@ func TestDeleteItem(t *testing.T) {
 
 	// Verify that the recently deleted item has been added to the database.
 	var recentlyDeleted RecentlyDeletedItem
-	if result := db.Where("deleted_item_id = ? AND account_id = ?", item.ItemID, user.Username).First(&recentlyDeleted); result.Error != nil {
+	if result := db.Where("item_id = ? AND account_id = ?", item.ItemID, user.Username).First(&recentlyDeleted); result.Error != nil {
 		t.Fatalf("Expected recently deleted item to be created, but found error: %v", result.Error)
 	}
 }
