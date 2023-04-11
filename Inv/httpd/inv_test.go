@@ -79,11 +79,6 @@ func TestContainersGet(t *testing.T) {
 
 }
 
-func TestDeleteGet(t *testing.T) {
-	setupTestDB()
-	//todo:implement
-
-}
 func TestInventoryPut(t *testing.T) {
 	setupTestDB()
 
@@ -101,6 +96,44 @@ func TestInventoryPost(t *testing.T) {
 }
 func TestNameGet(t *testing.T) {
 	//todo: implement
+
+}
+
+
+func TestDeletedGet(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.DeletedGet(db)
+	router := gin.Default()
+	router.GET("/deleted", Handler)
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+
+	// Insert a test item with a valid token into the database.
+	validItem := RecentlyDeletedItem{ItemID: 1, AccountID: "testuser", DeletedItemName: "Where", DeletedItemLocation: 1,
+	DeletedItemCount:    1, Timestamp:           time.Now()}
+
+	if err := db.Create(&validItem).Error; err != nil {
+		t.Fatalf("Failed to insert test item: %v", err)
+	}
+
+	// Create a test request with a valid token and item name
+	req, err := http.NewRequest("GET", "/deleted?Authorization=validtoken", nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
+
+	// Perform the request using the test router
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	assert.Equal(t, http.StatusOK, resp.Code)
+	assert.Equal(t, "[{\"ItemID\":1,\"AccountID\":\"testuser\",\"DeletedItemName\":\"Where\",\"DeletedItemLocation\":1,\"DeletedItemCount\":1},\"Timestamp\":\"2023-04-11T14:14:50.6451466-04:00\"}]", resp.Body.String())
 
 }
 
@@ -427,6 +460,15 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 	router := gin.Default()
 	router.POST("/delete", Handler)
 
+	Acc := Account{ //gorm.Model?
+		Username: "testuser",
+		Password: "password",
+		Token:    "testtoken",
+		RootLoc:  1,
+	}
+
+	db.Create(&Acc)
+
 	// Add a recently deleted item with a timestamp more than 30 days ago.
 	oldDeletedItem := RecentlyDeletedItem{
 		ItemID:       		 1,
@@ -442,15 +484,14 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 	}
 
 	// Add a recently deleted item with a timestamp less than 30 days ago.
-	newDeletedItem := RecentlyDeletedItem{
+	newDeletedItem := Item{
 		ItemID:       		2,
-		AccountID:           "testuser",
-		DeletedItemName:     "test item",
-		DeletedItemLocation: 1,
-		DeletedItemCount:    1,
-		Timestamp:           time.Now(),
+		User:           "testuser",
+		ItemName:     "test item1",
+		LocID: 1,
+		Count:    1,
 	}
-	if result := db.Table("recently_deleted_items").Create(&newDeletedItem); result.Error != nil {
+	if result := db.Table("items").Create(&newDeletedItem); result.Error != nil {
 		t.Fatalf("failed to create recently deleted item: %v", result.Error)
 	}
 

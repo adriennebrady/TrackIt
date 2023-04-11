@@ -69,10 +69,6 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 		return result.Error
 	}
 
-	// Delete the item.
-	if result := db.Table("items").Delete(&item); result.Error != nil {
-		return result.Error
-	}
 
 	// Create a new RecentlyDeletedItem object with the deleted item's ID and the current timestamp.
 	deletedItem := RecentlyDeletedItem{
@@ -83,6 +79,12 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 		DeletedItemCount:    item.Count,
 		Timestamp:           time.Now(),
 	}
+
+	// Delete the item.
+	if result := db.Table("items").Delete(&item); result.Error != nil {
+		return result.Error
+	}
+	
 
 	// Save the RecentlyDeletedItem object to the database.
 	if result := db.Table("recently_deleted_items").Create(&deletedItem); result.Error != nil {
