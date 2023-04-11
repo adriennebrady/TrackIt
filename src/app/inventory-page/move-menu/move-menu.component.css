@@ -1,0 +1,15 @@
+.buttonContainer {
+  justify-content: flex-start;
+}
+
+.mat-button-toggle {
+  font-weight: 500;
+}
+
+.mat-button-toggle-checked {
+  border-radius: 10%;
+}
+
+.mat-button-toggle-group-appearance-standard {
+  border: none;
+}
