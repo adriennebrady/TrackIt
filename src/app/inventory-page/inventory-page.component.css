@@ -19,6 +19,10 @@ mat-sidenav {
   padding-right: 5%;
 }
 
+mat-sidenav-content {
+  height: 100vh;
+}
+
 .inventoryHeading {
   text-align: center;
   padding-top: 5%;
