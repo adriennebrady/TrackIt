@@ -13,6 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -40,6 +41,9 @@ import { SearchItemComponent } from './search/search-item/search-item.component'
 import { RecountDialogComponent } from './container-card-page/recount-dialog/recount-dialog.component';
 import { SidebarNavComponent } from './sidebar-nav/sidebar-nav.component';
 import { RecentlyDeletedComponent } from './recently-deleted/recently-deleted.component';
+import { DeletedItemComponent } from './recently-deleted/deleted-item/deleted-item.component';
+import { MoveDialogComponent } from './inventory-page/move-dialog/move-dialog.component';
+import { MoveMenuComponent } from './inventory-page/move-menu/move-menu.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +66,9 @@ import { RecentlyDeletedComponent } from './recently-deleted/recently-deleted.co
     RecountDialogComponent,
     SidebarNavComponent,
     RecentlyDeletedComponent,
+    DeletedItemComponent,
+    MoveDialogComponent,
+    MoveMenuComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,6 +89,7 @@ import { RecentlyDeletedComponent } from './recently-deleted/recently-deleted.co
     MatTreeModule,
     MatSidenavModule,
     MatTooltipModule,
+    MatButtonToggleModule,
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],

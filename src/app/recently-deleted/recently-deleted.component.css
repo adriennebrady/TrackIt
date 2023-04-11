@@ -1,0 +1,51 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.signUpButton {
+  margin-left: 5px;
+}
+
+.navbar {
+  background-color: white;
+  cursor: pointer;
+}
+
+.logo {
+  font-weight: bold;
+}
+
+mat-sidenav {
+  padding-right: 5%;
+}
+
+mat-sidenav-content {
+  height: 100vh;
+}
+
+.inventoryHeading {
+  text-align: center;
+  padding-top: 5%;
+}
+
+.inventoryHeading h1 {
+  font-weight: 500;
+}
+
+.noItems {
+  text-align: center;
+  padding-top: 10%;
+  font-weight: 500;
+  font-size: large;
+}
+
+.actionField {
+  padding-top: 2%;
+  justify-content: center;
+  display: flex;
+}
+
+.actionField button {
+  height: 55px;
+  margin-right: 20px;
+}
