@@ -136,104 +136,6 @@ func TestDeletedGet(t *testing.T) {
 
 }
 
-// ////////////////////* GOOD *////////////////////////////////
-func TestInventoryDelete(t *testing.T) {
-	// Set up the test database and server.
-	setupTestDB()
-
-	Handler := handler.InventoryDelete(db)
-	router := gin.Default()
-	router.DELETE("/inventory", Handler)
-
-	//Create container
-	cont := Container{
-		LocID:    1,
-		Name:     "testcont",
-		ParentID: 0,
-		User:     "testuser",
-	}
-
-	if result := db.Table("containers").Create(&cont); result.Error != nil {
-		t.Fatalf("failed to create recently deleted item: %v", result.Error)
-	}
-
-	cont2 := Container{
-		LocID:    2,
-		Name:     "testcont2",
-		ParentID: 0,
-		User:     "testuser",
-	}
-
-	if result := db.Table("containers").Create(&cont2); result.Error != nil {
-		t.Fatalf("failed to create recently deleted item: %v", result.Error)
-	}
-
-	// Add a recently deleted item with a timestamp more than 30 days ago.
-	oldItem := Item{
-		ItemID:   1,
-		User:     "testuser",
-		ItemName: "old test item",
-		LocID:    1,
-		Count:    1,
-	}
-
-	if result := db.Table("items").Create(&oldItem); result.Error != nil {
-		t.Fatalf("failed to create item: %v", result.Error)
-	}
-
-	newItem := Item{
-		ItemID:   2,
-		User:     "testuser",
-		ItemName: "new test item",
-		LocID:    2,
-		Count:    2,
-	}
-
-	if result := db.Table("items").Create(&newItem); result.Error != nil {
-		t.Fatalf("failed to create item: %v", result.Error)
-	}
-
-	// Call the API endpoint to trigger auto-delete.
-	reqBody := handler.DeleteRequest{
-		Token: "testtoken",
-		ID:    2,
-		Type:  "container",
-	}
-
-	reqBodyBytes, err := json.Marshal(reqBody)
-	if err != nil {
-		t.Fatalf("failed to marshal request body: %v", err)
-	}
-	req, err := http.NewRequest("POST", "/delete", bytes.NewBuffer(reqBodyBytes))
-	if err != nil {
-		t.Fatalf("failed to create request: %v", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-	w := httptest.NewRecorder()
-	router.ServeHTTP(w, req)
-
-	// Verify that the new  item and container still exists.
-	var deletedItem handler.Item
-	if result := db.Table("items").First(&deletedItem, oldItem.ItemID); result.Error != nil {
-		t.Fatalf("failed to find recently deleted item: %v", result.Error)
-	}
-
-	var deletedCont handler.Container
-	if result := db.Table("containers").First(&deletedCont, cont.LocID); result.Error != nil {
-		t.Fatalf("failed to find recently deleted item: %v", result.Error)
-	}
-
-	// Verify that the new  item and container was deleted.
-	if result := db.Table("items").First(&deletedItem, newItem.ItemID); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		t.Errorf("expected recently deleted item to be deleted, but found: %v", deletedItem)
-	}
-
-	if result := db.Table("containers").First(&deletedCont, cont2.LocID); result.Error == nil {
-		t.Fatalf("failed to find recently deleted item: %v", result.Error)
-	}
-
-}
-
 func TestRegisterPost(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -380,6 +282,104 @@ func TestLoginPost(t *testing.T) {
 	result2 := db.Table("accounts").Where("username = ?", "testuser").First(&account2)
 	assert.NoError(t, result2.Error)
 	assert.NotEmpty(t, account2.Token)
+
+}
+
+// ////////////////////* GOOD *////////////////////////////////
+func TestInventoryDelete(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.InventoryDelete(db)
+	router := gin.Default()
+	router.DELETE("/inventory", Handler)
+
+	//Create container
+	cont := Container{
+		LocID:    1,
+		Name:     "testcont",
+		ParentID: 0,
+		User:     "testuser",
+	}
+
+	if result := db.Table("containers").Create(&cont); result.Error != nil {
+		t.Fatalf("failed to create recently deleted item: %v", result.Error)
+	}
+
+	cont2 := Container{
+		LocID:    2,
+		Name:     "testcont2",
+		ParentID: 0,
+		User:     "testuser",
+	}
+
+	if result := db.Table("containers").Create(&cont2); result.Error != nil {
+		t.Fatalf("failed to create recently deleted item: %v", result.Error)
+	}
+
+	// Add a recently deleted item with a timestamp more than 30 days ago.
+	oldItem := Item{
+		ItemID:   1,
+		User:     "testuser",
+		ItemName: "old test item",
+		LocID:    1,
+		Count:    1,
+	}
+
+	if result := db.Table("items").Create(&oldItem); result.Error != nil {
+		t.Fatalf("failed to create item: %v", result.Error)
+	}
+
+	newItem := Item{
+		ItemID:   2,
+		User:     "testuser",
+		ItemName: "new test item",
+		LocID:    2,
+		Count:    2,
+	}
+
+	if result := db.Table("items").Create(&newItem); result.Error != nil {
+		t.Fatalf("failed to create item: %v", result.Error)
+	}
+
+	// Call the API endpoint to trigger auto-delete.
+	reqBody := handler.DeleteRequest{
+		Token: "testtoken",
+		ID:    2,
+		Type:  "container",
+	}
+
+	reqBodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf("failed to marshal request body: %v", err)
+	}
+	req, err := http.NewRequest("POST", "/delete", bytes.NewBuffer(reqBodyBytes))
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	// Verify that the new  item and container still exists.
+	var deletedItem handler.Item
+	if result := db.Table("items").First(&deletedItem, oldItem.ItemID); result.Error != nil {
+		t.Fatalf("failed to find recently deleted item: %v", result.Error)
+	}
+
+	var deletedCont handler.Container
+	if result := db.Table("containers").First(&deletedCont, cont.LocID); result.Error != nil {
+		t.Fatalf("failed to find recently deleted item: %v", result.Error)
+	}
+
+	// Verify that the new  item and container was deleted.
+	if result := db.Table("items").First(&deletedItem, newItem.ItemID); !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		t.Errorf("expected recently deleted item to be deleted, but found: %v", deletedItem)
+	}
+
+	if result := db.Table("containers").First(&deletedCont, cont2.LocID); result.Error == nil {
+		t.Fatalf("failed to find recently deleted item: %v", result.Error)
+	}
 
 }
 
