@@ -29,6 +29,8 @@
   *  Created Unit test for registerPost
   *  Created Unit test for loginPost
   *  Created Unit test for inventoryDelete
+  *  Fixed DeletedGet
+  *  Created Unit test for DeletedGet
 * Israel Solano
   *  Created manual deletion of recently deleted items
   *  Created Unit test for manual deletion of recently deleted items
