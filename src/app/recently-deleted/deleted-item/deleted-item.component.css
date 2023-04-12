@@ -1,0 +1,12 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.containerName {
+  margin-top: 8%;
+}
+
+.example-card {
+  min-width: 250px;
+  min-height: 120px;
+}

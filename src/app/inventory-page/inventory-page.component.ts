@@ -6,6 +6,8 @@ import { AuthService } from '../auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RenameDialogComponent } from './rename-dialog/rename-dialog.component';
 import { Router } from '@angular/router';
+import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
+import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 
 interface Item {
   ItemID: number;
@@ -110,6 +112,47 @@ export class InventoryPageComponent implements OnInit {
         this.createContainer(result.name);
       }
     });
+  }
+
+  openMoveDialog(index: number) {
+    const dialogRef = this.dialog.open(MoveDialogComponent, {
+      width: '300px',
+      data: { name: this.containers[index].Name },
+    });
+
+    dialogRef.afterClosed().subscribe((parentID: number) => {
+      if (parentID) {
+        this.moveContainer(index, parentID);
+      }
+    });
+  }
+
+  moveContainer(index: number, parentID: number) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const updateContainer = {
+      Authorization: authToken,
+      Kind: 'Container',
+      ID: this.containers[index].LocID,
+      Cont: parentID,
+      Name: this.containers[index].Name,
+      Type: 'Relocate',
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: updateContainer.Authorization,
+      }),
+    };
+
+    this.http
+      .put('/api/inventory', updateContainer, httpOptions)
+      .subscribe((response) => {
+        console.log(response);
+        this.getInventory();
+      });
   }
 
   removeContainer(index: number) {

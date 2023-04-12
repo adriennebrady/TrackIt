@@ -1,5 +1,0 @@
-parts
-samsung buds
-webcam
-ridge pen
-sd cards

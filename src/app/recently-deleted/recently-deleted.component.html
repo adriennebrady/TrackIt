@@ -1,1 +1,49 @@
-<p>recently-deleted works!</p>
+<mat-toolbar class="navbar">
+  <span class="logo" routerLink="/home">TRACKIT</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/about">About</button>
+  <button mat-button (click)="logOut()" routerLink="/home">Sign Out</button>
+  <button
+    mat-flat-button
+    routerLink="/inventory"
+    color="primary"
+    class="signUpButton"
+  >
+    My Inventory
+  </button>
+  <button
+    mat-icon-button
+    [routerLink]="['/recentlyDeleted']"
+    matTooltip="Recently deleted items"
+  >
+    <mat-icon>restore_from_trash</mat-icon>
+  </button>
+</mat-toolbar>
+<div class="container">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-sidenav-container autosize>
+    <mat-sidenav #sidenav mode="side">
+      <app-sidebar-nav [invContainers]="[]"></app-sidebar-nav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="inventoryHeading">
+        <h1>Recently Deleted</h1>
+        <p>Restore or permanently delete recently deleted items.</p>
+      </div>
+
+      <div *ngIf="items.length == 0" class="noItems">
+        No recently deleted items.
+      </div>
+
+      <div class="inventoryGrid">
+        <mat-grid-list cols="4" rowHeight="1:1">
+          <mat-grid-tile *ngFor="let item of items; index as i">
+            <app-deleted-item [item]="item" [index]="i"></app-deleted-item>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

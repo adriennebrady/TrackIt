@@ -35,4 +35,8 @@ export class InvContainerComponent {
   renameContainer(index: number) {
     this.inventoryPage.openRenameDialog(index);
   }
+
+  moveContainer(index: number) {
+    this.inventoryPage.openMoveDialog(index);
+  }
 }

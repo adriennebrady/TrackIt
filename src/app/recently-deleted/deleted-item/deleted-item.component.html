@@ -1,0 +1,27 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title class="containerName">{{
+      item.DeletedItemName
+    }}</mat-card-title>
+    <span class="spacer"></span>
+    <button
+      mat-icon-button
+      class="deleteButton"
+      (click)="deleteItem(index)"
+      matTooltip="Permanently delete item"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      (click)="restoreItem(index)"
+      matTooltip="Restore item"
+    >
+      <mat-icon>add_circle</mat-icon>
+    </button>
+  </mat-card-header>
+  <br />
+  <mat-card-content>
+    <span class="countAmount">Count: {{ item.DeletedItemCount }}</span>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Move "{{ data.name }}"</h1>
+<mat-dialog-content>
+  <app-move-menu
+    [invContainers]="[]"
+    (onContainerPicked)="parentIDSelected($event)"
+  ></app-move-menu>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="cancelButton" (click)="cancel()">Cancel</button>
+  <span class="spacer"></span>
+  <button
+    mat-raised-button
+    color="primary"
+    class="renameButton"
+    (click)="move()"
+  >
+    Move
+  </button>
+</mat-dialog-actions>
