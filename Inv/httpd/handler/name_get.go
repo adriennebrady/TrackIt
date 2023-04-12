@@ -43,7 +43,7 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 
 		maxIterations := 10 // Set a maximum number of iterations
 		for i := 0; ParentID != 0 && i < maxIterations; i++ {
-			if name, ParentID = getParent(db, ParentID); name == "" {
+			if name, ParentID = GetParent(db, ParentID); name == "" {
 				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Container not found"})
 				return
 			}
@@ -54,7 +54,7 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func getParent(db *gorm.DB, LocID int) (string, int) {
+func GetParent(db *gorm.DB, LocID int) (string, int) {
 	// Look up the container in the database by ID.
 	var container Container
 	query := db.Table("Containers").Where("LocID = ?", LocID)
