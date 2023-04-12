@@ -24,9 +24,9 @@ func TestAccountDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
 
-	Handler := handler.RegisterPost(db)
+	Handler := handler.AccountDelete(db)
 	router := gin.Default()
-	router.POST("/account", Handler)
+	router.DELETE("/account", Handler)
 
 	// Seed the database with a test user.
 	testUser := Account{
@@ -52,7 +52,6 @@ func TestAccountDelete(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
-	router.DELETE("/account", handler.AccountDelete(db))
 	router.ServeHTTP(w, req)
 
 	// Check that the response has a 200 status code.
@@ -94,8 +93,45 @@ func TestInventoryPost(t *testing.T) {
 	//todo: implement
 
 }
+
 func TestNameGet(t *testing.T) {
-	//todo: implement
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.NameGet(db)
+	router := gin.Default()
+	router.GET("/name", Handler)
+
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+
+	// Seed the database with some test data.
+	container1 := Container{Name: "Container 1", LocID: 1, ParentID: 0, User: "testuser"}
+	db.Create(&container1)
+
+	container2 := Container{Name: "Container 2", LocID: 2, ParentID: 1, User: "testuser"}
+	db.Create(&container2)
+
+	expectedOutput := "\"Container 1/Container 2\""
+
+	// Create a test request with a valid token and item name
+	req, err := http.NewRequest("GET", "/name?Container_id=2", nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
+	req.Header.Set("Authorization", "validtoken")
+
+	// Perform the request using the test router
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	assert.Equal(t, http.StatusOK, resp.Code)
+
+	assert.Equal(t, expectedOutput, resp.Body.String())
 
 }
 
