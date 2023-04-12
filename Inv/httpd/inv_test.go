@@ -68,16 +68,6 @@ func TestAccountDelete(t *testing.T) {
 
 }
 
-func TestItemsGet(t *testing.T) {
-	setupTestDB()
-	//todo:implement
-}
-func TestContainersGet(t *testing.T) {
-	setupTestDB()
-	//todo:implement
-
-}
-
 func TestInventoryPut(t *testing.T) {
 	setupTestDB()
 
@@ -93,7 +83,6 @@ func TestInventoryPost(t *testing.T) {
 	//todo: implement
 
 }
-
 
 func TestDeletedGet(t *testing.T) {
 	// Set up the test database and server.
@@ -133,7 +122,95 @@ func TestDeletedGet(t *testing.T) {
 }
 
 
+func TestItemsGet(t *testing.T) {
+	setupTestDB()
+	//todo:implement
+}
+
+
+
 // ////////////////////* GOOD *////////////////////////////////
+
+func TestContainersGet(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.ContainersGet(db)
+	router := gin.Default()
+	router.GET("/containers", Handler)
+
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+
+	 // Create some test containers.
+	 parentContainer := Container{
+        Name:     "Parent",
+        ParentID: 0,
+		LocID: 1,
+        User: "testuser",
+    }
+    childContainer1 := Container{
+        Name:     "Child1",
+        ParentID: 1,
+		LocID: 2,
+        User: "testuser",
+    }
+    childContainer2 := Container{
+        Name:     "Child2",
+        ParentID: 1,
+		LocID: 3,
+        User: "testuser",
+    }
+
+    err = db.Create(&parentContainer).Error
+    if err != nil {
+        t.Fatalf("Failed to create parent container: %v", err)
+    }
+    err = db.Create(&childContainer1).Error
+    if err != nil {
+        t.Fatalf("Failed to create child container 1: %v", err)
+    }
+    err = db.Create(&childContainer2).Error
+    if err != nil {
+        t.Fatalf("Failed to create child container 2: %v", err)
+    }
+
+
+	// Create a test request with a valid token and item name
+	req, err := http.NewRequest("GET", "/containers?container_id=1", nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
+	req.Header.Set("Authorization", "validtoken")
+
+	// Perform the request using the test router
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	assert.Equal(t, http.StatusOK, resp.Code)
+
+	var containers []Container
+    err = json.Unmarshal(resp.Body.Bytes(), &containers)
+    if err != nil {
+        t.Errorf("Failed to unmarshal response: %v", err)
+    }
+
+	if len(containers) != 2 {
+        t.Errorf("Unexpected number of containers: got %v, want %v", len(containers), 2)
+    }
+
+	if containers[0].Name != "Child1" {
+        t.Errorf("Unexpected container name: got %v, want %v", containers[0].Name, "Child1")
+    }
+	if containers[1].Name != "Child2" {
+        t.Errorf("Unexpected container name: got %v, want %v", containers[0].Name, "Child1")
+    }
+
+}
 
 func TestNameGet(t *testing.T) {
 	// Set up the test database and server.
