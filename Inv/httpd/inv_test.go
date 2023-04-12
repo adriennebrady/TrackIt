@@ -133,7 +133,7 @@ func TestDeletedGet(t *testing.T) {
 	router.ServeHTTP(resp, req)
 
 	assert.Equal(t, http.StatusOK, resp.Code)
-	assert.Equal(t, "[{\"ItemID\":1,\"AccountID\":\"testuser\",\"DeletedItemName\":\"Where\",\"DeletedItemLocation\":1,\"DeletedItemCount\":1},\"Timestamp\":\"2023-04-11T14:14:50.6451466-04:00\"}]", resp.Body.String())
+	assert.Equal(t, "[{\"ItemID\":1,\"AccountID\":\"testuser\",\"DeletedItemName\":\"Where\",\"DeletedItemLocation\":1,\"DeletedItemCount\":1,\"Timestamp\": \"" +  validItem.Timestamp.String() + "}]", resp.Body.String())
 
 }
 
@@ -400,7 +400,7 @@ func TestDeleteDelete(t *testing.T) {
 
 	Handler := handler.DeleteDelete(db)
 	router := gin.Default()
-	router.POST("/delete", Handler)
+	router.DELETE("/delete", Handler)
 
 	user := Account{
 		Username: "testuser",
@@ -436,7 +436,7 @@ func TestDeleteDelete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to marshal request body: %v", err)
 	}
-	req, err := http.NewRequest("POST", "/delete", bytes.NewBuffer(reqBodyBytes))
+	req, err := http.NewRequest("DELETE", "/delete", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
 		t.Fatalf("failed to create request: %v", err)
 	}
