@@ -75,14 +75,6 @@ func TestInventoryPut(t *testing.T) {
 
 }
 
-func TestInventoryPost(t *testing.T) {
-	setupTestDB()
-
-	r := gin.Default()
-	r.POST("/inventory", handler.InventoryPost(db))
-	//todo: implement
-
-}
 
 func TestDeletedGet(t *testing.T) {
 	// Set up the test database and server.
@@ -123,6 +115,53 @@ func TestDeletedGet(t *testing.T) {
 
 
 // ////////////////////* GOOD *////////////////////////////////
+
+
+func TestInventoryPost(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.InventoryPost(db)
+	router := gin.Default()
+	router.POST("/inventory", Handler)
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+
+	// Call the API endpoint to trigger auto-delete.
+	reqBody := handler.InvRequest{
+		Authorization:             "validtoken",
+		Kind:             "container",
+		ID: 1,
+		Cont: 0,
+		Name: "cont1",
+		Type: "",
+		Count: 0,
+	}
+
+	reqBodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf("failed to marshal request body: %v", err)
+	}
+	req, err := http.NewRequest("POST", "/inventory", bytes.NewBuffer(reqBodyBytes))
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	status := w.Code;
+
+	// Check that the response has a 200 status code.
+	if status != http.StatusNoContent {
+		t.Errorf("Handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+}
 
 func TestItemsGet(t *testing.T) {
 	// Set up the test database and server.
@@ -209,7 +248,6 @@ func TestItemsGet(t *testing.T) {
         t.Errorf("Unexpected container name: got %v, want %v", items[0].ItemName, "Item2")
     }
 }
-
 
 func TestContainersGet(t *testing.T) {
 	// Set up the test database and server.
