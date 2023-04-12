@@ -74,6 +74,12 @@ func TestInventoryPut(t *testing.T) {
 	//todo: implement
 
 }
+func TestTreeGet(t *testing.T) {
+	setupTestDB()
+
+	//todo: implement
+
+}
 
 func TestInventoryPost(t *testing.T) {
 	setupTestDB()
@@ -117,10 +123,9 @@ func TestDeletedGet(t *testing.T) {
 	router.ServeHTTP(resp, req)
 
 	assert.Equal(t, http.StatusOK, resp.Code)
-	assert.Equal(t, "[{\"ItemID\":1,\"AccountID\":\"testuser\",\"DeletedItemName\":\"Where\",\"DeletedItemLocation\":1,\"DeletedItemCount\":1,\"Timestamp\": \"" +  validItem.Timestamp.String() + "}]", resp.Body.String())
+	assert.Equal(t, "[{\"ItemID\":1,\"AccountID\":\"testuser\",\"DeletedItemName\":\"Where\",\"DeletedItemLocation\":1,\"DeletedItemCount\":1,\"Timestamp\": \""+validItem.Timestamp.String()+"}]", resp.Body.String())
 
 }
-
 
 // ////////////////////* GOOD *////////////////////////////////
 
@@ -132,52 +137,48 @@ func TestItemsGet(t *testing.T) {
 	router := gin.Default()
 	router.GET("/items", Handler)
 
-
 	// Insert a test user with a valid token into the database.
 	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
 	if err := db.Create(&validTokenUser).Error; err != nil {
 		t.Fatalf("Failed to insert test user: %v", err)
 	}
 
-
 	parentContainer := Container{
-        Name:     "Parent",
-        ParentID: 0,
-        User: "testuser",
-		LocID: 1,
-    }
+		Name:     "Parent",
+		ParentID: 0,
+		User:     "testuser",
+		LocID:    1,
+	}
 
 	err = db.Create(&parentContainer).Error
-    if err != nil {
-        t.Fatalf("Failed to create parent container: %v", err)
-    }
+	if err != nil {
+		t.Fatalf("Failed to create parent container: %v", err)
+	}
 
-	 // Create some test containers.
-    Item1 := Item{
-        ItemName:     "Item1",
-        ItemID: 1,
-		LocID: 1,
-        User: "testuser",
-		Count: 1,
-    }
-    Item2 := Item{
-        ItemName:     "Item2",
-        ItemID: 2,
-		LocID: 1,
-        User: "testuser",
-		Count: 1,
-    }
+	// Create some test containers.
+	Item1 := Item{
+		ItemName: "Item1",
+		ItemID:   1,
+		LocID:    1,
+		User:     "testuser",
+		Count:    1,
+	}
+	Item2 := Item{
+		ItemName: "Item2",
+		ItemID:   2,
+		LocID:    1,
+		User:     "testuser",
+		Count:    1,
+	}
 
-    err = db.Create(&Item1).Error
-    if err != nil {
-        t.Fatalf("Failed to create item1: %v", err)
-    }
-    err = db.Create(&Item2).Error
-    if err != nil {
-        t.Fatalf("Failed to create item2 1: %v", err)
-    }
-
-
+	err = db.Create(&Item1).Error
+	if err != nil {
+		t.Fatalf("Failed to create item1: %v", err)
+	}
+	err = db.Create(&Item2).Error
+	if err != nil {
+		t.Fatalf("Failed to create item2 1: %v", err)
+	}
 
 	// Create a test request with a valid token and item name
 	req, err := http.NewRequest("GET", "/items?container_id=1", nil)
@@ -193,23 +194,22 @@ func TestItemsGet(t *testing.T) {
 	assert.Equal(t, http.StatusOK, resp.Code)
 
 	var items []Item
-    err = json.Unmarshal(resp.Body.Bytes(), &items)
-    if err != nil {
-        t.Errorf("Failed to unmarshal response: %v", err)
-    }
+	err = json.Unmarshal(resp.Body.Bytes(), &items)
+	if err != nil {
+		t.Errorf("Failed to unmarshal response: %v", err)
+	}
 
 	if len(items) != 2 {
-        t.Errorf("Unexpected number of containers: got %v, want %v", len(items), 2)
-    }
+		t.Errorf("Unexpected number of containers: got %v, want %v", len(items), 2)
+	}
 
 	if items[0].ItemName != "Item1" {
-        t.Errorf("Unexpected container name: got %v, want %v", items[0].ItemName, "Item1")
-    }
+		t.Errorf("Unexpected container name: got %v, want %v", items[0].ItemName, "Item1")
+	}
 	if items[1].ItemName != "Item2" {
-        t.Errorf("Unexpected container name: got %v, want %v", items[0].ItemName, "Item2")
-    }
+		t.Errorf("Unexpected container name: got %v, want %v", items[0].ItemName, "Item2")
+	}
 }
-
 
 func TestContainersGet(t *testing.T) {
 	// Set up the test database and server.
@@ -219,46 +219,44 @@ func TestContainersGet(t *testing.T) {
 	router := gin.Default()
 	router.GET("/containers", Handler)
 
-
 	// Insert a test user with a valid token into the database.
 	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
 	if err := db.Create(&validTokenUser).Error; err != nil {
 		t.Fatalf("Failed to insert test user: %v", err)
 	}
 
-	 // Create some test containers.
-	 parentContainer := Container{
-        Name:     "Parent",
-        ParentID: 0,
-		LocID: 1,
-        User: "testuser",
-    }
-    childContainer1 := Container{
-        Name:     "Child1",
-        ParentID: 1,
-		LocID: 2,
-        User: "testuser",
-    }
-    childContainer2 := Container{
-        Name:     "Child2",
-        ParentID: 1,
-		LocID: 3,
-        User: "testuser",
-    }
+	// Create some test containers.
+	parentContainer := Container{
+		Name:     "Parent",
+		ParentID: 0,
+		LocID:    1,
+		User:     "testuser",
+	}
+	childContainer1 := Container{
+		Name:     "Child1",
+		ParentID: 1,
+		LocID:    2,
+		User:     "testuser",
+	}
+	childContainer2 := Container{
+		Name:     "Child2",
+		ParentID: 1,
+		LocID:    3,
+		User:     "testuser",
+	}
 
-    err = db.Create(&parentContainer).Error
-    if err != nil {
-        t.Fatalf("Failed to create parent container: %v", err)
-    }
-    err = db.Create(&childContainer1).Error
-    if err != nil {
-        t.Fatalf("Failed to create child container 1: %v", err)
-    }
-    err = db.Create(&childContainer2).Error
-    if err != nil {
-        t.Fatalf("Failed to create child container 2: %v", err)
-    }
-
+	err = db.Create(&parentContainer).Error
+	if err != nil {
+		t.Fatalf("Failed to create parent container: %v", err)
+	}
+	err = db.Create(&childContainer1).Error
+	if err != nil {
+		t.Fatalf("Failed to create child container 1: %v", err)
+	}
+	err = db.Create(&childContainer2).Error
+	if err != nil {
+		t.Fatalf("Failed to create child container 2: %v", err)
+	}
 
 	// Create a test request with a valid token and item name
 	req, err := http.NewRequest("GET", "/containers?container_id=1", nil)
@@ -274,21 +272,21 @@ func TestContainersGet(t *testing.T) {
 	assert.Equal(t, http.StatusOK, resp.Code)
 
 	var containers []Container
-    err = json.Unmarshal(resp.Body.Bytes(), &containers)
-    if err != nil {
-        t.Errorf("Failed to unmarshal response: %v", err)
-    }
+	err = json.Unmarshal(resp.Body.Bytes(), &containers)
+	if err != nil {
+		t.Errorf("Failed to unmarshal response: %v", err)
+	}
 
 	if len(containers) != 2 {
-        t.Errorf("Unexpected number of containers: got %v, want %v", len(containers), 2)
-    }
+		t.Errorf("Unexpected number of containers: got %v, want %v", len(containers), 2)
+	}
 
 	if containers[0].Name != "Child1" {
-        t.Errorf("Unexpected container name: got %v, want %v", containers[0].Name, "Child1")
-    }
+		t.Errorf("Unexpected container name: got %v, want %v", containers[0].Name, "Child1")
+	}
 	if containers[1].Name != "Child2" {
-        t.Errorf("Unexpected container name: got %v, want %v", containers[0].Name, "Child1")
-    }
+		t.Errorf("Unexpected container name: got %v, want %v", containers[0].Name, "Child1")
+	}
 
 }
 
@@ -299,7 +297,6 @@ func TestNameGet(t *testing.T) {
 	Handler := handler.NameGet(db)
 	router := gin.Default()
 	router.GET("/name", Handler)
-
 
 	// Insert a test user with a valid token into the database.
 	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
@@ -637,6 +634,143 @@ func TestDeleteDelete(t *testing.T) {
 	}
 }
 
+func TestSearchGet(t *testing.T) {
+	setupTestDB()
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+	// Insert a test item with a valid token into the database.
+	validItem := Item{ItemID: 1, User: "testuser", ItemName: "Where"}
+	if err := db.Create(&validItem).Error; err != nil {
+		t.Fatalf("Failed to insert test item: %v", err)
+	}
+
+	r := gin.Default()
+	r.GET("/search", handler.SearchGet(db))
+
+	// Create a test request with a valid token and item name
+	req, err := http.NewRequest("GET", "/search?Authorization=validtoken&Item=Where", nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
+
+	// Perform the request using the test router
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+
+	// Verify the response code and body
+	assert.Equal(t, http.StatusOK, resp.Code)
+	assert.Equal(t, "[{\"ItemID\":1,\"User\":\"testuser\",\"ItemName\":\"Where\",\"LocID\":0,\"Count\":0}]", resp.Body.String())
+}
+func TestPingGet(t *testing.T) {
+	// Create a new HTTP request and response recorder
+	req, err := http.NewRequest("GET", "/ping", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	w := httptest.NewRecorder()
+
+	// Create a new Gin context from the response recorder
+	c, r := gin.CreateTestContext(w)
+	r.GET("/ping", handler.PingGet())
+	_ = c
+
+	// Perform the HTTP request and check the response status code
+	r.ServeHTTP(w, req)
+	if w.Code != http.StatusOK {
+		t.Errorf("unexpected status code: got %v want %v", w.Code, http.StatusOK)
+	}
+
+	// Check the response body
+	expectedBody := `{"hello":"Found me"}`
+	if w.Body.String() != expectedBody {
+		t.Errorf("unexpected response body: got %v want %v", w.Body.String(), expectedBody)
+	}
+}
+func TestDestroyContainer(t *testing.T) {
+	// Set up a new in-memory SQLite database for testing.
+	setupTestDB()
+
+	// Create a test user and container.
+	testUser := Account{Username: "testuser", Password: "password123", Token: "token123"}
+	testContainer := Container{Name: "Test Container", User: "testuser"}
+	if result := db.Create(&testUser); result.Error != nil {
+		t.Fatalf("failed to create test user: %v", result.Error)
+	}
+	if result := db.Create(&testContainer); result.Error != nil {
+		t.Fatalf("failed to create test container: %v", result.Error)
+	}
+
+	// Create a test item inside the test container.
+	testItem := Item{ItemName: "Test Item", Count: 5, LocID: testContainer.LocID, User: "testuser"}
+	if result := db.Create(&testItem); result.Error != nil {
+		t.Fatalf("failed to create test item: %v", result.Error)
+	}
+
+	// Call the function under test.
+	if err := handler.DestroyContainer(db, testContainer.LocID, "testuser"); err != nil {
+		t.Errorf("DestroyContainer returned an error: %v", err)
+	}
+
+	// Verify that the container and item were deleted from the database.
+	var count int64
+	if result := db.Table("containers").Where("LocID = ?", testContainer.LocID).Count(&count); result.Error != nil {
+		t.Fatalf("failed to query database: %v", result.Error)
+	}
+	if count != 0 {
+		t.Errorf("DestroyContainer did not delete the container from the database")
+	}
+	if result := db.Table("items").Where("LocID = ?", testContainer.LocID).Count(&count); result.Error != nil {
+		t.Fatalf("failed to query database: %v", result.Error)
+	}
+	if count != 0 {
+		t.Errorf("DestroyContainer did not delete the items from the database")
+	}
+}
+
+func TestIsValidToken(t *testing.T) {
+	setupTestDB()
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+
+	// Test with a valid token.
+	validToken := "Bearer validtoken"
+	username := handler.IsValidToken(validToken, db)
+	assert.Equal(t, "testuser", username)
+
+	// Test with an invalid token.
+	invalidToken := "Bearer invalidtoken"
+	username = handler.IsValidToken(invalidToken, db)
+	assert.Empty(t, username)
+
+	// Test with no token.
+	noToken := ""
+	username = handler.IsValidToken(noToken, db)
+	assert.Empty(t, username)
+}
+
+func TestComparePasswords(t *testing.T) {
+	password := []byte("password123")
+	hash, _ := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
+
+	match := handler.ComparePasswords(string(hash), password)
+	if !match {
+		t.Errorf("ComparePasswords failed: expected true but got false")
+	}
+
+	match = handler.ComparePasswords(string(hash), []byte("wrongpassword"))
+	if match {
+		t.Errorf("ComparePasswords failed: expected false but got true")
+	}
+}
+
 func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -733,6 +867,49 @@ func TestGetChildren(t *testing.T) {
 	result = handler.GetChildren(2, "", db)
 	if len(result) != 0 {
 		t.Errorf("Expected 0 children, but got %d", len(result))
+	}
+}
+func TestGetParent(t *testing.T) {
+	// Create a mock database.
+	setupTestDB()
+	// Insert a test container into the database.
+	container := Container{Name: "test-container", ParentID: 1, LocID: 123}
+	if err := db.Create(&container).Error; err != nil {
+		t.Fatalf("Failed to insert container: %v", err)
+	}
+
+	// Call the GetParent function with the test container's LocID.
+	name, parentID := handler.GetParent(db, 123)
+
+	// Check that the function returned the correct values.
+	if name != "test-container" {
+		t.Errorf("Expected name to be 'test-container', but got '%s'", name)
+	}
+	if parentID != 1 {
+		t.Errorf("Expected parentID to be 1, but got %d", parentID)
+	}
+
+}
+func TestGetMaxLocID(t *testing.T) {
+	// Create a mock database.
+	setupTestDB()
+	// Test for empty container
+	maxLocID := handler.GetMaxLocID(db)
+	if maxLocID != 0 {
+		t.Errorf("Expected maxLocID to be 0, but got %v", maxLocID)
+	}
+	// Create a new container with LocID 1
+	cont := Container{LocID: 1, Name: "Test Container", ParentID: 0, User: "testUser"}
+	db.Create(&cont)
+
+	// Create a new container with LocID 2
+	cont = Container{LocID: 2, Name: "Test Container", ParentID: 0, User: "testUser"}
+	db.Create(&cont)
+
+	// Test for non-empty container
+	maxLocID = handler.GetMaxLocID(db)
+	if maxLocID != 2 {
+		t.Errorf("Expected maxLocID to be 2, but got %v", maxLocID)
 	}
 }
 
@@ -864,145 +1041,6 @@ func TestContainerPut(t *testing.T) {
 		t.Errorf("Error retrieving updated container from database: %s", result.Error.Error())
 	} else if updatedContainer.ParentID != 1 {
 		t.Errorf("Container location was not updated correctly")
-	}
-}
-
-func TestDestroyContainer(t *testing.T) {
-	// Set up a new in-memory SQLite database for testing.
-	setupTestDB()
-
-	// Create a test user and container.
-	testUser := Account{Username: "testuser", Password: "password123", Token: "token123"}
-	testContainer := Container{Name: "Test Container", User: "testuser"}
-	if result := db.Create(&testUser); result.Error != nil {
-		t.Fatalf("failed to create test user: %v", result.Error)
-	}
-	if result := db.Create(&testContainer); result.Error != nil {
-		t.Fatalf("failed to create test container: %v", result.Error)
-	}
-
-	// Create a test item inside the test container.
-	testItem := Item{ItemName: "Test Item", Count: 5, LocID: testContainer.LocID, User: "testuser"}
-	if result := db.Create(&testItem); result.Error != nil {
-		t.Fatalf("failed to create test item: %v", result.Error)
-	}
-
-	// Call the function under test.
-	if err := handler.DestroyContainer(db, testContainer.LocID, "testuser"); err != nil {
-		t.Errorf("DestroyContainer returned an error: %v", err)
-	}
-
-	// Verify that the container and item were deleted from the database.
-	var count int64
-	if result := db.Table("containers").Where("LocID = ?", testContainer.LocID).Count(&count); result.Error != nil {
-		t.Fatalf("failed to query database: %v", result.Error)
-	}
-	if count != 0 {
-		t.Errorf("DestroyContainer did not delete the container from the database")
-	}
-	if result := db.Table("items").Where("LocID = ?", testContainer.LocID).Count(&count); result.Error != nil {
-		t.Fatalf("failed to query database: %v", result.Error)
-	}
-	if count != 0 {
-		t.Errorf("DestroyContainer did not delete the items from the database")
-	}
-}
-
-func TestSearchGet(t *testing.T) {
-	setupTestDB()
-
-	// Insert a test user with a valid token into the database.
-	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
-	if err := db.Create(&validTokenUser).Error; err != nil {
-		t.Fatalf("Failed to insert test user: %v", err)
-	}
-	// Insert a test item with a valid token into the database.
-	validItem := Item{ItemID: 1, User: "testuser", ItemName: "Where"}
-	if err := db.Create(&validItem).Error; err != nil {
-		t.Fatalf("Failed to insert test item: %v", err)
-	}
-
-	r := gin.Default()
-	r.GET("/search", handler.SearchGet(db))
-
-	// Create a test request with a valid token and item name
-	req, err := http.NewRequest("GET", "/search?Authorization=validtoken&Item=Where", nil)
-	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
-	}
-
-	// Perform the request using the test router
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-
-	// Verify the response code and body
-	assert.Equal(t, http.StatusOK, resp.Code)
-	assert.Equal(t, "[{\"ItemID\":1,\"User\":\"testuser\",\"ItemName\":\"Where\",\"LocID\":0,\"Count\":0}]", resp.Body.String())
-}
-
-func TestIsValidToken(t *testing.T) {
-	setupTestDB()
-
-	// Insert a test user with a valid token into the database.
-	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
-	if err := db.Create(&validTokenUser).Error; err != nil {
-		t.Fatalf("Failed to insert test user: %v", err)
-	}
-
-	// Test with a valid token.
-	validToken := "Bearer validtoken"
-	username := handler.IsValidToken(validToken, db)
-	assert.Equal(t, "testuser", username)
-
-	// Test with an invalid token.
-	invalidToken := "Bearer invalidtoken"
-	username = handler.IsValidToken(invalidToken, db)
-	assert.Empty(t, username)
-
-	// Test with no token.
-	noToken := ""
-	username = handler.IsValidToken(noToken, db)
-	assert.Empty(t, username)
-}
-
-func TestComparePasswords(t *testing.T) {
-	password := []byte("password123")
-	hash, _ := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
-
-	match := handler.ComparePasswords(string(hash), password)
-	if !match {
-		t.Errorf("ComparePasswords failed: expected true but got false")
-	}
-
-	match = handler.ComparePasswords(string(hash), []byte("wrongpassword"))
-	if match {
-		t.Errorf("ComparePasswords failed: expected false but got true")
-	}
-}
-
-func TestPingGet(t *testing.T) {
-	// Create a new HTTP request and response recorder
-	req, err := http.NewRequest("GET", "/ping", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	w := httptest.NewRecorder()
-
-	// Create a new Gin context from the response recorder
-	c, r := gin.CreateTestContext(w)
-	r.GET("/ping", handler.PingGet())
-	_ = c
-
-	// Perform the HTTP request and check the response status code
-	r.ServeHTTP(w, req)
-	if w.Code != http.StatusOK {
-		t.Errorf("unexpected status code: got %v want %v", w.Code, http.StatusOK)
-	}
-
-	// Check the response body
-	expectedBody := `{"hello":"Found me"}`
-	if w.Body.String() != expectedBody {
-		t.Errorf("unexpected response body: got %v want %v", w.Body.String(), expectedBody)
 	}
 }
 
