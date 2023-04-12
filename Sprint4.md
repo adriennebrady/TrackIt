@@ -34,6 +34,7 @@
   *  Created Unit test for NameGet
   *  Created Unit test for ContainersGet
   *  Created Unit test for ItemsGet
+  *  Created Unit test for InventoryPost
 * Israel Solano
   *  Created manual deletion of recently deleted items
   *  Created Unit test for manual deletion of recently deleted items
