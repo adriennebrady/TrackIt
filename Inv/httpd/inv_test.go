@@ -288,6 +288,7 @@ func TestLoginPost(t *testing.T) {
 	assert.NotEmpty(t, account2.Token)
 
 }
+
 func TestInventoryDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
