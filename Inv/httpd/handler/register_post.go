@@ -55,10 +55,25 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 			Token:    GenerateToken(),
 		}
 
-		var maxLocID int
-		if maxLocID = getMaxLocID(DB); maxLocID == -1 {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get max location ID"})
-			return
+
+
+		//check if container is empty
+		var maxLocID int64
+		mpty := false
+		var cont Container
+		if result := DB.Table("items").Where("container_id = ?", cont.LocID).Count(&maxLocID); result.Error != nil {
+			// Handle error
+			mpty = true
+			maxLocID = 0;
+		}
+
+		// Create a new container object with a unique LocID.
+		if mpty == false {
+			err := DB.Table("containers").Select("MAX(LocID)").Row().Scan(&maxLocID)
+			if err != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get max LocID"})
+				return
+			}
 		}
 
 		newContainer := Container{

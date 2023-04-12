@@ -136,6 +136,10 @@ func TestDeletedGet(t *testing.T) {
 
 }
 
+
+// ////////////////////* GOOD *////////////////////////////////
+
+
 func TestRegisterPost(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -284,8 +288,6 @@ func TestLoginPost(t *testing.T) {
 	assert.NotEmpty(t, account2.Token)
 
 }
-
-// ////////////////////* GOOD *////////////////////////////////
 func TestInventoryDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
