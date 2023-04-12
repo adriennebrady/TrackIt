@@ -122,14 +122,94 @@ func TestDeletedGet(t *testing.T) {
 }
 
 
+// ////////////////////* GOOD *////////////////////////////////
+
 func TestItemsGet(t *testing.T) {
+	// Set up the test database and server.
 	setupTestDB()
-	//todo:implement
+
+	Handler := handler.ItemsGet(db)
+	router := gin.Default()
+	router.GET("/items", Handler)
+
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+
+
+	parentContainer := Container{
+        Name:     "Parent",
+        ParentID: 0,
+        User: "testuser",
+		LocID: 1,
+    }
+
+	err = db.Create(&parentContainer).Error
+    if err != nil {
+        t.Fatalf("Failed to create parent container: %v", err)
+    }
+
+	 // Create some test containers.
+    Item1 := Item{
+        ItemName:     "Item1",
+        ItemID: 1,
+		LocID: 1,
+        User: "testuser",
+		Count: 1,
+    }
+    Item2 := Item{
+        ItemName:     "Item2",
+        ItemID: 2,
+		LocID: 1,
+        User: "testuser",
+		Count: 1,
+    }
+
+    err = db.Create(&Item1).Error
+    if err != nil {
+        t.Fatalf("Failed to create item1: %v", err)
+    }
+    err = db.Create(&Item2).Error
+    if err != nil {
+        t.Fatalf("Failed to create item2 1: %v", err)
+    }
+
+
+
+	// Create a test request with a valid token and item name
+	req, err := http.NewRequest("GET", "/items?container_id=1", nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
+	req.Header.Set("Authorization", "validtoken")
+
+	// Perform the request using the test router
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	assert.Equal(t, http.StatusOK, resp.Code)
+
+	var items []Item
+    err = json.Unmarshal(resp.Body.Bytes(), &items)
+    if err != nil {
+        t.Errorf("Failed to unmarshal response: %v", err)
+    }
+
+	if len(items) != 2 {
+        t.Errorf("Unexpected number of containers: got %v, want %v", len(items), 2)
+    }
+
+	if items[0].ItemName != "Item1" {
+        t.Errorf("Unexpected container name: got %v, want %v", items[0].ItemName, "Item1")
+    }
+	if items[1].ItemName != "Item2" {
+        t.Errorf("Unexpected container name: got %v, want %v", items[0].ItemName, "Item2")
+    }
 }
 
-
-
-// ////////////////////* GOOD *////////////////////////////////
 
 func TestContainersGet(t *testing.T) {
 	// Set up the test database and server.
