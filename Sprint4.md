@@ -32,6 +32,7 @@
   *  Fixed DeletedGet
   *  Created Unit test for DeletedGet
   *  Created Unit test for NameGet
+  *  Created Unit test for ContainersGet
 * Israel Solano
   *  Created manual deletion of recently deleted items
   *  Created Unit test for manual deletion of recently deleted items
