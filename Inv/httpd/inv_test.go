@@ -20,6 +20,18 @@ import (
 	"gorm.io/gorm"
 )
 
+func TestInventoryPut(t *testing.T) {
+	setupTestDB()
+	t.Errorf("Not implemented")
+	//todo: implement
+
+}
+func TestTreeGet(t *testing.T) {
+	setupTestDB()
+	t.Errorf("Not implemented")
+	//todo: implement
+
+}
 func TestAccountDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -65,19 +77,6 @@ func TestAccountDelete(t *testing.T) {
 	if result := db.Table("accounts").Where("username = ?", "test_user").First(&deletedUser); result.Error == nil {
 		t.Errorf("Expected user to be deleted from the database but found user: %v", deletedUser)
 	}
-
-}
-
-func TestInventoryPut(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-func TestTreeGet(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
 
 }
 
