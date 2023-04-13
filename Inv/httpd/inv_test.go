@@ -20,12 +20,6 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestInventoryPut(t *testing.T) {
-	setupTestDB()
-	t.Errorf("Not implemented")
-	//todo: implement
-
-}
 func TestAccountDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -113,6 +107,66 @@ func TestDeletedGet(t *testing.T) {
 
 
 // ////////////////////* GOOD *////////////////////////////////
+
+func TestInventoryPut(t *testing.T) {
+	// Set up the test database.
+	setupTestDB()
+
+	// Add some test data.
+	username := "testuser"
+	Cont := Container{
+		ParentID:   0,
+		User:     username,
+		Name: "Test Cont",
+		LocID:    1,
+	}
+	db.Create(&Cont)
+
+
+	// Test renaming the item.
+	requestBody := handler.InvRequest{
+		Type: "Rename",
+		ID:   1,
+		Name: "New Cont Name",
+	}
+	result := handler.ContainerPut(requestBody, db, username)
+	if result != nil {
+		t.Errorf("Unexpected error: %v", result)
+	}
+	var updatedItem Container
+	db.First(&updatedItem, "LocID = ? AND username = ?", 1, username)
+	if updatedItem.Name != "New Cont Name" {
+		t.Errorf("Item name was not updated correctly: expected '%s', got '%s'", "New Item Name", updatedItem.Name)
+	}
+
+	// Add some test data.
+	Cont2 := Container{
+		ParentID:   0,
+		User:     username,
+		Name: "Test Cont2",
+		LocID:    2,
+	}
+	db.Create(&Cont2)
+
+	// Test relocating the item.
+	requestBody = handler.InvRequest{
+		Type: "Relocate",
+		ID:   1,
+		Cont: 2,
+	}
+	result = handler.ContainerPut(requestBody, db, username)
+	if result != nil {
+		t.Errorf("Unexpected error: %v", result)
+	}
+	db.First(&updatedItem, "LocID = ? AND username = ?", 1, username)
+	if updatedItem.ParentID != 2 {
+		t.Errorf("Item location was not updated correctly: expected %d, got %d", 2, updatedItem.LocID)
+	}
+
+	// Clean up.
+	db.Unscoped().Delete(&Cont)
+	db.Unscoped().Delete(&Cont2)
+}
 
 func TestTreeGet(t *testing.T) {
 	// Set up the test database and server.
