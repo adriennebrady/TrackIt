@@ -35,6 +35,8 @@
   *  Created Unit test for ContainersGet
   *  Created Unit test for ItemsGet
   *  Created Unit test for InventoryPost
+  *  Recreated GetmaxLocId function
+  *  Fixed Unit test for GetmaxLocId function
 * Israel Solano
   *  Created manual deletion of recently deleted items
   *  Created Unit test for manual deletion of recently deleted items
