@@ -14,13 +14,13 @@ func PingGet() gin.HandlerFunc {
 	}
 }
 
-//TODO recently deleted page make get and delete handlers front end
 //TODO account deletion page front end
 //TODO treeGet for sidebar front end
 //TODO alternative list view front end
 
 //TODO solve tests/create tests for new functions - Tana
 
+//TODO recently deleted containers
 //TODO add item tags
 //TODO import/export inventories
 //TODO possible cards

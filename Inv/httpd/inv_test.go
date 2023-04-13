@@ -20,6 +20,18 @@ import (
 	"gorm.io/gorm"
 )
 
+func TestInventoryPut(t *testing.T) {
+	setupTestDB()
+	t.Errorf("Not implemented")
+	//todo: implement
+
+}
+func TestTreeGet(t *testing.T) {
+	setupTestDB()
+	t.Errorf("Not implemented")
+	//todo: implement
+
+}
 func TestAccountDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -30,27 +42,27 @@ func TestAccountDelete(t *testing.T) {
 
 	// Seed the database with a test user.
 	testUser := Account{
-		Username: "testuser",
+		Username: "test_user",
 		Password: handler.HashAndSalt([]byte("password")),
 	}
 	db.Table("accounts").Create(&testUser)
 
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.RegisterRequest{
-		Username:             "testuser",
+		Username:             "test_user",
 		Password:             "password",
 		PasswordConfirmation: "password",
 	}
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
-		t.Fatalf("failed to marshal request body: %v", err)
+		t.Fatalf(FTM, err)
 	}
 	req, err := http.NewRequest("DELETE", "/account", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
-		t.Fatalf("failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set(CT, "application/json")
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
@@ -67,20 +79,6 @@ func TestAccountDelete(t *testing.T) {
 	}
 
 }
-
-func TestInventoryPut(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-func TestTreeGet(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-
 
 func TestDeletedGet(t *testing.T) {
 	// Set up the test database and server.
@@ -107,7 +105,7 @@ func TestDeletedGet(t *testing.T) {
 	// Create a test request with a valid token and item name
 	req, err := http.NewRequest("GET", "/deleted?Authorization=validtoken", nil)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
 
 	// Perform the request using the test router
@@ -120,8 +118,11 @@ func TestDeletedGet(t *testing.T) {
 }
 
 // ////////////////////* GOOD *////////////////////////////////
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> faed771ce6061304f8b46921d135d4a74f8ddd60
 func TestGetMaxLocID(t *testing.T) {
 	// Create a mock database.
 	setupTestDB()
@@ -134,12 +135,19 @@ func TestGetMaxLocID(t *testing.T) {
 	cont := Container{LocID: 1, Name: "Test Container", ParentID: 0, User: "testUser"}
 	db.Create(&cont)
 
+<<<<<<< HEAD
+=======
+	// Create a new container with LocID 2
+	cont = Container{LocID: 0, Name: "Test Container", ParentID: 0, User: "testUser"}
+	db.Create(&cont)
+>>>>>>> faed771ce6061304f8b46921d135d4a74f8ddd60
 
 	// Test for non-empty container
 	maxLocID = handler.GetMaxLocID(db)
 	if maxLocID != 1 {
 		t.Errorf("Expected maxLocID to be 1, but got %v", maxLocID)
 	}
+<<<<<<< HEAD
 	
 	db.Delete(&cont)
 
@@ -148,6 +156,8 @@ func TestGetMaxLocID(t *testing.T) {
 	if maxLocID != 0 {
 		t.Errorf("Expected maxLocID to be 0, but got %v", maxLocID)
 	}
+=======
+>>>>>>> faed771ce6061304f8b46921d135d4a74f8ddd60
 }
 
 func TestInventoryPost(t *testing.T) {
@@ -166,28 +176,28 @@ func TestInventoryPost(t *testing.T) {
 
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.InvRequest{
-		Authorization:             "validtoken",
-		Kind:             "container",
-		ID: 1,
-		Cont: 0,
-		Name: "cont1",
-		Type: "",
-		Count: 0,
+		Authorization: "validtoken",
+		Kind:          "container",
+		ID:            1,
+		Cont:          0,
+		Name:          "cont1",
+		Type:          "",
+		Count:         0,
 	}
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
-		t.Fatalf("failed to marshal request body: %v", err)
+		t.Fatalf(FTM, err)
 	}
 	req, err := http.NewRequest("POST", "/inventory", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
-		t.Fatalf("failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set(CT, "application/json")
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
-	status := w.Code;
+	status := w.Code
 
 	// Check that the response has a 200 status code.
 	if status != http.StatusNoContent {
@@ -250,7 +260,7 @@ func TestItemsGet(t *testing.T) {
 	// Create a test request with a valid token and item name
 	req, err := http.NewRequest("GET", "/items?container_id=1", nil)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
 	req.Header.Set("Authorization", "validtoken")
 
@@ -328,7 +338,7 @@ func TestContainersGet(t *testing.T) {
 	// Create a test request with a valid token and item name
 	req, err := http.NewRequest("GET", "/containers?container_id=1", nil)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
 	req.Header.Set("Authorization", "validtoken")
 
@@ -383,7 +393,7 @@ func TestNameGet(t *testing.T) {
 	// Create a test request with a valid token and item name
 	req, err := http.NewRequest("GET", "/name?Container_id=2", nil)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
 	req.Header.Set("Authorization", "validtoken")
 
@@ -414,13 +424,13 @@ func TestRegisterPost(t *testing.T) {
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
-		t.Fatalf("failed to marshal request body: %v", err)
+		t.Fatalf(FTM, err)
 	}
 	req, err := http.NewRequest("POST", "/register", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
-		t.Fatalf("failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set(CT, "application/json")
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
@@ -471,13 +481,13 @@ func TestLoginPost(t *testing.T) {
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
-		t.Fatalf("failed to marshal request body: %v", err)
+		t.Fatalf(FTM, err)
 	}
 	req, err := http.NewRequest("POST", "/register", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
-		t.Fatalf("failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set(CT, "application/json")
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
@@ -516,13 +526,13 @@ func TestLoginPost(t *testing.T) {
 
 	reqBodyBytes2, err2 := json.Marshal(reqBody2)
 	if err2 != nil {
-		t.Fatalf("failed to marshal request body: %v", err2)
+		t.Fatalf(FTM, err2)
 	}
 	req2, err2 := http.NewRequest("POST", "/login", bytes.NewBuffer(reqBodyBytes2))
 	if err2 != nil {
-		t.Fatalf("failed to create request: %v", err2)
+		t.Fatalf(FTC, err2)
 	}
-	req2.Header.Set("Content-Type", "application/json")
+	req2.Header.Set(CT, "application/json")
 	w2 := httptest.NewRecorder()
 	router.ServeHTTP(w2, req2)
 
@@ -611,13 +621,13 @@ func TestInventoryDelete(t *testing.T) {
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
-		t.Fatalf("failed to marshal request body: %v", err)
+		t.Fatalf(FTM, err)
 	}
 	req, err := http.NewRequest("POST", "/delete", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
-		t.Fatalf("failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set(CT, "application/json")
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
@@ -683,13 +693,13 @@ func TestDeleteDelete(t *testing.T) {
 
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
-		t.Fatalf("failed to marshal request body: %v", err)
+		t.Fatalf(FTM, err)
 	}
 	req, err := http.NewRequest("DELETE", "/delete", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
-		t.Fatalf("failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set(CT, "application/json")
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
@@ -721,7 +731,7 @@ func TestSearchGet(t *testing.T) {
 	// Create a test request with a valid token and item name
 	req, err := http.NewRequest("GET", "/search?Authorization=validtoken&Item=Where", nil)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
 
 	// Perform the request using the test router
@@ -889,13 +899,13 @@ func TestAutoDeleteRecentlyDeletedItems(t *testing.T) {
 	}
 	reqBodyBytes, err := json.Marshal(reqBody)
 	if err != nil {
-		t.Fatalf("failed to marshal request body: %v", err)
+		t.Fatalf(FTM, err)
 	}
 	req, err := http.NewRequest("POST", "/delete", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
-		t.Fatalf("failed to create request: %v", err)
+		t.Fatalf(FTC, err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set(CT, "application/json")
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
@@ -1121,3 +1131,7 @@ func setupTestDB() {
 	db.AutoMigrate(&handler.RecentlyDeletedItem{})
 
 }
+
+var CT string = "Content-Type"
+var FTM string = "failed to marshal request body: %v"
+var FTC string = "failed to create request: %v"
