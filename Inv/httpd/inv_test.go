@@ -26,12 +26,6 @@ func TestInventoryPut(t *testing.T) {
 	//todo: implement
 
 }
-func TestTreeGet(t *testing.T) {
-	setupTestDB()
-	t.Errorf("Not implemented")
-	//todo: implement
-
-}
 func TestAccountDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -117,7 +111,81 @@ func TestDeletedGet(t *testing.T) {
 
 }
 
+
 // ////////////////////* GOOD *////////////////////////////////
+
+func TestTreeGet(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.TreeGet(db)
+	router := gin.Default()
+	router.GET("/tree", Handler)
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+
+	parentContainer := Container{
+		Name:     "Parent",
+		ParentID: 0,
+		User:     "testuser",
+		LocID:    1,
+	}
+
+	err = db.Create(&parentContainer).Error
+	if err != nil {
+		t.Fatalf("Failed to create parent container: %v", err)
+	}
+
+	childContainer := Container{
+		Name:     "child",
+		ParentID: 1,
+		User:     "testuser",
+		LocID:    2,
+	}
+
+	err = db.Create(&childContainer).Error
+	if err != nil {
+		t.Fatalf("Failed to create parent container: %v", err)
+	}
+
+	child2Container := Container{
+		Name:     "child2",
+		ParentID: 2,
+		User:     "testuser",
+		LocID:    3,
+	}
+
+	err = db.Create(&child2Container).Error
+	if err != nil {
+		t.Fatalf("Failed to create parent container: %v", err)
+	}
+
+	// Create a test request with a valid authorization token.
+	req, err := http.NewRequest("GET", "/tree", nil)
+	if err != nil {
+		t.Fatalf("Failed to create HTTP request: %v", err)
+	}
+	req.Header.Set("Authorization", "validtoken")
+
+	// Call the handler function and record the response.
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	// Verify that the response status code is 200 OK.
+	assert.Equal(t, http.StatusOK, rr.Code)
+
+	// Verify that the response body contains a JSON-encoded container tree.
+	var tree handler.ContainerTree
+	err = json.Unmarshal(rr.Body.Bytes(), &tree)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal response body: %v", err)
+	}
+
+}
 
 func TestGetMaxLocID(t *testing.T) {
 	// Create a mock database.
@@ -137,7 +205,7 @@ func TestGetMaxLocID(t *testing.T) {
 	if maxLocID != 1 {
 		t.Errorf("Expected maxLocID to be 1, but got %v", maxLocID)
 	}
-	
+
 	db.Delete(&cont)
 
 	// Test for non-empty container
