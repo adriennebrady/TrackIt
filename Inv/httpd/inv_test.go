@@ -30,14 +30,14 @@ func TestAccountDelete(t *testing.T) {
 
 	// Seed the database with a test user.
 	testUser := Account{
-		Username: "testuser",
+		Username: "test_user",
 		Password: handler.HashAndSalt([]byte("password")),
 	}
 	db.Table("accounts").Create(&testUser)
 
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.RegisterRequest{
-		Username:             "testuser",
+		Username:             "test_user",
 		Password:             "password",
 		PasswordConfirmation: "password",
 	}
@@ -117,6 +117,8 @@ func TestDeletedGet(t *testing.T) {
 	assert.Equal(t, "[{\"ItemID\":1,\"AccountID\":\"testuser\",\"DeletedItemName\":\"Where\",\"DeletedItemLocation\":1,\"DeletedItemCount\":1,\"Timestamp\": \""+validItem.Timestamp.String()+"}]", resp.Body.String())
 
 }
+
+// ////////////////////* GOOD *////////////////////////////////
 func TestGetMaxLocID(t *testing.T) {
 	// Create a mock database.
 	setupTestDB()
@@ -130,7 +132,7 @@ func TestGetMaxLocID(t *testing.T) {
 	db.Create(&cont)
 
 	// Create a new container with LocID 2
-	cont = Container{LocID: 2, Name: "Test Container", ParentID: 0, User: "testUser"}
+	cont = Container{LocID: 0, Name: "Test Container", ParentID: 0, User: "testUser"}
 	db.Create(&cont)
 
 	// Test for non-empty container
@@ -139,8 +141,6 @@ func TestGetMaxLocID(t *testing.T) {
 		t.Errorf("Expected maxLocID to be 2, but got %v", maxLocID)
 	}
 }
-
-// ////////////////////* GOOD *////////////////////////////////
 
 func TestInventoryPost(t *testing.T) {
 	// Set up the test database and server.
