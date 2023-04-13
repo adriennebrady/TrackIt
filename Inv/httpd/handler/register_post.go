@@ -120,22 +120,22 @@ func HashAndSalt(password []byte) string {
 
 func GetMaxLocID(DB *gorm.DB) int64 {
 
-	//check if container is empty
 	var maxLocID int64
-	empty := false
-	var cont Container
-	if result := DB.Table("items").Where("container_id = ?", cont.LocID).Count(&maxLocID); result.Error != nil {
-		// Handle error
-		empty = true
-		maxLocID = 0
+
+	// Check if the "containers" table is empty
+	var count int64
+	DB.Table("containers").Count(&count)
+	if count == 0 {
+		// Return 0 if the table is empty
+		return 0
 	}
 
-	// Find the max LocID
-	if !empty {
-		err := DB.Table("containers").Select("MAX(LocID)").Row().Scan(&maxLocID)
-		if err != nil {
-			return -1
-		}
+	// Retrieve the maximum "LocID" value
+	err := DB.Table("containers").Select("MAX(LocID)").Row().Scan(&maxLocID)
+	if err != nil {
+		return -1
 	}
+
 	return maxLocID
+
 }

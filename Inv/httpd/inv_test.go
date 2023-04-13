@@ -118,6 +118,10 @@ func TestDeletedGet(t *testing.T) {
 	assert.Equal(t, "[{\"ItemID\":1,\"AccountID\":\"testuser\",\"DeletedItemName\":\"Where\",\"DeletedItemLocation\":1,\"DeletedItemCount\":1,\"Timestamp\": \""+validItem.Timestamp.String()+"}]", resp.Body.String())
 
 }
+
+// ////////////////////* GOOD *////////////////////////////////
+
+
 func TestGetMaxLocID(t *testing.T) {
 	// Create a mock database.
 	setupTestDB()
@@ -130,19 +134,21 @@ func TestGetMaxLocID(t *testing.T) {
 	cont := Container{LocID: 1, Name: "Test Container", ParentID: 0, User: "testUser"}
 	db.Create(&cont)
 
-	// Create a new container with LocID 2
-	cont = Container{LocID: 2, Name: "Test Container", ParentID: 0, User: "testUser"}
-	db.Create(&cont)
 
 	// Test for non-empty container
 	maxLocID = handler.GetMaxLocID(db)
-	if maxLocID != 2 {
-		t.Errorf("Expected maxLocID to be 2, but got %v", maxLocID)
+	if maxLocID != 1 {
+		t.Errorf("Expected maxLocID to be 1, but got %v", maxLocID)
+	}
+	
+	db.Delete(&cont)
+
+	// Test for non-empty container
+	maxLocID = handler.GetMaxLocID(db)
+	if maxLocID != 0 {
+		t.Errorf("Expected maxLocID to be 0, but got %v", maxLocID)
 	}
 }
-
-// ////////////////////* GOOD *////////////////////////////////
-
 
 func TestInventoryPost(t *testing.T) {
 	// Set up the test database and server.
