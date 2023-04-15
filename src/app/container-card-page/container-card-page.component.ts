@@ -529,17 +529,30 @@ export class ContainerCardPageComponent implements OnInit {
     });
   }
 
-  openMoveDialog(index: number) {
-    const dialogRef = this.dialog.open(MoveDialogComponent, {
-      width: '300px',
-      data: { name: this.containers[index].Name },
-    });
+  openMoveDialog(index: number, type: string) {
+    if (type == 'container') {
+      const dialogRef = this.dialog.open(MoveDialogComponent, {
+        width: '300px',
+        data: { name: this.containers[index].Name },
+      });
 
-    dialogRef.afterClosed().subscribe((parentID: number) => {
-      if (parentID) {
-        this.moveContainer(index, parentID);
-      }
-    });
+      dialogRef.afterClosed().subscribe((parentID: number) => {
+        if (parentID) {
+          this.moveContainer(index, parentID);
+        }
+      });
+    } else if (type == 'item') {
+      const dialogRef = this.dialog.open(MoveDialogComponent, {
+        width: '300px',
+        data: { name: this.items[index].ItemName },
+      });
+
+      dialogRef.afterClosed().subscribe((parentID: number) => {
+        if (parentID) {
+          this.moveItem(index, parentID);
+        }
+      });
+    }
   }
 
   moveContainer(index: number, parentID: number) {
@@ -564,6 +577,34 @@ export class ContainerCardPageComponent implements OnInit {
 
     this.http
       .put('/api/inventory', updateContainer, httpOptions)
+      .subscribe((response) => {
+        console.log(response);
+        this.getInventory();
+      });
+  }
+
+  moveItem(index: number, parentID: number) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const updateItem = {
+      Authorization: authToken,
+      Kind: 'Item',
+      ID: this.items[index].ItemID,
+      Cont: parentID,
+      Name: this.items[index].ItemName,
+      Type: 'Relocate',
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: updateItem.Authorization,
+      }),
+    };
+
+    this.http
+      .put('/api/inventory', updateItem, httpOptions)
       .subscribe((response) => {
         console.log(response);
         this.getInventory();

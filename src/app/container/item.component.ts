@@ -46,4 +46,8 @@ export class ItemComponent {
   updateCount(index: number) {
     this.ContainerCardPage.openRecountDialog(index);
   }
+
+  moveContainer(index: number) {
+    this.ContainerCardPage.openMoveDialog(index, 'item');
+  }
 }

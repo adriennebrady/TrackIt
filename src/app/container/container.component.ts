@@ -39,6 +39,6 @@ export class ContainerComponent {
   }
 
   moveContainer(index: number) {
-    this.containerPage.openMoveDialog(index);
+    this.containerPage.openMoveDialog(index, 'container');
   }
 }
