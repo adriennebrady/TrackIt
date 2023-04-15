@@ -45,6 +45,7 @@ import { DeletedItemComponent } from './recently-deleted/deleted-item/deleted-it
 import { MoveDialogComponent } from './inventory-page/move-dialog/move-dialog.component';
 import { MoveMenuComponent } from './inventory-page/move-menu/move-menu.component';
 import { SettingsComponent } from './settings/settings.component';
+import { DeleteAccountDialogComponent } from './settings/delete-account-dialog/delete-account-dialog.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { SettingsComponent } from './settings/settings.component';
     MoveDialogComponent,
     MoveMenuComponent,
     SettingsComponent,
+    DeleteAccountDialogComponent,
   ],
   imports: [
     BrowserModule,
