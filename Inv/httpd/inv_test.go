@@ -68,6 +68,7 @@ func TestAccountDelete(t *testing.T) {
 
 }
 
+// ////////////////////* GOOD *////////////////////////////////
 func TestDeletedGet(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -91,22 +92,20 @@ func TestDeletedGet(t *testing.T) {
 	}
 
 	// Create a test request with a valid token and item name
-	req, err := http.NewRequest("GET", "/deleted?Authorization=validtoken", nil)
+	req, err := http.NewRequest("GET", "/deleted", nil)
 	if err != nil {
 		t.Fatalf(FTC, err)
 	}
+	req.Header.Set("Authorization", "validtoken")
 
 	// Perform the request using the test router
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
 	assert.Equal(t, http.StatusOK, resp.Code)
-	assert.Equal(t, "[{\"ItemID\":1,\"AccountID\":\"testuser\",\"DeletedItemName\":\"Where\",\"DeletedItemLocation\":1,\"DeletedItemCount\":1,\"Timestamp\": \""+validItem.Timestamp.String()+"}]", resp.Body.String())
+	assert.Equal(t, "[{\"ItemID\":1,\"AccountID\":\"testuser\",\"DeletedItemName\":\"Where\",\"DeletedItemLocation\":1,\"DeletedItemCount\":1,\"Timestamp\":\""+validItem.Timestamp.Format("2006-01-02T15:04:05.999999999-07:00")+"\"}]", resp.Body.String())
 
 }
-
-
-// ////////////////////* GOOD *////////////////////////////////
 
 func TestInventoryPut(t *testing.T) {
 	// Set up the test database.
@@ -115,13 +114,12 @@ func TestInventoryPut(t *testing.T) {
 	// Add some test data.
 	username := "testuser"
 	Cont := Container{
-		ParentID:   0,
+		ParentID: 0,
 		User:     username,
-		Name: "Test Cont",
+		Name:     "Test Cont",
 		LocID:    1,
 	}
 	db.Create(&Cont)
-
 
 	// Test renaming the item.
 	requestBody := handler.InvRequest{
@@ -141,9 +139,9 @@ func TestInventoryPut(t *testing.T) {
 
 	// Add some test data.
 	Cont2 := Container{
-		ParentID:   0,
+		ParentID: 0,
 		User:     username,
-		Name: "Test Cont2",
+		Name:     "Test Cont2",
 		LocID:    2,
 	}
 	db.Create(&Cont2)
@@ -252,7 +250,6 @@ func TestGetMaxLocID(t *testing.T) {
 	// Create a new container with LocID 1
 	cont := Container{LocID: 1, Name: "Test Container", ParentID: 0, User: "testUser"}
 	db.Create(&cont)
-
 
 	// Test for non-empty container
 	maxLocID = handler.GetMaxLocID(db)

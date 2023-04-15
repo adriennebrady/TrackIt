@@ -7,15 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
-type DeletedRequest struct {
-	Authorization string `json:"Authorization"`
-}
-
 func DeletedGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		requestBody := DeletedRequest{}
-		c.Bind(&requestBody)
-
 		// Verify that the token is valid.
 		token := c.GetHeader("Authorization")
 		// Verify that the token is valid.
