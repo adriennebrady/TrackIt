@@ -34,7 +34,11 @@ func TestAccountDelete(t *testing.T) {
 		Password: handler.HashAndSalt([]byte("password")),
 	}
 	db.Table("accounts").Create(&testUser)
-
+	// Create a new container with LocID 1
+	cont := Container{LocID: 1, Name: "Test Container", ParentID: 0, User: "test_user"}
+	db.Create(&cont) // Create a new container with LocID 1
+	cont = Container{LocID: 2, Name: "Test Container", ParentID: 0, User: "test_user"}
+	db.Create(&cont)
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.RegisterRequest{
 		Username:             "test_user",
@@ -55,9 +59,9 @@ func TestAccountDelete(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	// Check that the response has a 200 status code.
-	if status := w.Code; status != http.StatusOK {
+	if status := w.Code; status != http.StatusNoContent {
 		t.Errorf("Handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
+			status, http.StatusNoContent)
 	}
 
 	// Check that the test user was deleted from the database.

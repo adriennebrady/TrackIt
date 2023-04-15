@@ -7,6 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
+type RegisterRequest struct {
+	Username             string `json:"username"`
+	Password             string `json:"password"`
+	PasswordConfirmation string `json:"password_confirmation"`
+}
+
 func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Parse the request body.
@@ -38,6 +44,7 @@ func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 		// Start a new transaction to ensure atomicity.
 		tx := DB.Begin()
 
+		//Not sure what maxLoc does
 		if maxLocID := GetMaxLocID(DB); maxLocID == 0 {
 			if err := DestroyContainer(DB, existingUser.RootLoc, existingUser.Username); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -48,7 +55,7 @@ func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 
 		// Delete the account.
 		if result := DB.Table("accounts").Delete(&existingUser); result.Error != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Couldn't delete account"})
+			c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"error": "Couldn't delete account"})
 			tx.Rollback()
 			return
 		}
