@@ -18,6 +18,9 @@
   >
     <mat-icon>restore_from_trash</mat-icon>
   </button>
+  <button mat-icon-button [routerLink]="['/settings']" matTooltip="Settings">
+    <mat-icon>settings</mat-icon>
+  </button>
 </mat-toolbar>
 <div class="container">
   <button mat-icon-button (click)="sidenav.toggle()">

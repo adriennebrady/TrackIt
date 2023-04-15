@@ -1,6 +1,6 @@
 <body>
   <mat-toolbar class="navbar">
-    <span routerLink="/home" class="logo">TRACKIT</span>
+    <span class="logo" routerLink="/home">TRACKIT</span>
     <span class="spacer"></span>
     <button mat-button routerLink="/about">About</button>
     <button mat-button (click)="logOut()" routerLink="/home">Sign Out</button>
@@ -8,7 +8,7 @@
       mat-flat-button
       routerLink="/inventory"
       color="primary"
-      class="inventoryButton"
+      class="signUpButton"
     >
       My Inventory
     </button>
@@ -18,6 +18,9 @@
       matTooltip="Recently deleted items"
     >
       <mat-icon>restore_from_trash</mat-icon>
+    </button>
+    <button mat-icon-button [routerLink]="['/settings']" matTooltip="Settings">
+      <mat-icon>settings</mat-icon>
     </button>
   </mat-toolbar>
   <button mat-icon-button (click)="sidenav.toggle()">
