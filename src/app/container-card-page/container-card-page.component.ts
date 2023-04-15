@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 import { ItemDialogComponent } from '../inventory-page/item-dialog/item-dialog.component';
 import { NavigationEnd } from '@angular/router';
 import { RecountDialogComponent } from './recount-dialog/recount-dialog.component';
+import { MoveDialogComponent } from '../inventory-page/move-dialog/move-dialog.component';
 
 interface Item {
   ItemID: number;
@@ -526,5 +527,46 @@ export class ContainerCardPageComponent implements OnInit {
         this.updateItemCount(index, newCount);
       }
     });
+  }
+
+  openMoveDialog(index: number) {
+    const dialogRef = this.dialog.open(MoveDialogComponent, {
+      width: '300px',
+      data: { name: this.containers[index].Name },
+    });
+
+    dialogRef.afterClosed().subscribe((parentID: number) => {
+      if (parentID) {
+        this.moveContainer(index, parentID);
+      }
+    });
+  }
+
+  moveContainer(index: number, parentID: number) {
+    // Set the HTTP headers with the authorization token
+    const authToken: string = localStorage.getItem('token')!;
+
+    const updateContainer = {
+      Authorization: authToken,
+      Kind: 'Container',
+      ID: this.containers[index].LocID,
+      Cont: parentID,
+      Name: this.containers[index].Name,
+      Type: 'Relocate',
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: updateContainer.Authorization,
+      }),
+    };
+
+    this.http
+      .put('/api/inventory', updateContainer, httpOptions)
+      .subscribe((response) => {
+        console.log(response);
+        this.getInventory();
+      });
   }
 }
