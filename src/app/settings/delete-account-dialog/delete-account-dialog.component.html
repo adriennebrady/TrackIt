@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>Delete Account?</h1>
+<mat-dialog-content>
+  <p>Enter password to confirm.</p>
+  <form #form="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="password"
+        placeholder="Password"
+        name="password"
+        [(ngModel)]="data.password"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="password"
+        placeholder="Confirm Password"
+        name="confirmpass"
+        [(ngModel)]="data.confirmpass"
+        required
+      />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="cancelButton" (click)="cancel()">Cancel</button>
+  <span class="spacer"></span>
+  <button
+    mat-raised-button
+    color="primary"
+    class="renameButton"
+    [disabled]="!form.valid"
+    (click)="deleteAccount()"
+  >
+    Delete
+  </button>
+</mat-dialog-actions>

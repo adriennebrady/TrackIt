@@ -32,20 +32,24 @@
     </mat-sidenav>
     <mat-sidenav-content>
       <div class="inventoryHeading">
-        <h1>Recently Deleted</h1>
-        <p>Restore or permanently delete recently deleted items.</p>
+        <h1>Settings</h1>
+        <p>Change account settings or delete account.</p>
       </div>
-
-      <div *ngIf="items.length == 0" class="noItems">
-        No recently deleted items.
-      </div>
-
-      <div class="inventoryGrid">
-        <mat-grid-list cols="4" rowHeight="1:1">
-          <mat-grid-tile *ngFor="let item of items; index as i">
-            <app-deleted-item [item]="item" [index]="i"></app-deleted-item>
-          </mat-grid-tile>
-        </mat-grid-list>
+      <br />
+      <div class="settings-card">
+        <mat-card>
+          <mat-card-content
+            ><span class="deleteTitle">Delete Account</span>
+            <button
+              mat-mini-fab
+              color="warn"
+              class="deleteButton"
+              (click)="openConfirmDialog()"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-content>
+        </mat-card>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>

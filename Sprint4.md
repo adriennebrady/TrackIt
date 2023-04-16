@@ -3,6 +3,7 @@
 ## Detail work you've completed in Sprint 3
 
 ### Front-End
+
 * Adrienne Brady
   * Added new functionality to allow user to update the item count with a pop-up dialog
   * Added new functionality & increment/decrement buttons to allow user to quickly increase/decrease an item's count by 1
@@ -12,50 +13,61 @@
   * Created new sidebar navigation tree component w/buttons to directly navigate to any container card page
   * Added new sidebar functionality on the inventory page with a toggle button to hide/display the navigation tree
 
-
 * Sara Winner
   * Remove description from containers
   * Remove description field from pop-up dialog
-  * Update existing Cypress tests to succeed without container description 
+  * Update existing Cypress tests to succeed without container description
 
 ### Back-End
+
 * Tana Desir
-  *  Created Auto-deletion of recently deleted items after 30 days
-  *  Created Unit test for Auto-deletion of recently deleted items after 30 days
-  *  Fixed manual deletion of recently deleted items
-  *  Fixed unit test for manual deletion of recently deleted items
-  *  Changed recently deleted to include 'location' and 'Count' to help when restoring a recently deleted item
-  *  Edited RegisterPost to check if container is empty
-  *  Created Unit test for registerPost
-  *  Created Unit test for loginPost
-  *  Created Unit test for inventoryDelete
-  *  Fixed DeletedGet
-  *  Created Unit test for DeletedGet
-  *  Created Unit test for NameGet
-  *  Created Unit test for ContainersGet
-  *  Created Unit test for ItemsGet
-  *  Created Unit test for InventoryPost
-  *  Recreated GetmaxLocId function
-  *  Fixed Unit test for GetmaxLocId function
+  * Created Auto-deletion of recently deleted items after 30 days
+  * Created Unit test for Auto-deletion of recently deleted items after 30 days
+  * Fixed manual deletion of recently deleted items
+  * Fixed unit test for manual deletion of recently deleted items
+  * Changed recently deleted to include 'location' and 'Count' to help when restoring a recently deleted item
+  * Edited RegisterPost to check if container is empty
+  * Created Unit test for registerPost
+  * Created Unit test for loginPost
+  * Created Unit test for inventoryDelete
+  * Fixed DeletedGet
+  * Created Unit test for DeletedGet
+  * Created Unit test for NameGet
+  * Created Unit test for ContainersGet
+  * Created Unit test for ItemsGet
+  * Created Unit test for InventoryPost
+  * Recreated GetMaxLocId function
+  * Fixed Unit test for GetMaxLocId function
+  * Created Unit test for InventoryPut
 * Israel Solano
-  *  Created manual deletion of recently deleted items
-  *  Created Unit test for manual deletion of recently deleted items
-  *  Split InventoryGet into ItemGet and ContainerGet
-  *  Fix Get handler for recently deleted items
-  *  Update unittests
-  *  Update handler for getting container name that recursively adds parent containers to path
-  *  Optimize invdelete, invput, and invpost handlers with switches (and put tests)
-  *  Created a handler for getting the user's tree of containers
-  *  Created a function that returns the children inside a container
-  *  Created a unit test for getChildren
+  * Created manual deletion of recently deleted items
+  * Created Unit test for manual deletion of recently deleted items
+  * Split InventoryGet into ItemGet and ContainerGet
+  * Fix Get handler for recently deleted items
+  * Update unit tests
+  * Update handler for getting container name that recursively adds parent containers to path
+  * Optimize invdelete, invput, and invpost handlers with switches (and put tests)
+  * Created a handler for getting the user's tree of containers
+  * Created a function that returns the children inside a container
+  * Created a unit test for getChildren
+  * Set trusted proxies
+  * Compartmentalized GetMaxLocID and fixed issues
+  * Created test for GetMaxLocID
+  * Created function for getting a container's parent
+  * Created testGetParent
+
 <p>&nbsp;</p>
 
 ## List frontend unit and Cypress tests
+
 * (List here)
+
 <p>&nbsp;</p>
 
 ## List backend unit tests
+
 * (List here)
+
 <p>&nbsp;</p>
 
-## Show updated documentation for your backend API 
+## Show updated documentation for your backend API

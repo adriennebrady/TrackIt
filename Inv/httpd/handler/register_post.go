@@ -20,12 +20,6 @@ import (
 	        "fmt"
 	        "io"*/)
 
-type RegisterRequest struct {
-	Username             string `json:"username"`
-	Password             string `json:"password"`
-	PasswordConfirmation string `json:"password_confirmation"`
-}
-
 func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Parse the request body.

@@ -37,4 +37,8 @@ export class ContainerComponent {
   renameContainer(index: number) {
     this.containerPage.openRenameDialog(index, 'container');
   }
+
+  moveContainer(index: number) {
+    this.containerPage.openMoveDialog(index, 'container');
+  }
 }

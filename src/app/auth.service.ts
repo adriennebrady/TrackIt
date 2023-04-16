@@ -38,6 +38,7 @@ export class AuthService {
         localStorage.setItem('token', this.token);
         this.rootloc = response.LocID;
         localStorage.setItem('rootloc', this.rootloc.toString());
+        localStorage.setItem('user', user.username);
         return true;
       })
     );
@@ -50,6 +51,7 @@ export class AuthService {
         localStorage.setItem('token', this.token);
         this.rootloc = response.LocID;
         localStorage.setItem('rootloc', this.rootloc.toString());
+        localStorage.setItem('user', user.username);
         if (this.redirectUrl) {
           this.router.navigate([this.redirectUrl]);
         }
@@ -66,6 +68,7 @@ export class AuthService {
     this.isLoggedIn = false;
     localStorage.removeItem('token');
     localStorage.removeItem('rootloc');
+    localStorage.removeItem('user');
     this.token = '';
     this.rootloc = -1;
   }

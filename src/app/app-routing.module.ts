@@ -10,6 +10,7 @@ import { InventoryPageComponent } from './inventory-page/inventory-page.componen
 import { ContainerCardPageComponent } from './container-card-page/container-card-page.component';
 import { SearchComponent } from './search/search.component';
 import { RecentlyDeletedComponent } from './recently-deleted/recently-deleted.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, title: 'TrackIt | Home' },
@@ -47,6 +48,12 @@ const routes: Routes = [
     path: 'recentlyDeleted',
     component: RecentlyDeletedComponent,
     title: 'TrackIt | Recently Deleted',
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    title: 'TrackIt | Settings',
     canActivate: [AuthGuard],
   },
 ];
