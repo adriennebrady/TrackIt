@@ -66,7 +66,48 @@
 
 ## List backend unit tests
 
-* (List here)
+* #### Sprint 4
+  * TestAccountDelete
+  * TestDeletedGet
+  * TestInventoryPut
+  * TestTreeGet
+  * TestGetMaxLocID
+  * TestInventoryPost
+  * TestItemsGet
+  * TestContainersGet
+  * TestNameGet
+  * TestRegisterPost
+  * TestLoginPost
+  * TestInventoryDelete
+  * TestDeleteDelete
+  * TestAutoDeleteRecentlyDeletedItems
+  * TestGetChildren
+  * TestGetParent
+
+* #### Sprint 3
+  * TestDeleteItem
+  * TestItemPut
+  * TestContainerPut
+  * TestDestroyContainer
+  * TestInventoryGet
+  * TestSearchGet
+  * TestIsValidToken
+  * TestComparePasswords
+  * TestPingGet
+  * TestGenerateToken
+  * TestHashAndSalt
+  
+* #### Sprint 2
+  * TestAdd
+  * TestGetAll
+  * TestRename
+  * TestRelocate
+  * TestDelete
+  * TestAddContainer
+  * TestTraverseContainer
+  * TestRenameContainer
+  * TestRelocateContainer
+  * TestDeleteContainer
 
 <p>&nbsp;</p>
 
