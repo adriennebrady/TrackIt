@@ -29,15 +29,15 @@ func TestAccountDelete(t *testing.T) {
 	router.DELETE("/account", Handler)
 
 	// Seed the database with a test user.
-	testUser := Account{
-		Username: "test_user",
-		Password: handler.HashAndSalt([]byte("password")),
+	testuser := Account{Username: "testuser", Password: "password", Token: "validtoken"}
+	if err := db.Create(&testuser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
 	}
-	db.Table("accounts").Create(&testUser)
+
 
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.RegisterRequest{
-		Username:             "test_user",
+		Username:             "testuser",
 		Password:             "password",
 		PasswordConfirmation: "password",
 	}
@@ -1055,6 +1055,7 @@ func TestGetChildren(t *testing.T) {
 		t.Errorf("Expected 0 children, but got %d", len(result))
 	}
 }
+
 func TestGetParent(t *testing.T) {
 	// Create a mock database.
 	setupTestDB()
