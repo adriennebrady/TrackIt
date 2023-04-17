@@ -29,11 +29,23 @@ func TestAccountDelete(t *testing.T) {
 	router.DELETE("/account", Handler)
 
 	// Seed the database with a test user.
-	testuser := Account{Username: "testuser", Password: "password", Token: "validtoken"}
-	if err := db.Create(&testuser).Error; err != nil {
-		t.Fatalf("Failed to insert test user: %v", err)
+	testuser := Account{
+		Username: "testuser",
+		Password: handler.HashAndSalt([]byte("password")),
+		RootLoc:  2,
 	}
 
+	if err := db.Table("accounts").Create(&testuser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %+v", err)
+
+	}
+	Cont := Container{
+		ParentID: 0,
+		User:     "testuser",
+		Name:     "Test Cont",
+		LocID:    2,
+	}
+	db.Create(&Cont)
 
 	// Call the API endpoint to trigger auto-delete.
 	reqBody := handler.RegisterRequest{
@@ -62,7 +74,7 @@ func TestAccountDelete(t *testing.T) {
 
 	// Check that the test user was deleted from the database.
 	var deletedUser Account
-	if result := db.Table("accounts").Where("username = ?", "test_user").First(&deletedUser); result.Error == nil {
+	if result := db.Table("accounts").Where("username = ?", "testuser").First(&deletedUser); result.Error == nil {
 		t.Errorf("Expected user to be deleted from the database but found user: %v", deletedUser)
 	}
 
