@@ -157,6 +157,33 @@ This API starts by checking the user's token using the IsValidToken function. If
 
 ---------------------
 
+### &ndash; Delete Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Delete Get Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+
 ### &ndash; Inventory Delete Request
 
 * ####  &emsp; Description:
@@ -170,7 +197,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Functionality:
 
 ---------------------
-### &ndash; Inventory Delete Request
+### &ndash; Inventory Post Request
 
 * ####  &emsp; Description:
 
@@ -183,7 +210,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Functionality:
 
 ---------------------
-### &ndash; Inventory Delete Request
+### &ndash; Inventory Put Request
 
 * ####  &emsp; Description:
 
@@ -196,7 +223,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Functionality:
 
 ---------------------
-### &ndash; Inventory Delete Request
+### &ndash; Items Get Request
 
 * ####  &emsp; Description:
 
@@ -209,7 +236,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Functionality:
 
 ---------------------
-### &ndash; Inventory Delete Request
+### &ndash; Login Post Request
 
 * ####  &emsp; Description:
 
@@ -222,7 +249,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Functionality:
 
 ---------------------
-### &ndash; Inventory Delete Request
+### &ndash; Name Get Request
 
 * ####  &emsp; Description:
 
@@ -235,7 +262,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Functionality:
 
 ---------------------
-### &ndash; Inventory Delete Request
+### &ndash; Ping Get Request
 
 * ####  &emsp; Description:
 
@@ -248,7 +275,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Functionality:
 
 ---------------------
-### &ndash; Inventory Delete Request
+### &ndash; Register Post Request
 
 * ####  &emsp; Description:
 
@@ -261,7 +288,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Functionality:
 
 ---------------------
-### &ndash; Inventory Delete Request
+### &ndash; Search Get Request
 
 * ####  &emsp; Description:
 
@@ -274,7 +301,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Functionality:
 
 ---------------------
-### &ndash; Inventory Delete Request
+### &ndash; Tree Get Request
 
 * ####  &emsp; Description:
 
@@ -285,31 +312,4 @@ This API starts by checking the user's token using the IsValidToken function. If
 * ####  &emsp; Response:
 
 * ####  &emsp; Functionality:
-
----------------------
-### &ndash; Inventory Delete Request
-
-* ####  &emsp; Description:
-
-* ####  &emsp; Request:
-
-* ####  &emsp; Errors:
-
-* ####  &emsp; Response:
-
-* ####  &emsp; Functionality:
-
----------------------
-### &ndash; Inventory Delete Request
-
-* ####  &emsp; Description:
-
-* ####  &emsp; Request:
-
-* ####  &emsp; Errors:
-
-* ####  &emsp; Response:
-
-* ####  &emsp; Functionality:
-
 
