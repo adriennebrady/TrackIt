@@ -112,3 +112,204 @@
 <p>&nbsp;</p>
 
 ## Show updated documentation for your backend API
+
+### &ndash; Account Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+
+### &ndash; Container Get Request
+
+* ####  &emsp; Description:
+This API provides functionality for getting all the containers that belong to a user and have a specified container ID as their parent. It validates the user's authorization token, the container ID, and checks if the container belongs to the user.
+
+* ####  &emsp; Request:
+This API requires a GET request with the following parameters:
+
+  1. Authorization header: A valid user token is required to access this endpoint.
+  2. container_id: An integer parameter that specifies the container ID.
+
+* ####  &emsp; Errors:
+This API may return the following errors:
+
+  1. 401 Unauthorized: The user's token is invalid or has expired.
+  2, 400 Bad Request: The container ID parameter is missing or not an integer.
+  3. 401 Unauthorized: The container does not belong to the user.
+  4. 500 Internal Server Error: The server encountered an unexpected error while processing the   request.
+
+* ####  &emsp; Response:
+This API returns a JSON response with the following fields:
+
+  1. container_id: The ID of the container that was requested.
+  2. containers: An array of containers that belong to the user and have the specified container ID as their parent.
+
+* ####  &emsp; Functionality:
+This API starts by checking the user's token using the IsValidToken function. If the token is invalid, it returns an error. It then checks if the container ID is valid and belongs to the user. If the container does not belong to the user, it returns an error. Finally, it retrieves all the containers that have the requested container as their parent and returns them as a JSON response.
+
+---------------------
+
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+---------------------
+### &ndash; Inventory Delete Request
+
+* ####  &emsp; Description:
+
+* ####  &emsp; Request:
+
+* ####  &emsp; Errors:
+
+* ####  &emsp; Response:
+
+* ####  &emsp; Functionality:
+
+
