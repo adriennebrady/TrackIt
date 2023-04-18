@@ -30,6 +30,7 @@
   * Update existing Cypress tests to succeed without container description
 
 ### Back-End
+
 * New additions
   * Tests for new functions
   * Handler for getting the user's tree of containers
@@ -61,7 +62,8 @@
 
 ## List backend unit tests
 
-* #### Sprint 4
+* ### Sprint 4
+  
   * TestAccountDelete
   * TestDeletedGet
   * TestInventoryPut
@@ -79,7 +81,8 @@
   * TestGetChildren
   * TestGetParent
 
-* #### Sprint 3
+* ### Sprint 3
+  
   * TestDeleteItem
   * TestItemPut
   * TestContainerPut
@@ -93,6 +96,7 @@
   * TestHashAndSalt
   
 * #### Sprint 2
+  
   * TestAdd
   * TestGetAll
   * TestRename
@@ -110,30 +114,33 @@
 
 ### &ndash; Account Delete Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
 
 ### &ndash; Container Get Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
+
 This API provides functionality for getting all the containers that belong to a user and have a specified container ID as their parent. It validates the user's authorization token, the container ID, and checks if the container belongs to the user.
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
+
 This API requires a GET request with the following parameters:
 
   1. Authorization header: A valid user token is required to access this endpoint.
   2. container_id: An integer parameter that specifies the container ID.
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
+
 This API may return the following errors:
 
   1. 401 Unauthorized: The user's token is invalid or has expired.
@@ -141,170 +148,181 @@ This API may return the following errors:
   3. 401 Unauthorized: The container does not belong to the user.
   4. 500 Internal Server Error: The server encountered an unexpected error while processing the   request.
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
+
 This API returns a JSON response with the following fields:
 
   1. container_id: The ID of the container that was requested.
   2. containers: An array of containers that belong to the user and have the specified container ID as their parent.
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
+
 This API starts by checking the user's token using the IsValidToken function. If the token is invalid, it returns an error. It then checks if the container ID is valid and belongs to the user. If the container does not belong to the user, it returns an error. Finally, it retrieves all the containers that have the requested container as their parent and returns them as a JSON response.
 
 ---------------------
 
 ### &ndash; Delete Delete Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Delete Get Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
 
 ### &ndash; Inventory Delete Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Inventory Post Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Inventory Put Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Items Get Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Login Post Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Name Get Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Ping Get Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Register Post Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Search Get Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
+* ####  &emsp; Functionality
 
 ---------------------
+
 ### &ndash; Tree Get Request
 
-* ####  &emsp; Description:
+* ####  &emsp; Description
 
-* ####  &emsp; Request:
+* ####  &emsp; Request
 
-* ####  &emsp; Errors:
+* ####  &emsp; Errors
 
-* ####  &emsp; Response:
+* ####  &emsp; Response
 
-* ####  &emsp; Functionality:
-
+* ####  &emsp; Functionality
