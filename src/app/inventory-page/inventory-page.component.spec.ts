@@ -1,5 +1,6 @@
 import { InventoryPageComponent } from './inventory-page.component';
 import { ContainerComponent } from '../container/container.component';
+import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -19,6 +20,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
 
 describe('InventoryPageComponent', () => {
   let component: InventoryPageComponent;
@@ -26,7 +29,7 @@ describe('InventoryPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InventoryPageComponent, ContainerComponent ],
+      declarations: [ InventoryPageComponent, ContainerComponent, SidebarNavComponent ],
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
@@ -40,7 +43,10 @@ describe('InventoryPageComponent', () => {
         MatMenuModule,
         MatDividerModule,
         FormsModule,
-        BrowserAnimationsModule ],
+        BrowserAnimationsModule,
+        MatSidenavModule,
+        MatTreeModule
+      ],
       providers: [
         { provide: MatDialog, useValue: {} },
         InventoryPageComponent
