@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../auth.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -18,6 +19,7 @@ describe('AboutComponent', () => {
         MatToolbarModule,
         MatButtonModule,
         HttpClientTestingModule,
+        MatIconModule
       ],
       providers: [AuthService],
     }).compileComponents();
@@ -40,7 +42,7 @@ describe('AboutComponent', () => {
     expect(fixture.nativeElement.querySelector('.logo').textContent).toContain(
       'TRACKIT'
     );
-    expect(fixture.nativeElement.querySelectorAll('button').length).toBe(3);
+    expect(fixture.nativeElement.querySelectorAll('button').length).toBe(5);
     expect(
       fixture.nativeElement.querySelector('.signUpButton').textContent
     ).toContain('My Inventory');
