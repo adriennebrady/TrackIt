@@ -28,6 +28,15 @@
   * Remove description from containers
   * Remove description field from pop-up dialog
   * Update existing Cypress tests to succeed without container description
+  * Fixed the following Jasmine unit test failures due to software updates:
+    * MoveMenuComponent—should create
+    * SidebarNavComponent—should create
+    * DeletedItemComponent—should create
+    * RecentlyDeletedComponent—should create
+    * RecountDialogComponent—should create
+    * SettingsComponent—should create
+    * DeleteAccountDialogComponent—should create
+    * AboutComponent—should display the correct content when user is logged in
 
 ### Back-End
 
