@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchComponent } from './search.component';
+import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
+
 import { RouterTestingModule } from "@angular/router/testing";
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -19,7 +23,7 @@ describe('SearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SearchComponent ],
+      declarations: [ SearchComponent, SidebarNavComponent ],
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
@@ -29,7 +33,9 @@ describe('SearchComponent', () => {
         MatIconModule,
         FormsModule,
         MatInputModule,
-        MatGridListModule
+        MatGridListModule,
+        MatSidenavModule,
+        MatTreeModule
       ]
     })
     .compileComponents();
@@ -45,7 +51,7 @@ describe('SearchComponent', () => {
 
   it('should display the correct navigation', () => {
     expect(fixture.nativeElement.querySelector('.logo').textContent).toContain('TRACKIT');
-    expect(fixture.nativeElement.querySelector('.inventoryButton').textContent).toContain('My Inventory');
+    expect(fixture.nativeElement.querySelector('.signUpButton').textContent).toContain('My Inventory');
   });
 
   it('should display the correct page title', () => {
