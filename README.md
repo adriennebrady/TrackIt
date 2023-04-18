@@ -17,14 +17,19 @@ Users will be able to put tags on an item, which allow groups of items to appear
 **Back End**: Tana Desir  
 **Back End**: Israel Solano
 
-## Development server
+## These instructions are for Windows 10/11
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Prerequisites for running end-to-end tests:
+Latest stable version of Node.js https://nodejs.org/en/
+Angular CLI npm install -g @angular/cli
+Latest stable version of golang
 
-## Running unit tests
+git clone https://github.com/evaeia/TrackIt.git
+cd Trackit
+go run Inv/httpd/main.go
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+In another terminal for the front end
+cd Trackit
+ng serve
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Open browser to http://localhost:4200/
