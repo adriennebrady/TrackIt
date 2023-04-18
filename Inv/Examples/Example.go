@@ -67,45 +67,64 @@ func getAlbumByID(c *gin.Context) {
 }
 
 /*
-func TestInventoryDelete(t *testing.T) {
-	setupTestDB()
 
-	//todo: implement
-
-}
-func TestInventoryPut(t *testing.T) {
-	setupTestDB()
-
-	//todo: implement
-
-}
-
-func TestLoginPost(t *testing.T) {
-	//todo: implement
-}
-
-func TestRegisterPost(t *testing.T) {
-
-	setupTestDB()
-	//todo: implement
-}
 func TestAccountDelete(t *testing.T) {
+	// Set up the test database and server.
 	setupTestDB()
 
-	//todo: implement
+	Handler := handler.AccountDelete(db)
+	router := gin.Default()
+	router.DELETE("/account", Handler)
 
-}
+	// Seed the database with a test user.
+	testuser := Account{
+		Username: "testuser",
+		Password: handler.HashAndSalt([]byte("password")),
+		RootLoc:  2,
+	}
 
-func TestInventoryPost(t *testing.T) {
-	setupTestDB()
+	if err := db.Table("accounts").Create(&testuser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %+v", err)
 
-	r := gin.Default()
-	r.POST("/inventory", handler.InventoryPost(db))
-	//todo: implement
+	}
+	Cont := Container{
+		ParentID: 0,
+		User:     "testuser",
+		Name:     "Test Cont",
+		LocID:    2,
+	}
+	db.Create(&Cont)
 
-}
-func TestNameGet(t *testing.T) {
-	//todo: implement
+	// Call the API endpoint to trigger auto-delete.
+	reqBody := handler.RegisterRequest{
+		Username:             "testuser",
+		Password:             "password",
+		PasswordConfirmation: "password",
+	}
+
+	reqBodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf(FTM, err)
+	}
+	req, err := http.NewRequest("DELETE", "/account", bytes.NewBuffer(reqBodyBytes))
+	if err != nil {
+		t.Fatalf(FTC, err)
+	}
+	req.Header.Set(CT, "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	// Check that the response has a 200 status code.
+	if status := w.Code; status != http.StatusNoContent {
+		t.Errorf("Handler returned wrong status code: got %v want %v",
+			status, http.StatusNoContent)
+	}
+
+	// Check that the test user was deleted from the database.
+	var deletedUser Account
+	if result := db.Table("accounts").Where("username = ?", "testuser").First(&deletedUser); result.Error == nil {
+		t.Errorf("Expected user to be deleted from the database but found user: %v", deletedUser)
+	}
 
 }
 */
