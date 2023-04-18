@@ -1,5 +1,6 @@
 import { ContainerCardPageComponent } from './container-card-page.component';
 import { ContainerComponent } from '../container/container.component';
+import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,6 +18,8 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
 
 describe('ContainerCardPageComponent', () => {
   let component: ContainerCardPageComponent;
@@ -24,7 +27,7 @@ describe('ContainerCardPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ContainerCardPageComponent, ContainerComponent ],
+      declarations: [ ContainerCardPageComponent, ContainerComponent, SidebarNavComponent ],
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
@@ -36,7 +39,9 @@ describe('ContainerCardPageComponent', () => {
         FormsModule,
         MatInputModule,
         MatFormFieldModule,
-        MatGridListModule
+        MatGridListModule,
+        MatSidenavModule,
+        MatTreeModule
        ],
       providers: [
         { provide: MatDialog, useValue: {} },
@@ -59,7 +64,7 @@ describe('ContainerCardPageComponent', () => {
 
   it('should display the correct navigation', () => {
     expect(fixture.nativeElement.querySelector('.logo').textContent).toContain('TRACKIT');
-    expect(fixture.nativeElement.querySelector('.inventoryButton').textContent).toContain('My Inventory');
+    expect(fixture.nativeElement.querySelector('.signUpButton').textContent).toContain('My Inventory');
   });
 
   it('should display the correct page title', () => {
