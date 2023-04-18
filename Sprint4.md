@@ -31,41 +31,23 @@
 
 ### Back-End
 
-* Tana Desir
-  * Created Auto-deletion of recently deleted items after 30 days
-  * Created Unit test for Auto-deletion of recently deleted items after 30 days
-  * Fixed manual deletion of recently deleted items
-  * Fixed unit test for manual deletion of recently deleted items
-  * Changed recently deleted to include 'location' and 'Count' to help when restoring a recently deleted item
-  * Edited RegisterPost to check if container is empty
-  * Created Unit test for registerPost
-  * Created Unit test for loginPost
-  * Created Unit test for inventoryDelete
-  * Fixed DeletedGet
-  * Created Unit test for DeletedGet
-  * Created Unit test for NameGet
-  * Created Unit test for ContainersGet
-  * Created Unit test for ItemsGet
-  * Created Unit test for InventoryPost
-  * Recreated GetMaxLocId function
-  * Fixed Unit test for GetMaxLocId function
-  * Created Unit test for InventoryPut
-* Israel Solano
-  * Created manual deletion of recently deleted items
-  * Created Unit test for manual deletion of recently deleted items
-  * Split InventoryGet into ItemGet and ContainerGet
-  * Fix Get handler for recently deleted items
-  * Update unit tests
-  * Update handler for getting container name that recursively adds parent containers to path
-  * Optimize invdelete, invput, and invpost handlers with switches (and put tests)
-  * Created a handler for getting the user's tree of containers
-  * Created a function that returns the children inside a container
-  * Created a unit test for getChildren
-  * Set trusted proxies
-  * Compartmentalized GetMaxLocID and fixed issues
-  * Created test for GetMaxLocID
-  * Created function for getting a container's parent
-  * Created testGetParent
+* Created tests for new functions
+* Created a handler for getting the user's tree of containers
+* Created a function that returns the children inside a container
+* Created function for getting a container's parent
+* Created function that returns the highest LocID in database for handlers
+* Created manual deletion of recently deleted items
+* Created Auto-deletion of recently deleted items after 30 days
+* Fixed unit tests past issues for backend changes
+* Fixed DeletedGet
+* Fixed Get handler for recently deleted items
+* Fixed manual deletion of recently deleted items
+* Fixed handler for getting container name that recursively adds parent containers to path
+* Updated recently deleted to include 'location' and 'Count' to help when restoring a recently deleted item
+* Updated RegisterPost to check if container is empty
+* Split InventoryGet into ItemGet and ContainerGet
+* Optimized invdelete, invput, and invpost handlers with switches (and put tests)
+* Set trusted proxies
 
 <p>&nbsp;</p>
 
