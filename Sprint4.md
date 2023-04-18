@@ -37,6 +37,10 @@
     * SettingsComponent—should create
     * DeleteAccountDialogComponent—should create
     * AboutComponent—should display the correct content when user is logged in
+    * MoveDialogComponent—should create
+    * ContainerCardPageComponent
+    * InventoryPageComponent
+    * SearchComponent
 
 ### Back-End
 
