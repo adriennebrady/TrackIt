@@ -19,17 +19,20 @@ Users will be able to put tags on an item, which allow groups of items to appear
 
 ## These instructions are for Windows 10/11
 
-Prerequisites for running end-to-end tests:
-Latest stable version of Node.js https://nodejs.org/en/
-Angular CLI npm install -g @angular/cli
-Latest stable version of golang
+### Prerequisites for running end-to-end tests:
 
-git clone https://github.com/evaeia/TrackIt.git
-cd Trackit
-go run Inv/httpd/main.go
+* Latest stable version of Node.js https://nodejs.org/en/
+* Angular CLI npm install -g @angular/cli
+* Latest stable version of golang
 
-In another terminal for the front end
-cd Trackit
-ng serve
+### Running golang backend
+* git clone https://github.com/evaeia/TrackIt.git
+* cd Trackit
+* go run Inv/httpd/main.go
 
-Open browser to http://localhost:4200/
+### Running Angular in another terminal
+* In another terminal for the front end
+* cd Trackit
+* ng serve
+
+Open browser to http://localhost:4200/, success!
