@@ -33,6 +33,9 @@ Users will be able to put tags on an item, which allow groups of items to appear
 ### Running Angular in another terminal
 * In another terminal for the front end
 * cd Trackit
+* npm install
 * ng serve
+   * If this fails to load from SecurityError, try running:
+    * set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 Open browser to http://localhost:4200/, success!

@@ -39,6 +39,7 @@
   * Function that returns the highest LocID in database for handlers
   * Manual deletion of recently deleted items
   * Auto-deletion of recently deleted items after 30 days
+  * Instructions for running on a Windows device
 * Fixes/Patches
   * Unit tests past issues for backend changes
   * DeletedGet errors
