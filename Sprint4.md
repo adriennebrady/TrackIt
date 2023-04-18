@@ -30,24 +30,26 @@
   * Update existing Cypress tests to succeed without container description
 
 ### Back-End
-
-* Created tests for new functions
-* Created a handler for getting the user's tree of containers
-* Created a function that returns the children inside a container
-* Created function for getting a container's parent
-* Created function that returns the highest LocID in database for handlers
-* Created manual deletion of recently deleted items
-* Created Auto-deletion of recently deleted items after 30 days
-* Fixed unit tests past issues for backend changes
-* Fixed DeletedGet
-* Fixed Get handler for recently deleted items
-* Fixed manual deletion of recently deleted items
-* Fixed handler for getting container name that recursively adds parent containers to path
-* Updated recently deleted to include 'location' and 'Count' to help when restoring a recently deleted item
-* Updated RegisterPost to check if container is empty
-* Split InventoryGet into ItemGet and ContainerGet
-* Optimized invdelete, invput, and invpost handlers with switches (and put tests)
-* Set trusted proxies
+* New additions
+  * Tests for new functions
+  * Handler for getting the user's tree of containers
+  * Function that returns the children inside a container
+  * Function for getting a container's parent
+  * Function that returns the highest LocID in database for handlers
+  * Manual deletion of recently deleted items
+  * Auto-deletion of recently deleted items after 30 days
+* Fixes/Patches
+  * Unit tests past issues for backend changes
+  * DeletedGet errors
+  * Get handler for recently deleted items
+  * Manual deletion of recently deleted items
+  * Handler for getting container name that recursively adds parent containers to path
+* Improvements
+  * Updated recently deleted to include 'location' and 'Count' to help when restoring a recently deleted item
+  * Updated RegisterPost to check if container is empty
+  * Split InventoryGet into ItemGet and ContainerGet
+  * Optimized invdelete, invput, and invpost handlers with switches (and put tests)
+  * Set trusted proxies
 
 <p>&nbsp;</p>
 
