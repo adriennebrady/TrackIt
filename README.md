@@ -19,23 +19,27 @@ Users will be able to put tags on an item, which allow groups of items to appear
 
 ## These instructions are for Windows 10/11
 
-### Prerequisites for running end-to-end tests:
+### Prerequisites for running end-to-end tests
 
-* Latest stable version of Node.js https://nodejs.org/en/
+* Latest stable version of Node.js <https://nodejs.org/en/>
 * Angular CLI npm install -g @angular/cli
 * Latest stable version of golang
 
 ### Running golang backend
-* git clone https://github.com/evaeia/TrackIt.git
+
+* git clone <https://github.com/evaeia/TrackIt.git>
+  * This should be done at your golang project root
 * cd Trackit
 * go run Inv/httpd/main.go
 
 ### Running Angular in another terminal
+
 * In another terminal for the front end
 * cd Trackit
 * npm install
+* npm update
 * ng serve
-   * If this fails to load from SecurityError, try running:
-    * set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+  * If this fails to load from SecurityError, try running:
+  * set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-Open browser to http://localhost:4200/, success!
+Open browser to <http://localhost:4200/>, success!
