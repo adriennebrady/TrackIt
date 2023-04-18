@@ -23,7 +23,8 @@ Users will be able to put tags on an item, which allow groups of items to appear
 
 * Latest stable version of Node.js <https://nodejs.org/en/>
 * Angular CLI npm install -g @angular/cli
-* Latest stable version of golang
+* Latest stable version of golang <https://go.dev/doc/install>
+* Download the GCC from <http://tdm-gcc.tdragon.net/download>
 
 ### Running golang backend
 
