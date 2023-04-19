@@ -270,14 +270,38 @@ Finally, if the query succeeds, the API returns a 200 OK response with a JSON-en
 ### &ndash; Inventory Delete Request
 
 * ####  &emsp; Description
+This API provides an endpoint for deleting items or containers from an inventory management system. It takes in a JSON payload with a token for user authentication, the type of item to delete (either "item" or "container"), and the ID of the item or container to delete. The API uses the Gin framework for HTTP routing and GORM for database operations. The API performs input validation and verifies the token's authenticity before performing any deletion operations.
 
 * ####  &emsp; Request
+The API expects an HTTP POST request to the endpoint /inventory/delete. The request must contain a JSON payload with the following fields:
+
+  1. token: A string representing the user's authentication token. This field is required.
+  2. id: An integer representing the ID of the item or container to delete. This field is required.
+  3. type: A string representing the type of item to delete. Valid values are "item" and "container". This field is required.
 
 * ####  &emsp; Errors
+The API can return the following error responses:
+
+  1. 400 Bad Request: The request payload is missing or invalid.
+  2. 401 Unauthorized: The provided authentication token is invalid.
+  3. 404 Not Found: The specified item or container does not exist.
+  4. 500 Internal Server Error: An error occurred while performing the deletion operation.
 
 * ####  &emsp; Response
+The API returns an HTTP status code indicating the success or failure of the request. If the deletion operation is successful, the API returns an HTTP status code of 204 No Content with an empty response body.
 
 * ####  &emsp; Functionality
+The InventoryDelete function is the main handler function that is called when the API endpoint is hit. It takes a GORM database connection as an argument and returns a Gin handler function.
+
+The Gin handler function first parses the JSON payload and checks for any errors. It then verifies the authentication token and retrieves the username associated with the token. If the token is invalid, the API returns a 401 Unauthorized error.
+
+The handler function then calls either the DeleteItem or DestroyContainer helper function based on the object type specified in the JSON payload. If the object type is invalid, the API returns a 400 Bad Request error.
+
+The DeleteItem helper function takes the GORM database connection, the ID of the item to be deleted, and the username of the user as arguments. It first checks if the item belongs to the user. If not, it returns an error. If the item belongs to the user, it creates a RecentlyDeletedItem object with the deleted item's ID, name, location, count, and timestamp, and saves it to the database. It then deletes the item from the database. Finally, it deletes any recently deleted items older than 30 days from the RecentlyDeletedItem table.
+
+The DestroyContainer helper function takes the GORM database connection, the ID of the container to be deleted, and the username of the user as arguments. It looks up the container in the database and deletes all items and sub-containers associated with the container. It then deletes the container itself.
+
+Both helper functions return an error if there is a problem deleting the object from the database. The handler function returns a 500 Internal Server Error if either helper function returns an error. If the deletion is successful, the handler function returns a 204 No Content status code.
 
 ---------------------
 
