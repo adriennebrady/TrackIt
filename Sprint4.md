@@ -225,12 +225,14 @@
 * **Description**: This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
 
 * **Request**: The API expects a JSON request body with the following format:
+<pre>
 {
 "id": <integer>,
 "token": <string>
 }
+</pre>
 
-where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
+  where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
 
 * **Errors**:
 
