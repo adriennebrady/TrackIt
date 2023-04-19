@@ -170,15 +170,18 @@
 
 ### &ndash; Account Delete Request
 
-* **Description**: This API endpoint allows a user to delete their account. It accepts a JSON payload containing the user's username, password, and password confirmation. If the provided credentials are valid, the account is deleted. This endpoint is implemented using the Gin web framework and GORM ORM for database access.
+* **Description**
+    This API endpoint allows a user to delete their account. It accepts a JSON payload containing the user's username, password, and password confirmation. If the provided credentials are valid, the account is deleted. This endpoint is implemented using the Gin web framework and GORM ORM for database access.
 
-* **Request**: The API endpoint is an HTTP POST request that accepts a JSON payload with the following fields:
+* **Request**
+    The API endpoint is an HTTP POST request that accepts a JSON payload with the following fields:
 
   * **username**(string): The username of the account to be deleted.
   * **password**(string): The password of the account to be deleted.
   * **password_confirmation**(string): The password confirmation for the deletion process.
 
-* **Errors**: The API can return the following HTTP status codes and error messages:
+* **Errors**
+    The API can return the following HTTP status codes and error messages:
 
   * 400 Bad Request: The request body is invalid or the password and password confirmation do not match.
   * 401 Unauthorized: The username or password is invalid.
@@ -186,45 +189,54 @@
   * 406 Not Acceptable: The account could not be deleted from the database.
   * 500 Internal Server Error: An internal server error occurred during the process.
 
-* **Response**: If successful, the API endpoint returns an HTTP status code and a JSON payload:
+* **Response**
+    If successful, the API endpoint returns an HTTP status code and a JSON payload:
 
   * HTTP 204: The account was deleted successfully.
   * JSON payload: Empty JSON object.
 
-* **Functionality**: The API endpoint first validates the request payload and checks if the account exists. If the account exists, it checks if the password and password confirmation fields match and if the password provided is correct. If all checks pass, it starts a new transaction to ensure atomicity, deletes the account, and commits the transaction. If any error occurs during this process, it rolls back the transaction and returns an error message with the appropriate HTTP status code.
+* **Functionality**
+    The API endpoint first validates the request payload and checks if the account exists. If the account exists, it checks if the password and password confirmation fields match and if the password provided is correct. If all checks pass, it starts a new transaction to ensure atomicity, deletes the account, and commits the transaction. If any error occurs during this process, it rolls back the transaction and returns an error message with the appropriate HTTP status code.
 
 ---------------------
 
 ### &ndash; Container Get Request
 
-* **Description**: This API allows a user to retrieve all containers that belong to them and have a specified container ID as their parent. It validates the user's authorization token, the container ID, and checks if the container belongs to the user.
+* **Description** 
+    This API allows a user to retrieve all containers that belong to them and have a specified container ID as their parent. It validates the user's authorization token, the container ID, and checks if the container belongs to the user.
 
-* **Request**: This API requires a GET request with the following parameters:
+* **Request**
+    This API requires a GET request with the following parameters:
 
   * Authorization header: A valid user token is required to access this endpoint.
   * **container_id**: An integer parameter that specifies the container ID.
 
-* **Errors**: This API may return the following errors:
+* **Errors**
+    This API may return the following errors:
 
   * 401 Unauthorized: The user's token is invalid or has expired.
   * 400 Bad Request: The container ID parameter is missing or not an integer.
   * 401 Unauthorized: The container does not belong to the user.
   * 500 Internal Server Error: The server encountered an unexpected error while processing the   request.
 
-* **Response**: This API returns a JSON response with the following fields:
+* **Response**
+    This API returns a JSON response with the following fields:
 
   * container_id: The ID of the container that was requested.
   * containers: An array of containers that belong to the user and have the specified container ID as their parent.
 
-* **Functionality**: This API starts by checking the user's token using the IsValidToken function. If the token is invalid, it returns an error. It then checks if the container ID is valid and belongs to the user. If the container does not belong to the user, it returns an error. Finally, it retrieves all the containers that have the requested container as their parent and returns them as a JSON response.
+* **Functionality**
+    This API starts by checking the user's token using the IsValidToken function. If the token is invalid, it returns an error. It then checks if the container ID is valid and belongs to the user. If the container does not belong to the user, it returns an error. Finally, it retrieves all the containers that have the requested container as their parent and returns them as a JSON response.
 
 ---------------------
 
 ### &ndash; Delete Delete Request
 
-* **Description**: This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
+* **Description**
+    This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
 
-* **Request**: The API expects a JSON request body with the following format:
+* **Request**
+    The API expects a JSON request body with the following format:
     <pre>
     {
     "id": <integer>,
@@ -234,15 +246,18 @@
 
     where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
 
-* **Errors**: The API may return the following HTTP error responses:
+* **Errors**
+    The API may return the following HTTP error responses:
 
   * 400 Bad Request: If the request body is invalid.
   * 417 Expectation Failed: If the token is invalid.
   * 500 Internal Server Error: If there is an error while querying the database.
 
-* **Response**: The API returns a response with HTTP status code 204 No Content if the item is successfully deleted.
+* **Response**
+    The API returns a response with HTTP status code 204 No Content if the item is successfully deleted.
 
-* **Functionality**: The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
+* **Functionality**
+    The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
 
     If the token is valid, the API queries the "recently_deleted_items" table in the database to retrieve the item with the specified ID and the same account ID as the user making the request. If the query fails, the API returns an HTTP 500 Internal Server Error response.
  
