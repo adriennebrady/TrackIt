@@ -170,38 +170,28 @@
 
 ### &ndash; Account Delete Request
 
-* ####  &emsp; Description
+* **Description**: This API endpoint allows a user to delete their account. It accepts a JSON payload containing the user's username, password, and password confirmation. If the provided credentials are valid, the account is deleted. This endpoint is implemented using the Gin web framework and GORM ORM for database access.
 
-This API endpoint is designed to delete an existing account. It takes in a JSON payload containing a username, password, and password confirmation. If the account exists, the password is correct, and the password confirmation matches the password, the account will be deleted. If the account doesn't exist, an error message will be returned. If the password is incorrect, an error message will also be returned. The endpoint is implemented using the Gin web framework and GORM ORM for database access.
+* **Request**: The API endpoint is an HTTP POST request that accepts a JSON payload with the following fields:
 
-* ####  &emsp; Request
+  * **username**: a string representing the username of the account to be deleted.
+  * **password**: a string representing the password of the account to be deleted.
+  * **password_confirmation**: a string representing the confirmation password for the deletion   process.
 
-The API endpoint is an HTTP POST request that accepts a JSON payload with the following fields:
+* **Errors**: The API can return the following HTTP status codes and error messages:
 
-  1. username: a string representing the username of the account to be deleted.
-  2. password: a string representing the password of the account to be deleted.
-  3. password_confirmation: a string representing the confirmation password for the deletion   process.
+  * 400 Bad Request: If the request body is invalid or if the password and password confirmation do not match.
+  * 401 Unauthorized: If the username or password is invalid.
+  * 404 Not Found: If the user does not exist in the database.
+  * 406 Not Acceptable: If the account could not be deleted from the database.
+  * 500 Internal Server Error: If there is an internal server error during the process.
 
-* ####  &emsp; Errors
+* **Response**: If successful, the API endpoint returns an HTTP status code and a JSON payload:
 
-The API can return the following HTTP status codes and error messages:
+  * HTTP 204: if the account was deleted successfully.
+  * JSON payload: empty JSON object.
 
-  1. 400 Bad Request: If the request body is invalid or if the password and password confirmation do not match.
-  2. 401 Unauthorized: If the username or password is invalid.
-  3. 404 Not Found: If the user does not exist in the database.
-  4. 406 Not Acceptable: If the account could not be deleted from the database.
-  5. 500 Internal Server Error: If there is an internal server error during the process.
-
-* ####  &emsp; Response
-
-If successful, the API endpoint returns an HTTP status code and a JSON payload:
-
-  1. HTTP 204: if the account was deleted successfully.
-  2. JSON payload: empty JSON object.
-
-* ####  &emsp; Functionality
-
-The API endpoint first validates the request payload and checks if the account exists. If the account exists, it checks if the password and password confirmation fields match and if the password provided is correct. If all checks pass, it starts a new transaction to ensure atomicity, deletes the account, and commits the transaction. If any error occurs during this process, it rolls back the transaction and returns an error message with the appropriate HTTP status code.
+* **Functionality**: The API endpoint first validates the request payload and checks if the account exists. If the account exists, it checks if the password and password confirmation fields match and if the password provided is correct. If all checks pass, it starts a new transaction to ensure atomicity, deletes the account, and commits the transaction. If any error occurs during this process, it rolls back the transaction and returns an error message with the appropriate HTTP status code.
 
 ---------------------
 
@@ -209,7 +199,7 @@ The API endpoint first validates the request payload and checks if the account e
 
 * ####  &emsp; Description
 
-This API provides functionality for getting all the containers that belong to a user and have a specified container ID as their parent. It validates the user's authorization token, the container ID, and checks if the container belongs to the user.
+This API allows a user to retrieve all containers that belong to them and have a specified container ID as their parent. It validates the user's authorization token, the container ID, and checks if the container belongs to the user.
 
 * ####  &emsp; Request
 
