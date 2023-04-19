@@ -324,9 +324,9 @@ The request should be an HTTP POST request to the endpoint where this API is hos
 * ####  &emsp; Errors
 The API may return the following errors:
 
-  1. http.StatusBadRequest: If the request body is invalid.
-  2. http.StatusUnauthorized: If the authorization token is invalid.
-  3. http.StatusInternalServerError: If the API fails to create the new container or item in the database.
+  1.400 Bad Request: Returned if the request body is invalid.
+  2. 401 Unauthorized: Returned if the authorization token is invalid.
+  3. 500 Internal Server Error: Returned if there is an error creating the new container or item.
 
 * ####  &emsp; Response
 The API returns an HTTP response with a status code of 204 (No Content) if the new container or item was created successfully.
@@ -345,14 +345,36 @@ If the new container or item was created successfully, the API returns an HTTP r
 ### &ndash; Inventory Put Request
 
 * ####  &emsp; Description
+This API contains two functions, InventoryPut and its helper functions ContainerPut and ItemPut. It receives a JSON request body with authorization, kind, ID, type, name, count, and cont (container ID) fields. Depending on the kind of request, the API updates the name, location, or count of an item, or the name or location of a container in a database, given a valid authorization token.
 
 * ####  &emsp; Request
+The API expects an HTTP POST request with a JSON request body that includes the following fields:
+
+  1. Authorization: A token to authenticate the request.
+  2. Kind: A string that represents whether the request pertains to a container or an item.
+  3. ID: An integer that represents the ID of the container or item in the database.
+  4. Type: A string that represents the type of request. If Kind is "Container", Type can be "Rename" or "Relocate". If Kind is "Item", Type can be "Rename", "Relocate", or "Recount".
+  5. Name: A string that represents the new name of the container or item (if Type is "Rename").
+  6. Count: An integer that represents the new count of the item (if Type is "Recount").
+  7. Cont: An integer that represents the new location of the container (if Type is "Relocate").
 
 * ####  &emsp; Errors
+The API may return the following HTTP status codes and JSON error messages:
+
+  1. 400 Bad Request: The request body is invalid.
+  2. 401 Unauthorized: The token is invalid.
+  3. 404 Not Found: The container or item ID cannot be found in the database.
+  4. 500 Internal Server Error: A database error occurs.
 
 * ####  &emsp; Response
+If the API successfully processes the request, it returns an HTTP status code of 200 OK with an empty response body. If an error occurs, it returns an HTTP status code and a JSON error message.
 
 * ####  &emsp; Functionality
+The InventoryPut function is a gin.HandlerFunc that takes a gorm.DB object and returns a function that handles the HTTP request. It first reads the JSON request body and validates it. If the request is valid, it checks the authorization token by calling the IsValidToken function. If the token is valid, it processes the request by calling either the ContainerPut or ItemPut function, depending on the Kind field of the request. If an error occurs during processing, it returns an appropriate HTTP status code and JSON error message.
+
+The ContainerPut function takes an InvRequest object, a gorm.DB object, and a string representing the username of the request's author. It looks up the container in the database by ID and username, then updates its name or location based on the Type field of the request. It saves the changes to the database and returns nil if successful. If an error occurs, it returns a string pointer to an appropriate error message.
+
+The ItemPut function takes an InvRequest object, a gorm.DB object, and a string representing the username of the request's author. It looks up the item in the database by ID and username, then updates its name, location, or count based on the Type field of the request. It saves the changes to the database and returns nil if successful. If an error occurs, it returns a string pointer to an appropriate error message.
 
 ---------------------
 
