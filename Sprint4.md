@@ -41,6 +41,14 @@
     * ContainerCardPageComponent
     * InventoryPageComponent
     * SearchComponent
+  * Wrote new Jasmine unit tests for the following components:
+    * DeleteAccountDialogComponent
+    * DeletedItemComponent
+    * SettingsComponent
+    * MoveMenuComponent
+    * MoveDialogComponent
+    * RecountDialogComponent
+    * RecentlyDeletedComponent
 
 ### Back-End
 
@@ -109,6 +117,10 @@
   * should call updateCount() if update button is clicked
   * should disable update button if the form is invalid
   * should enable update button if the form is valid
+* RecentlyDeletedComponent
+  * should display message when there are no items
+  * should display correct heading
+  * should display the correct navigation
 
 ### Sprint 3 - Jasmine Unit Tests
 * ContainerCardPageComponent
