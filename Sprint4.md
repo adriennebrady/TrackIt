@@ -174,22 +174,22 @@
 
 * **Request**: The API endpoint is an HTTP POST request that accepts a JSON payload with the following fields:
 
-  * **username**: a string representing the username of the account to be deleted.
-  * **password**: a string representing the password of the account to be deleted.
-  * **password_confirmation**: a string representing the confirmation password for the deletion   process.
+  * **username**(string): The username of the account to be deleted.
+  * **password**(string): The password of the account to be deleted.
+  * **password_confirmation**(string): The password confirmation for the deletion process.
 
 * **Errors**: The API can return the following HTTP status codes and error messages:
 
-  * 400 Bad Request: If the request body is invalid or if the password and password confirmation do not match.
-  * 401 Unauthorized: If the username or password is invalid.
-  * 404 Not Found: If the user does not exist in the database.
-  * 406 Not Acceptable: If the account could not be deleted from the database.
-  * 500 Internal Server Error: If there is an internal server error during the process.
+  * 400 Bad Request: The request body is invalid or the password and password confirmation do not match.
+  * 401 Unauthorized: The username or password is invalid.
+  * 404 Not Found: The user does not exist in the database.
+  * 406 Not Acceptable: The account could not be deleted from the database.
+  * 500 Internal Server Error: An internal server error occurred during the process.
 
 * **Response**: If successful, the API endpoint returns an HTTP status code and a JSON payload:
 
-  * HTTP 204: if the account was deleted successfully.
-  * JSON payload: empty JSON object.
+  * HTTP 204: The account was deleted successfully.
+  * JSON payload: Empty JSON object.
 
 * **Functionality**: The API endpoint first validates the request payload and checks if the account exists. If the account exists, it checks if the password and password confirmation fields match and if the password provided is correct. If all checks pass, it starts a new transaction to ensure atomicity, deletes the account, and commits the transaction. If any error occurs during this process, it rolls back the transaction and returns an error message with the appropriate HTTP status code.
 
@@ -197,36 +197,26 @@
 
 ### &ndash; Container Get Request
 
-* ####  &emsp; Description
+* **Description**: This API allows a user to retrieve all containers that belong to them and have a specified container ID as their parent. It validates the user's authorization token, the container ID, and checks if the container belongs to the user.
 
-This API allows a user to retrieve all containers that belong to them and have a specified container ID as their parent. It validates the user's authorization token, the container ID, and checks if the container belongs to the user.
+* **Request**: This API requires a GET request with the following parameters:
 
-* ####  &emsp; Request
+  * Authorization header: A valid user token is required to access this endpoint.
+  * **container_id**: An integer parameter that specifies the container ID.
 
-This API requires a GET request with the following parameters:
+* **Response**: This API may return the following errors:
 
-  1. Authorization header: A valid user token is required to access this endpoint.
-  2. container_id: An integer parameter that specifies the container ID.
+  * 401 Unauthorized: The user's token is invalid or has expired.
+  * 400 Bad Request: The container ID parameter is missing or not an integer.
+  * 401 Unauthorized: The container does not belong to the user.
+  * 500 Internal Server Error: The server encountered an unexpected error while processing the   request.
 
-* ####  &emsp; Errors
+* **Response**: This API returns a JSON response with the following fields:
 
-This API may return the following errors:
+  * container_id: The ID of the container that was requested.
+  * containers: An array of containers that belong to the user and have the specified container ID as their parent.
 
-  1. 401 Unauthorized: The user's token is invalid or has expired.
-  2, 400 Bad Request: The container ID parameter is missing or not an integer.
-  3. 401 Unauthorized: The container does not belong to the user.
-  4. 500 Internal Server Error: The server encountered an unexpected error while processing the   request.
-
-* ####  &emsp; Response
-
-This API returns a JSON response with the following fields:
-
-  1. container_id: The ID of the container that was requested.
-  2. containers: An array of containers that belong to the user and have the specified container ID as their parent.
-
-* ####  &emsp; Functionality
-
-This API starts by checking the user's token using the IsValidToken function. If the token is invalid, it returns an error. It then checks if the container ID is valid and belongs to the user. If the container does not belong to the user, it returns an error. Finally, it retrieves all the containers that have the requested container as their parent and returns them as a JSON response.
+* **Functionality**: This API starts by checking the user's token using the IsValidToken function. If the token is invalid, it returns an error. It then checks if the container ID is valid and belongs to the user. If the container does not belong to the user, it returns an error. Finally, it retrieves all the containers that have the requested container as their parent and returns them as a JSON response.
 
 ---------------------
 
