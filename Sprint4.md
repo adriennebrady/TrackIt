@@ -3,8 +3,6 @@
 ## Detail work you've completed in Sprint 4
 
 ### Front-End
-
-* Adrienne Brady
   * Added new functionality to allow user to update the item count with a pop-up dialog
   * Added new functionality & increment/decrement buttons to allow user to quickly increase/decrease an item's count by 1
   * Added new sidebar functionality on the inventory page with a toggle button to hide/display the navigation tree
@@ -23,8 +21,6 @@
   * Fixed sidebar nav. so it now automatically updates when containers are added/deleted
   * Fixed recently deleted get and delete HTTP requests
   * Fixed display of container name
-
-* Sara Winner
   * Remove description from containers
   * Remove description field from pop-up dialog
   * Update existing Cypress tests to succeed without container description
