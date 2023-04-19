@@ -333,10 +333,89 @@ This API starts by checking the user's token using the IsValidToken function. If
 
 * ####  &emsp; Description
 
+**TreeGet** is a handler function that retrieves the hierarchical tree structure of all containers owned by a user. It returns a JSON response with the root container and its children containers. The function requires a valid authorization token in the request header.
+
 * ####  &emsp; Request
+
+**GET /containers/tree**
+
+Headers:
+
+  1. Authorization: The authorization token of the user.
+
 
 * ####  &emsp; Errors
 
-* ####  &emsp; Response
+The following error responses may be returned by the function:
+
+  1. 401 Unauthorized: The authorization token is invalid or not provided.
+  2. 404 Not Found: The user associated with the provided authorization token does not exist.
+Response
+
+The function returns a JSON response with the following structure:
+
+<pre>
+{
+  "Container": {
+    "LocID": 1,
+    "Name": "root",
+    "Description": "Root container",
+    "ParentID": null,
+    "OwnerID": 1
+  },
+  "Children": [
+    {
+      "Container": {
+        "LocID": 2,
+        "Name": "child1",
+        "Description": "First child container",
+        "ParentID": 1,
+        "OwnerID": 1
+      },
+      "Children": [
+        {
+          "Container": {
+            "LocID": 3,
+            "Name": "grandchild1",
+            "Description": "First grandchild container",
+            "ParentID": 2,
+            "OwnerID": 1
+          },
+          "Children": null
+        }
+      ]
+    },
+    {
+      "Container": {
+        "LocID": 4,
+        "Name": "child2",
+        "Description": "Second child container",
+        "ParentID": 1,
+        "OwnerID": 1
+      },
+      "Children": null
+    }
+  ]
+}
+</pre>
+
+  1. Container: The root container of the user.
+  2. Children: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
 
 * ####  &emsp; Functionality
+
+The function performs the following steps:
+
+  1. Retrieves the authorization token from the request header.
+  2. Validates the authorization token using the IsValidToken function.
+  3. Retrieves the root location of the user from the accounts table.
+  4. Calls the GetChildren function recursively to retrieve the hierarchical tree structure of all child containers.
+  5. Constructs and returns a JSON response with the root container and its children containers.
+
+The **GetChildren** function performs the following steps:
+
+  1. Retrieves all child containers of the specified parent container from the Containers table.
+  2. Creates a new ContainerTree object for each child container.
+  3. Calls the GetChildren function recursively for each child container to retrieve its own children containers.
+  4. Assigns the array of children containers to the Children field of the current ContainerTree object.
+  5. Returns an array of ContainerTree objects representing the child containers.
