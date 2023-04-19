@@ -49,6 +49,7 @@
     * MoveDialogComponent
     * RecountDialogComponent
     * RecentlyDeletedComponent
+  * Wrote restore item Cypress test
 
 ### Back-End
 
@@ -90,6 +91,7 @@
   * Signout authentication
   * Create new container
   * Search for item
+  * Restore item
 
 ### Sprint 4 - Jasmine Unit Tests
 
