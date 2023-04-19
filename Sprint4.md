@@ -381,14 +381,35 @@ The ItemPut function takes an InvRequest object, a gorm.DB object, and a string 
 ### &ndash; Items Get Request
 
 * ####  &emsp; Description
+uses the Gin web framework for routing and GORM as an ORM to interact with a database. The function ItemsGet takes a pointer to a gorm.DB object as input and returns a gin.HandlerFunc. The API checks the validity of a token provided in the Authorization header, verifies that the container belongs to the user, and retrieves all items that belong to the container.
 
 * ####  &emsp; Request
+The API expects a GET request to the endpoint /items with the container ID as a query parameter in the URL. The container ID should be an integer. The Authorization header should contain a valid token.
 
 * ####  &emsp; Errors
+The API can return the following error responses:
+
+  1. 400 Bad Request if the container ID is invalid
+  2. 401 Unauthorized if the token is invalid or the container does not belong to the user
+  3. 500 Internal Server Error if there was an error retrieving the items from the database
 
 * ####  &emsp; Response
+The API returns a JSON response with a status code of 200 OK and an array of Item objects. Each Item object represents an item that belongs to the container. The Item object has the following fields:
+
+  1. ID (int): the ID of the item
+  2. Name (string): the name of the item
+  3. LocID (int): the ID of the container that the item belongs to
+  4. CreatedAt (time.Time): the timestamp when the item was created
+  5. UpdatedAt (time.Time): the timestamp when the item was last updated
 
 * ####  &emsp; Functionality
+The ItemsGet function handles HTTP GET requests to retrieve all items that belong to a container. It first verifies the validity of the token provided in the Authorization header by calling the IsValidToken function. If the token is invalid, the API returns a 401 Unauthorized response.
+
+Next, the API retrieves the container ID from the query parameter in the URL and checks if the container belongs to the user by querying the Containers table in the database using the db.Table method of GORM. If the container does not belong to the user, the API returns a 401 Unauthorized response.
+
+If the container belongs to the user, the API retrieves all items that belong to the container by querying the Items table in the database using the db.Table method of GORM. If there was an error retrieving the items, the API returns a 500 Internal Server Error response.
+
+Finally, the API returns a JSON response with a status code of 200 OK and an array of Item objects. Each Item object represents an item that belongs to the container.
 
 ---------------------
 
