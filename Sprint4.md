@@ -291,13 +291,25 @@ This API starts by checking the user's token using the IsValidToken function. If
 
 * ####  &emsp; Description
 
+This endpoint is used to test that the server is up and running.
+
 * ####  &emsp; Request
+
+This endpoint does not require any request parameters.
 
 * ####  &emsp; Errors
 
+This endpoint does not return any errors.
+
 * ####  &emsp; Response
 
+If the request is successful, the response will be a JSON object containing a single key-value pair:
+
+  1. **"hello"**: A greeting message.
+
 * ####  &emsp; Functionality
+
+The **PingGet** function returns a **gin.HandlerFunc** that simply returns a JSON response with a greeting message and a status code of 200 when the endpoint is called. This is useful for testing that the server is up and running.
 
 ---------------------
 
