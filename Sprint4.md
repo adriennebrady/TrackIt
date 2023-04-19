@@ -170,10 +170,10 @@
 
 ### &ndash; Account Delete Request
 
-* **Description**
+* **Description** 
     This API endpoint allows a user to delete their account. It accepts a JSON payload containing the user's username, password, and password confirmation. If the provided credentials are valid, the account is deleted. This endpoint is implemented using the Gin web framework and GORM ORM for database access.
 
-* **Request**
+* **Request** 
     The API endpoint is an HTTP POST request that accepts a JSON payload with the following fields:
 
   * **username**(string): The username of the account to be deleted.
@@ -370,7 +370,7 @@
 
     The API may return the following errors:
 
-  *400 Bad Request: Returned if the request body is invalid.
+  * 400 Bad Request: Returned if the request body is invalid.
   * 401 Unauthorized: Returned if the authorization token is invalid.
   * 500 Internal Server Error: Returned if there is an error creating the new container or item.
 
