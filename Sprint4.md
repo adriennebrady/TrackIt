@@ -4,73 +4,66 @@
 
 ### Front-End
 
-* Added new functionality to allow user to update the item count with a pop-up dialog
-* Added new functionality & increment/decrement buttons to allow user to quickly increase/decrease an item's count by 1
-* Added new sidebar functionality on the inventory page with a toggle button to hide/display the navigation tree
-* Added sidebar navigation tree to all logged in pages
-* Added new move/relocate menu to items and containers
-* Added new recently deleted page with options to permanently delete or restore items
-* Added buttons linked to recently deleted page and settings page for logged in users
-* Created new account settings page with account deletion functionality
-* Created password verification pop up dialog component for account deletion
-* Created new move/relocate pop up dialog
-* Created new sidebar navigation tree component w/buttons to directly navigate to any container card page
-* Updated item component to now display actual item count
-* Updated item HTTP POST request to send "1" as the default item count if user doesn't input a value
-* Updated sidenav to take up entire side of screen
-* Fixed container and item GET requests to account for new container and item GET handlers in the backend
-* Fixed sidebar nav. so it now automatically updates when containers are added/deleted
-* Fixed recently deleted get and delete HTTP requests
-* Fixed display of container name
-* Remove description from containers
-* Remove description field from pop-up dialog
-* Update existing Cypress tests to succeed without container description
-* Fixed the following Jasmine unit test failures due to software updates:
-  * MoveMenuComponent—should create
-  * SidebarNavComponent—should create
-  * DeletedItemComponent—should create
-  * RecentlyDeletedComponent—should create
-  * RecountDialogComponent—should create
-  * SettingsComponent—should create
-  * DeleteAccountDialogComponent—should create
-  * AboutComponent—should display the correct content when user is logged in
-  * MoveDialogComponent—should create
-  * ContainerCardPageComponent
-  * InventoryPageComponent
-  * SearchComponent
-* Wrote new Jasmine unit tests for the following components:
-  * DeleteAccountDialogComponent
-  * DeletedItemComponent
-  * SettingsComponent
-  * MoveMenuComponent
-  * MoveDialogComponent
-  * RecountDialogComponent
-  * RecentlyDeletedComponent
-* Wrote restore item Cypress test
+#### Inventory Page
+
+* Implemented new functionality to allow users to update item counts via a pop-up dialog box.
+* Added new increment and decrement buttons to quickly increase/decrease item counts by 1.
+* Created a new sidebar with a toggle button to hide/display the navigation tree on the inventory page.
+* Added the sidebar navigation tree to all logged-in pages.
+* Created a new move/relocate menu to items and containers.
+* Added a new "Recently Deleted" page with options to permanently delete or restore items.
+* Created new buttons linked to the Recently Deleted page and settings page for logged-in users.
+* Implemented a new account settings page with account deletion functionality.
+* Designed a password verification pop-up dialog component for account deletion.
+
+#### Components
+
+* Designed a new move/relocate pop-up dialog.
+* Designed a new sidebar navigation tree component with buttons that enable users to navigate directly to any container card page.
+* Updated the item component to now display the actual item count.
+* Updated item HTTP POST request to send "1" as the default item count if a user does not input a value.
+* Updated sidenav to take up the entire side of the screen.
+
+#### Bug Fixes
+
+* Fixed container and item GET requests to account for new container and item GET handlers in the backend.
+* Fixed sidebar nav so it now automatically updates when containers are added/deleted.
+* Fixed recently deleted GET and DELETE HTTP requests.
+* Fixed the display of container names.
+* Removed the description field from containers and the pop-up dialog.
+* Updated existing Cypress tests to succeed without container descriptions.
+* Fixed previous Jasmine unit test failures due to software updates.
+* Wrote new Jasmine unit tests.
+* Wrote a new restore item Cypress test.
 
 ### Back-End
 
-* New additions
-  * Tests for new functions
-  * Handler for getting the user's tree of containers
-  * Function that returns the children inside a container
-  * Function for getting a container's parent
-  * Function that returns the highest LocID in database for handlers
-  * Manual deletion of recently deleted items
-  * Auto-deletion of recently deleted items after 30 days
-  * Instructions for running on a Windows device
-* Fixes/Patches
-  * Unit tests past issues for backend changes
-  * DeletedGet errors
-  * Get handler for recently deleted items
-  * Manual deletion of recently deleted items
-  * Handler for getting container name that recursively adds parent containers to path
-* Improvements
-  * Updated recently deleted to include 'location' and 'Count' to help when restoring a recently deleted item
-  * Updated RegisterPost to check if container is empty
-  * Split InventoryGet into ItemGet and ContainerGet
-  * Optimized invdelete, invput, and invpost handlers with switches (and put tests)
-  * Set trusted proxies
+#### New features
+
+* Added unit tests for new functions
+* Implemented a handler to fetch the user's container tree
+* Created a function to return the children within a container
+* Implemented a function to get a container's parent
+* Created a function to return the highest LocID in the database for handlers
+* Enabled manual deletion of recently deleted items
+* Implemented auto-deletion of recently deleted items after 30 days
+* Added instructions for running the software on a Windows device
+
+#### Fixes and Patches
+
+* Resolved past issues with backend changes in unit tests
+* Fixed errors with DeletedGet
+* Improved the Get handler for recently deleted items
+* Improved the manual deletion of recently deleted items
+* Updated the handler to get a container name, which now recursively adds parent containers to the path
+
+#### Improvements
+
+* Updated recently deleted items to include 'location' and 'count' to make it easier to restore them
+* Updated RegisterPost to check if a container is empty
+* Split InventoryGet into ItemGet and ContainerGet
+* Optimized invdelete, invput, and invpost handlers with switches (and added tests)
+* Set trusted proxies
 
 <p>&nbsp;</p>
 
@@ -84,144 +77,42 @@
 * Visit Signup Page from Home Page
 * Login Authentication
 * Valid User Navigation
-  * Navigates from My Inventory page to About page then back
-  * Signout authentication
-  * Create new container
-  * Search for item
-  * Restore item
 
 ### Sprint 4 - Jasmine Unit Tests
 
 * DeleteAccountDialogComponent
-  * should enable delete when input fields are filled
-  * should display add item dialog title
-  * should call cancel() when cancel button is clicked
-  * should disable delete button element when input fields are empty
-  * should call deleteAccount() when delete button is clicked
 * DeletedItemComponent
-  * should call restoreItem() on click of restore button
-  * should call deleteItem() on click of permanently delete item button
-  * should display the item count correctly
-  * should display the item name correctly
 * SettingsComponent
-  * should call openConfirmDialog() when the delete account button is clicked
-  * should call logOut() when sign out button is clicked
-  * should display the correct navigation
 * MoveMenuComponent
-  * should contain button toggles
 * MoveDialogComponent
-  * should call move() when move is clicked
-  * should call cancel() when cancel is clicked
 * RecountDialogComponent
-  * should display correct dialog title
-  * should call cancel() if cancel button is clicked
-  * should call updateCount() if update button is clicked
-  * should disable update button if the form is invalid
-  * should enable update button if the form is valid
 * RecentlyDeletedComponent
-  * should display message when there are no items
-  * should display correct heading
-  * should display the correct navigation
 
 ### Sprint 3 - Jasmine Unit Tests
 
 * ContainerCardPageComponent
-  * should call backClicked on click of back button
-  * should display the correct navigation
-  * should display the correct page title
-  * should call openDialog on click of add container button
-  * should call openItemDialog on click of add item button
 * SearchItemComponent
-  * should display the item name and location
-  * should create
 * ItemDialogComponent
-  * should call cancel() when cancel button is clicked
-  * should display add item dialog title
-  * should create
 * SearchComponent
-  * should call backButton on click of back button
-  * should create
-  * should display the correct page title
-  * should display the correct navigation
 * InvContainerComponent
-  * should call deleteContainer on click of delete button
-  * should create
-  * should display see inside button
-  * should call seeInside on click of see inside button
 * ItemComponent
-  * should display the item name
-  * should display the item count
 
 ### Sprint 2 - Jasmine Unit Tests
 
 * ContainerComponent
-  * should create
-  * should call openConfirmDialog on click of delete button
-  * should display the container name and description
 * ItemComponent
-  * should create
-  * should display the item name and location
 * AuthService
-  * should logout a user
-  * should signup a user
-  * should be created
-  * should login a user
-  * should return true if the user is authenticated
-  * should return the token
 * ContainerCardPageComponent
-  * should create
 * HomeComponent
-  * should display the home page description
-  * should display the home page title
-  * should have a button to get started
-  * should have a button for Login
-  * should have a button for About
-  * should have a button for Sign Up
-  * should display the TRACKIT logo
 * AuthGuard
-  * canActivate
-    * should return true for user with token in localStorage
-    * should return true for authenticated user
-    * should redirect to login page for unauthenticated user
-  * checkLogin
-    * should return true for authenticated user
-    * should return true for user with token in localStorage
-    * should redirect to login page for unauthenticated user
 * ConfirmDialogComponent
-  * should create
-  * should display confirm dialog title
 * SignUpPageComponent
-  * should create
-  * onSubmit() should not navigate to inventory page if passwords do not match
-  * constructor should navigate to inventory page if user is already authenticated
-  * onSubmit() should call authService.signup() and navigate to inventory page on successful sign-up
 * AppComponent
-  * should have as title 'cen3031-project'
-  * should create the app
 * AboutComponent
-  * should create
-  * should display the correct content when user is logged out
-  * should display the correct content when user is logged in
 * InventoryPageComponent
-  * should display the correct page title and description
-  * should create
-  * should display the correct navigation
-  * should call openDialog on click of new container button
 * DialogComponent
-  * should call onNoClick() when cancel button is clicked
-  * should display rename dialog title
-  * should create
 * RenameDialogComponent
-  * should call cancel() when cancel button is clicked
-  * should display rename dialog title
-  * should create
 * LoginPageComponent
-  * should create
-  * onSubmit
-    * should navigate to /inventory on successful login and no redirect URL is set
-    * should navigate to the redirect URL on successful login and a redirect URL is set
-    * should call authService.loginSuccess on successful login
-    * should call authService.login with the correct user
 
 <p>&nbsp;</p>
 
