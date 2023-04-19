@@ -308,14 +308,37 @@ Both helper functions return an error if there is a problem deleting the object 
 ### &ndash; Inventory Post Request
 
 * ####  &emsp; Description
+This API handles requests to create a new container or item in an inventory system. The API takes in an HTTP POST request with a JSON request body that contains information about the new container or item to be created, along with an authorization token for the user making the request. The API verifies the authorization token, checks whether the new item is a container or item, and then creates the new container or item in the database.
 
 * ####  &emsp; Request
+The request should be an HTTP POST request to the endpoint where this API is hosted. The request should contain a JSON request body with the following fields:
+
+  1. Authorization (string): The authorization token for the user making the request.
+  2. Kind (string): Whether the new item to be created is a container or item.
+  3. ID (int): The ID of the new container or item.
+  4. Cont (int): The ID of the parent container of the new container or item. Only applicable if the new item is a container.
+  5. Name (string): The name of the new container or item.
+  6. Type (string): The type of the new item.
+  7. Count (int): The count of the new item. Only applicable if the new item is an item.
 
 * ####  &emsp; Errors
+The API may return the following errors:
+
+  1. http.StatusBadRequest: If the request body is invalid.
+  2. http.StatusUnauthorized: If the authorization token is invalid.
+  3. http.StatusInternalServerError: If the API fails to create the new container or item in the database.
 
 * ####  &emsp; Response
+The API returns an HTTP response with a status code of 204 (No Content) if the new container or item was created successfully.
 
 * ####  &emsp; Functionality
+The API first parses the JSON request body into a struct called InvRequest. It then checks whether the authorization token provided in the request is valid by calling the IsValidToken function and passing in the token and the database connection. If the token is not valid, the API returns an HTTP response with a status code of 401 (Unauthorized).
+
+If the token is valid, the API checks whether the new item to be created is a container or item by checking the Kind field in the request body. If the Kind field is "container", the API creates a new Container struct with the information provided in the request body, and then creates a new record in the "containers" table in the database using the GORM Create method. If the Kind field is "item", the API creates a new Item struct with the information provided in the request body, and then creates a new record in the "items" table in the database using the GORM Create method.
+
+If the API fails to create the new container or item in the database, it returns an HTTP response with a status code of 500 (Internal Server Error).
+
+If the new container or item was created successfully, the API returns an HTTP response with a status code of 204 (No Content).
 
 ---------------------
 
