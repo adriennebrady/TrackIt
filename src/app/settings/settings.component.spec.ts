@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -48,5 +49,24 @@ describe('SettingsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display the correct navigation', () => {
+    expect(fixture.nativeElement.querySelector('.logo').textContent).toContain('TRACKIT');
+    expect(fixture.nativeElement.querySelector('.signUpButton').textContent).toContain('My Inventory');
+  });
+
+  it('should call logOut() when sign out button is clicked', () => {
+    const logOutButton = fixture.debugElement.query(By.css('.logOutBUtton'));
+    spyOn(component, 'logOut');
+    logOutButton.nativeElement.click();
+    expect(component.logOut).toHaveBeenCalled();
+  });
+
+  it('should call openConfirmDialog() when the delete account button is clicked', () => {
+    spyOn(component, 'openConfirmDialog');
+    const deleteAccountButton = fixture.debugElement.query(By.css('.deleteButton'));
+    deleteAccountButton.nativeElement.click();
+    expect(component.openConfirmDialog).toHaveBeenCalled();
   });
 });

@@ -39,7 +39,7 @@ describe('DeleteAccountDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display add item dialog title', () => {
+  it('should display delete account dialog title', () => {
     expect(fixture.nativeElement.querySelector('h1').textContent).toContain('Delete Account?');
   });
 
