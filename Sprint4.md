@@ -288,13 +288,40 @@ This API starts by checking the user's token using the IsValidToken function. If
 
 * ####  &emsp; Description
 
+The LoginPost function is a handler function that is used to handle the HTTP POST requests made to the login endpoint. It takes the username and password from the request body, checks if the user exists and if the password is correct, generates a token and saves it to the database, and then returns the token and the root location ID to the user.
+
 * ####  &emsp; Request
+
+The LoginPost function receives a JSON payload with the following fields:
+
+  1. username (string): The username of the user trying to login.
+  2. password (string): The password of the user trying to login.
 
 * ####  &emsp; Errors
 
+The LoginPost function may return the following errors as HTTP status codes and JSON payloads:
+
+  1. 400 Bad Request: The request body is not a valid JSON payload.
+  2. 401 Unauthorized: The username or password is incorrect.
+  3. 500 Internal Server Error: An error occurred while generating or saving the token or deleting old recently deleted items.
+
 * ####  &emsp; Response
 
+The LoginPost function returns a JSON payload with the following fields:
+
+  1. token (string): The token generated for the user.
+  2. rootLoc (int): The ID of the user's root location.
+
 * ####  &emsp; Functionality
+
+The LoginPost function does the following:
+
+  1. Parses the request body and extracts the username and password fields.
+  2. Queries the database to check if the user with the given username exists.
+  3. Compares the password provided by the user with the one stored in the database for the given user.
+  4. If the username and password are correct, generates a new token and saves it to the database for the user.
+  5. Deletes old recently deleted items from the database.
+  6. Returns the token and root location ID in a JSON response.
 
 ---------------------
 
@@ -302,13 +329,41 @@ This API starts by checking the user's token using the IsValidToken function. If
 
 * ####  &emsp; Description
 
+NameGet is a handler function that retrieves the name of a container identified by a Container_id query parameter, along with its parent names if any.
+
 * ####  &emsp; Request
+
+HTTP Method: GET
+
+Path: /name
+
+Query Parameters:
+
+  1. Container_id (required): The ID of the container whose name should be retrieved.
 
 * ####  &emsp; Errors
 
+  1. 401 Unauthorized: If the Authorization header is missing or the token is invalid.
+  2. 406 Not Acceptable: If the Container_id query parameter is missing or invalid.
+  3. 404 Not Found: If the container with the specified ID and username is not found.
+  4. 500 Internal Server Error: If there is an error retrieving the container from the database.
+
 * ####  &emsp; Response
 
+The function will return the following json response:
+
+  1. Status Code: 200 OK
+  2. Body: The name of the container identified by Container_id, along with its parent names separated by a forward slash ("/").
+
 * ####  &emsp; Functionality
+
+The function first retrieves the token from the **Authorization** header and checks its validity.
+
+Then, it parses the **Container_id** query parameter and retrieves the container with the specified ID and username from the database.
+
+It retrieves the name of the container and its parent names, if any, by calling the GetParent function recursively up to a maximum of 10 iterations.
+
+Finally, it returns the name of the container and its parent names as a JSON response.
 
 ---------------------
 
