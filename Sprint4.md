@@ -319,13 +319,31 @@ This API starts by checking the user's token using the IsValidToken function. If
 
 * ####  &emsp; Description
 
+This endpoint is used to search for items that belong to a user in the database.
+
 * ####  &emsp; Request
+
+The request to this endpoint must contain a JSON object with the following fields:
+
+  1. **Authorization** (string, required): A token that verifies the identity of the user making the request.
+  2. **Item** (string, required): The name of the item that the user wants to search for.
 
 * ####  &emsp; Errors
 
+This endpoint may return the following error status codes and messages:
+
+  1. **401 Unauthorized**: When the token provided is invalid or has expired.
+  2. **500 Internal Server Error**: When there was a problem getting the items from the database.
+
 * ####  &emsp; Response
 
+If the request is successful, the response will be a JSON object containing an array of items that match the search criteria.
+
 * ####  &emsp; Functionality
+
+The **SearchGet** function takes in a **gorm.DB** object and returns a **gin.HandlerFunc**. When the endpoint is called, it first parses the JSON request body into a **SearchRequest** object. It then verifies that the token provided is valid by calling the **IsValidToken** function, passing in the token and the **gorm.DB** object.
+
+If the token is valid, the function proceeds to retrieve all items from the **items** table in the database that match the **ItemName** and **username** fields provided in the request body. Finally, the function returns the retrieved items as a JSON response with a status code of 200. If there was an error, the function aborts the request and returns an appropriate error message with the corresponding HTTP status code.
 
 ---------------------
 
@@ -341,15 +359,15 @@ This API starts by checking the user's token using the IsValidToken function. If
 
 Headers:
 
-  1. Authorization: The authorization token of the user.
+  1. **Authorization**: The authorization token of the user.
 
 
 * ####  &emsp; Errors
 
 The following error responses may be returned by the function:
 
-  1. 401 Unauthorized: The authorization token is invalid or not provided.
-  2. 404 Not Found: The user associated with the provided authorization token does not exist.
+  1. **401 Unauthorized**: The authorization token is invalid or not provided.
+  2. **404 Not Found**: The user associated with the provided authorization token does not exist.
 Response
 
 The function returns a JSON response with the following structure:
@@ -399,23 +417,23 @@ The function returns a JSON response with the following structure:
 }
 </pre>
 
-  1. Container: The root container of the user.
-  2. Children: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
+  1. **Container**: The root container of the user.
+  2. **Children**: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
 
 * ####  &emsp; Functionality
 
 The function performs the following steps:
 
   1. Retrieves the authorization token from the request header.
-  2. Validates the authorization token using the IsValidToken function.
-  3. Retrieves the root location of the user from the accounts table.
-  4. Calls the GetChildren function recursively to retrieve the hierarchical tree structure of all child containers.
+  2. Validates the authorization token using the **IsValidToken** function.
+  3. Retrieves the root location of the user from the **accounts** table.
+  4. Calls the **GetChildren** function recursively to retrieve the hierarchical tree structure of all child containers.
   5. Constructs and returns a JSON response with the root container and its children containers.
 
 The **GetChildren** function performs the following steps:
 
-  1. Retrieves all child containers of the specified parent container from the Containers table.
-  2. Creates a new ContainerTree object for each child container.
-  3. Calls the GetChildren function recursively for each child container to retrieve its own children containers.
-  4. Assigns the array of children containers to the Children field of the current ContainerTree object.
-  5. Returns an array of ContainerTree objects representing the child containers.
+  1. Retrieves all child containers of the specified parent container from the **Containers** table.
+  2. Creates a new **ContainerTree** object for each child container.
+  3. Calls the **GetChildren** function recursively for each child container to retrieve its own children containers.
+  4. Assigns the array of children containers to the **Children** field of the current **ContainerTree** object.
+  5. Returns an array of **ContainerTree** objects representing the child containers.
