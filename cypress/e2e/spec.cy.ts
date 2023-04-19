@@ -133,4 +133,11 @@ describe('Valid User Navigation', () => {
   it('User searches for an item', () => {
     cy.get('.searchItemInput').type('Charger{enter}')
   })
+
+  // Restore item
+  it('User restores an item', () => {
+    cy.get('[mattooltip="Recently deleted items"] > .mat-mdc-button-touch-target').click();
+    cy.url().should('include', '/recentlyDeleted');
+    cy.get('.restoreButton > .mat-mdc-button-touch-target').click();
+  })
 })
