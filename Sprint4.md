@@ -254,36 +254,36 @@
 
 ### &ndash; Delete Get Request
 
-* ####  &emsp; Description
+* **Description**
 
-This API handler function is used to get all recently deleted items for a particular user account. The API endpoint accepts HTTP GET requests and requires a valid access token for authentication.
+    This API handler function is used to get all recently deleted items for a particular user account. The API endpoint accepts HTTP GET requests and requires a valid access token for authentication.
 
-* ####  &emsp; Request
+* **Request**
 
-The request must be an HTTP GET request with a valid access token included in the Authorization header.
+    The request must be an HTTP GET request with a valid access token included in the Authorization header.
 
-* ####  &emsp; Errors
+* **Errors**
 
-The API may return the following error responses:
+    The API may return the following error responses:
 
-  1. 401 Unauthorized: If the access token is invalid or missing.
-  2. 500 Internal Server Error: If there is an error retrieving the recently deleted items from the database.
+  * 401 Unauthorized: If the access token is invalid or missing.
+  * 500 Internal Server Error: If there is an error retrieving the recently deleted items from the database.
 
-* ####  &emsp; Response
+* **Response**
 
-The API response is a JSON-encoded array of RecentlyDeletedItem objects. Each object contains information about an item that was recently deleted by the user. The fields of the RecentlyDeletedItem object are:
+    The API response is a JSON-encoded array of RecentlyDeletedItem objects. Each object contains information about an item that was recently deleted by the user. The fields of the RecentlyDeletedItem object are:
 
-  1. ID (int): The unique identifier of the item.
-  2. Name (string): The name of the item.
-  3. DeletedAt (time.Time): The time the item was deleted.
+  * ID (int): The unique identifier of the item.
+  * Name (string): The name of the item.
+  * DeletedAt (time.Time): The time the item was deleted.
 
-* ####  &emsp; Functionality
+* **Functionality**
 
-The API handler function DeletedGet retrieves all recently deleted items for a particular user account from the database using the provided GORM database object. It first verifies that the provided access token is valid by calling the IsValidToken function, which returns the username associated with the token or an empty string if the token is invalid. If the token is invalid, the API returns a 401 Unauthorized response.
+    The API handler function DeletedGet retrieves all recently deleted items for a particular user account from the database using the provided GORM database object. It first verifies that the provided access token is valid by calling the IsValidToken function, which returns the username associated with the token or an empty string if the token is invalid. If the token is invalid, the API returns a 401 Unauthorized response.
 
-If the token is valid, the API queries the recently_deleted_items table in the database for all items with an account_id equal to the retrieved username. If the query fails, the API returns a 500 Internal Server Error response.
+    If the token is valid, the API queries the recently_deleted_items table in the database for all items with an account_id equal to the retrieved username. If the query fails, the API returns a 500 Internal Server Error response.
 
-Finally, if the query succeeds, the API returns a 200 OK response with a JSON-encoded array of RecentlyDeletedItem objects.
+    Finally, if the query succeeds, the API returns a 200 OK response with a JSON-encoded array of RecentlyDeletedItem objects.
 
 ---------------------
 
