@@ -526,13 +526,45 @@ The **PingGet** function returns a **gin.HandlerFunc** that simply returns a JSO
 
 * ####  &emsp; Description
 
+
+This endpoint receives a JSON payload containing the user's information, such as **username** and **password**. It creates a new account for the user and a root container for them.
+
 * ####  &emsp; Request
+
+The request must be a POST request to the **/register** endpoint with a JSON payload containing the following fields:
+
+  1. **username**: The user's username.
+  2. **password**: The user's password.
+  3. **password_confirmation**: The user's password confirmation
 
 * ####  &emsp; Errors
 
+If the request is invalid or any error occurs while processing it, the endpoint will return one of the following error messages as a JSON payload:
+
+  1. **400	Invalid request body**
+  2. **400	User already exists**
+  3. **400	Password and confirmation do not match**
+  4. **500	Failed to get max location ID**
+  5. **500	Failed to create user**
+  6. **500	Failed to create container**
+  7. **500	Failed to update user's RootLoc**
+
 * ####  &emsp; Response
 
+If the request is successful, the endpoint returns a JSON payload containing the following fields:
+
+  1. **token**: The authentication token for the newly created user.
+  2. **rootLoc**: The ID of the root container created for the new user.
+
 * ####  &emsp; Functionality
+
+When a request is received, the endpoint first checks if the request body is valid and if the user already exists in the system. If the request is valid and the user does not already exist, it creates a new account and a new root container for the user in the database.
+
+The endpoint creates the new account by hashing and salting the user's password using the bcrypt package. It also generates a random token for the user's authentication.
+
+The endpoint then creates a new container object for the user's root container. The new container is assigned a new unique location ID. The endpoint uses a transaction to ensure that the creation of the new user and container objects is atomic.
+
+If any error occurs during the creation of the user or container objects, the endpoint returns an error message and rolls back the transaction. If the creation is successful, the endpoint commits the transaction and returns the authentication token and the ID of the root container created for the user.
 
 ---------------------
 
