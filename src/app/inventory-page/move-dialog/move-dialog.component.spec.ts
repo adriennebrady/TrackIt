@@ -42,4 +42,18 @@ describe('MoveDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call move() when move is clicked', () => {
+    spyOn(component, 'move');
+    const moveButton = fixture.nativeElement.querySelector('.renameButton');
+    moveButton.click();
+    expect(component.move).toHaveBeenCalled();
+  });
+
+  it('should call cancel() when cancel is clicked', () => {
+    spyOn(component, 'cancel');
+    const cancelButton = fixture.nativeElement.querySelector('.cancelButton');
+    cancelButton.click();
+    expect(component.cancel).toHaveBeenCalled();
+  });
 });
