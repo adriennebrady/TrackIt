@@ -50,4 +50,24 @@ describe('RecentlyDeletedComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should display the correct navigation', () => {
+    const logoElement = fixture.nativeElement.querySelector('.logo');
+    expect(logoElement.textContent).toContain('TRACKIT');
+
+    const signOutButton = fixture.nativeElement.querySelector('.signUpButton');
+    expect(signOutButton.textContent).toContain('My Inventory');
+  });
+
+  it('should display correct heading', () => {
+    const headingElement = fixture.nativeElement.querySelector('.inventoryHeading h1');
+    expect(headingElement.textContent).toContain('Recently Deleted');
+  });
+
+  it('should display message when there are no items', () => {
+    component.items = [];
+    fixture.detectChanges();
+    const noItemsElement = fixture.nativeElement.querySelector('.noItems');
+    expect(noItemsElement.textContent).toContain('No recently deleted items.');
+  });
 });

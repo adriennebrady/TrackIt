@@ -4,6 +4,8 @@ import { SidebarNavComponent } from './sidebar-nav.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MatTreeModule } from '@angular/material/tree';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 describe('SidebarNavComponent', () => {
   let component: SidebarNavComponent;
