@@ -244,11 +244,11 @@
 
 * **Functionality**: The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
 
-If the token is valid, the API queries the "recently_deleted_items" table in the database to retrieve the item with the specified ID and the same account ID as the user making the request. If the query fails, the API returns an HTTP 500 Internal Server Error response.
+    If the token is valid, the API queries the "recently_deleted_items" table in the database to retrieve the item with the specified ID and the same account ID as the user making the request. If the query fails, the API returns an HTTP 500 Internal Server Error response.
+ 
+    If the item is successfully retrieved, the API deletes the item from the "recently_deleted_items" table. If the deletion fails, the API returns an HTTP 401 Unauthorized error response.
 
-If the item is successfully retrieved, the API deletes the item from the "recently_deleted_items" table. If the deletion fails, the API returns an HTTP 401 Unauthorized error response.
-
-If the deletion is successful, the API returns an HTTP 204 No Content response with an empty response body.
+    If the deletion is successful, the API returns an HTTP 204 No Content response with an empty response body.
 
 ---------------------
 
