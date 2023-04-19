@@ -79,6 +79,7 @@
 ## List frontend unit and Cypress tests
 
 ### Cypress Tests
+
 * Visit TrackIt Home Page
 * Visit About Page from Home Page
 * Visit Login Page from Home Page
@@ -91,6 +92,7 @@
   * Search for item
 
 ### Sprint 4 - Jasmine Unit Tests
+
 * DeleteAccountDialogComponent
   * should enable delete when input fields are filled
   * should display add item dialog title
@@ -123,6 +125,7 @@
   * should display the correct navigation
 
 ### Sprint 3 - Jasmine Unit Tests
+
 * ContainerCardPageComponent
   * should call backClicked on click of back button
   * should display the correct navigation
@@ -151,6 +154,7 @@
   * should display the item count
 
 ### Sprint 2 - Jasmine Unit Tests
+
 * ContainerComponent
   * should create
   * should call openConfirmDialog on click of delete button
@@ -281,6 +285,7 @@
 This API endpoint is designed to delete an existing account. It takes in a JSON payload containing a username, password, and password confirmation. If the account exists, the password is correct, and the password confirmation matches the password, the account will be deleted. If the account doesn't exist, an error message will be returned. If the password is incorrect, an error message will also be returned. The endpoint is implemented using the Gin web framework and GORM ORM for database access.
 
 * ####  &emsp; Request
+
 The API endpoint is an HTTP POST request that accepts a JSON payload with the following fields:
 
   1. username: a string representing the username of the account to be deleted.
@@ -299,16 +304,13 @@ The API can return the following HTTP status codes and error messages:
 
 * ####  &emsp; Response
 
-The API endpoint returns an HTTP status code and a JSON payload:
+If successful, the API endpoint returns an HTTP status code and a JSON payload:
 
   1. HTTP 204: if the account was deleted successfully.
-  2. HTTP 400: if the request payload is invalid.
-  3. HTTP 401: if the password provided is incorrect.
-  4. HTTP 404: if the account does not exist.
-  5. HTTP 406: if an error occurs during the deletion process.
-  6. JSON payload: empty JSON object.
+  2. JSON payload: empty JSON object.
 
 * ####  &emsp; Functionality
+
 The API endpoint first validates the request payload and checks if the account exists. If the account exists, it checks if the password and password confirmation fields match and if the password provided is correct. If all checks pass, it starts a new transaction to ensure atomicity, deletes the account, and commits the transaction. If any error occurs during this process, it rolls back the transaction and returns an error message with the appropriate HTTP status code.
 
 ---------------------
@@ -351,6 +353,7 @@ This API starts by checking the user's token using the IsValidToken function. If
 ### &ndash; Delete Delete Request
 
 * ####  &emsp; Description
+
 This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
 
 * ####  &emsp; Request
@@ -364,6 +367,7 @@ The API expects a JSON request body with the following format:
 where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
 
 * ####  &emsp; Errors
+
 The API may return the following HTTP error responses:
 
   1. 400 Bad Request: If the request body is invalid.
@@ -371,9 +375,11 @@ The API may return the following HTTP error responses:
   3. 500 Internal Server Error: If there is an error while querying the database.
 
 * ####  &emsp; Response
+
 The API returns a response with HTTP status code 204 No Content if the item is successfully deleted.
 
 * ####  &emsp; Functionality
+
 The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
 
 If the token is valid, the API queries the "recently_deleted_items" table in the database to retrieve the item with the specified ID and the same account ID as the user making the request. If the query fails, the API returns an HTTP 500 Internal Server Error response.
@@ -387,18 +393,22 @@ If the deletion is successful, the API returns an HTTP 204 No Content response w
 ### &ndash; Delete Get Request
 
 * ####  &emsp; Description
+
 This API handler function is used to get all recently deleted items for a particular user account. The API endpoint accepts HTTP GET requests and requires a valid access token for authentication.
 
 * ####  &emsp; Request
+
 The request must be an HTTP GET request with a valid access token included in the Authorization header.
 
 * ####  &emsp; Errors
+
 The API may return the following error responses:
 
   1. 401 Unauthorized: If the access token is invalid or missing.
   2. 500 Internal Server Error: If there is an error retrieving the recently deleted items from the database.
 
 * ####  &emsp; Response
+
 The API response is a JSON-encoded array of RecentlyDeletedItem objects. Each object contains information about an item that was recently deleted by the user. The fields of the RecentlyDeletedItem object are:
 
   1. ID (int): The unique identifier of the item.
@@ -418,9 +428,11 @@ Finally, if the query succeeds, the API returns a 200 OK response with a JSON-en
 ### &ndash; Inventory Delete Request
 
 * ####  &emsp; Description
+
 This API provides an endpoint for deleting items or containers from an inventory management system. It takes in a JSON payload with a token for user authentication, the type of item to delete (either "item" or "container"), and the ID of the item or container to delete. The API uses the Gin framework for HTTP routing and GORM for database operations. The API performs input validation and verifies the token's authenticity before performing any deletion operations.
 
 * ####  &emsp; Request
+
 The API expects an HTTP POST request to the endpoint /inventory/delete. The request must contain a JSON payload with the following fields:
 
   1. token: A string representing the user's authentication token. This field is required.
@@ -428,6 +440,7 @@ The API expects an HTTP POST request to the endpoint /inventory/delete. The requ
   3. type: A string representing the type of item to delete. Valid values are "item" and "container". This field is required.
 
 * ####  &emsp; Errors
+
 The API can return the following error responses:
 
   1. 400 Bad Request: The request payload is missing or invalid.
@@ -436,9 +449,14 @@ The API can return the following error responses:
   4. 500 Internal Server Error: An error occurred while performing the deletion operation.
 
 * ####  &emsp; Response
-The API returns an HTTP status code indicating the success or failure of the request. If the deletion operation is successful, the API returns an HTTP status code of 204 No Content with an empty response body.
+
+If successful, the API endpoint returns an HTTP status code and a JSON payload:
+
+  1. HTTP 204: if the account was deleted successfully.
+  2. JSON payload: empty JSON object.
 
 * ####  &emsp; Functionality
+
 The InventoryDelete function is the main handler function that is called when the API endpoint is hit. It takes a GORM database connection as an argument and returns a Gin handler function.
 
 The Gin handler function first parses the JSON payload and checks for any errors. It then verifies the authentication token and retrieves the username associated with the token. If the token is invalid, the API returns a 401 Unauthorized error.
@@ -456,9 +474,11 @@ Both helper functions return an error if there is a problem deleting the object 
 ### &ndash; Inventory Post Request
 
 * ####  &emsp; Description
+
 This API handles requests to create a new container or item in an inventory system. The API takes in an HTTP POST request with a JSON request body that contains information about the new container or item to be created, along with an authorization token for the user making the request. The API verifies the authorization token, checks whether the new item is a container or item, and then creates the new container or item in the database.
 
 * ####  &emsp; Request
+
 The request should be an HTTP POST request to the endpoint where this API is hosted. The request should contain a JSON request body with the following fields:
 
   1. Authorization (string): The authorization token for the user making the request.
@@ -470,6 +490,7 @@ The request should be an HTTP POST request to the endpoint where this API is hos
   7. Count (int): The count of the new item. Only applicable if the new item is an item.
 
 * ####  &emsp; Errors
+
 The API may return the following errors:
 
   1.400 Bad Request: Returned if the request body is invalid.
@@ -477,9 +498,11 @@ The API may return the following errors:
   3. 500 Internal Server Error: Returned if there is an error creating the new container or item.
 
 * ####  &emsp; Response
+
 The API returns an HTTP response with a status code of 204 (No Content) if the new container or item was created successfully.
 
 * ####  &emsp; Functionality
+
 The API first parses the JSON request body into a struct called InvRequest. It then checks whether the authorization token provided in the request is valid by calling the IsValidToken function and passing in the token and the database connection. If the token is not valid, the API returns an HTTP response with a status code of 401 (Unauthorized).
 
 If the token is valid, the API checks whether the new item to be created is a container or item by checking the Kind field in the request body. If the Kind field is "container", the API creates a new Container struct with the information provided in the request body, and then creates a new record in the "containers" table in the database using the GORM Create method. If the Kind field is "item", the API creates a new Item struct with the information provided in the request body, and then creates a new record in the "items" table in the database using the GORM Create method.
@@ -493,9 +516,11 @@ If the new container or item was created successfully, the API returns an HTTP r
 ### &ndash; Inventory Put Request
 
 * ####  &emsp; Description
+
 This API contains two functions, InventoryPut and its helper functions ContainerPut and ItemPut. It receives a JSON request body with authorization, kind, ID, type, name, count, and cont (container ID) fields. Depending on the kind of request, the API updates the name, location, or count of an item, or the name or location of a container in a database, given a valid authorization token.
 
 * ####  &emsp; Request
+
 The API expects an HTTP POST request with a JSON request body that includes the following fields:
 
   1. Authorization: A token to authenticate the request.
@@ -507,6 +532,7 @@ The API expects an HTTP POST request with a JSON request body that includes the 
   7. Cont: An integer that represents the new location of the container (if Type is "Relocate").
 
 * ####  &emsp; Errors
+
 The API may return the following HTTP status codes and JSON error messages:
 
   1. 400 Bad Request: The request body is invalid.
@@ -515,9 +541,14 @@ The API may return the following HTTP status codes and JSON error messages:
   4. 500 Internal Server Error: A database error occurs.
 
 * ####  &emsp; Response
-If the API successfully processes the request, it returns an HTTP status code of 200 OK with an empty response body. If an error occurs, it returns an HTTP status code and a JSON error message.
+
+If successful, the API endpoint returns an HTTP status code and a JSON payload:
+
+  1. HTTP 200: if the account was deleted successfully.
+  2. JSON payload: empty JSON object.
 
 * ####  &emsp; Functionality
+
 The InventoryPut function is a gin.HandlerFunc that takes a gorm.DB object and returns a function that handles the HTTP request. It first reads the JSON request body and validates it. If the request is valid, it checks the authorization token by calling the IsValidToken function. If the token is valid, it processes the request by calling either the ContainerPut or ItemPut function, depending on the Kind field of the request. If an error occurs during processing, it returns an appropriate HTTP status code and JSON error message.
 
 The ContainerPut function takes an InvRequest object, a gorm.DB object, and a string representing the username of the request's author. It looks up the container in the database by ID and username, then updates its name or location based on the Type field of the request. It saves the changes to the database and returns nil if successful. If an error occurs, it returns a string pointer to an appropriate error message.
@@ -529,12 +560,15 @@ The ItemPut function takes an InvRequest object, a gorm.DB object, and a string 
 ### &ndash; Items Get Request
 
 * ####  &emsp; Description
+
 uses the Gin web framework for routing and GORM as an ORM to interact with a database. The function ItemsGet takes a pointer to a gorm.DB object as input and returns a gin.HandlerFunc. The API checks the validity of a token provided in the Authorization header, verifies that the container belongs to the user, and retrieves all items that belong to the container.
 
 * ####  &emsp; Request
+
 The API expects a GET request to the endpoint /items with the container ID as a query parameter in the URL. The container ID should be an integer. The Authorization header should contain a valid token.
 
 * ####  &emsp; Errors
+
 The API can return the following error responses:
 
   1. 400 Bad Request if the container ID is invalid
@@ -542,6 +576,7 @@ The API can return the following error responses:
   3. 500 Internal Server Error if there was an error retrieving the items from the database
 
 * ####  &emsp; Response
+
 The API returns a JSON response with a status code of 200 OK and an array of Item objects. Each Item object represents an item that belongs to the container. The Item object has the following fields:
 
   1. ID (int): the ID of the item
@@ -551,6 +586,7 @@ The API returns a JSON response with a status code of 200 OK and an array of Ite
   5. UpdatedAt (time.Time): the timestamp when the item was last updated
 
 * ####  &emsp; Functionality
+
 The ItemsGet function handles HTTP GET requests to retrieve all items that belong to a container. It first verifies the validity of the token provided in the Authorization header by calling the IsValidToken function. If the token is invalid, the API returns a 401 Unauthorized response.
 
 Next, the API retrieves the container ID from the query parameter in the URL and checks if the container belongs to the user by querying the Containers table in the database using the db.Table method of GORM. If the container does not belong to the user, the API returns a 401 Unauthorized response.
@@ -674,7 +710,6 @@ The **PingGet** function returns a **gin.HandlerFunc** that simply returns a JSO
 
 * ####  &emsp; Description
 
-
 This endpoint receives a JSON payload containing the user's information, such as **username** and **password**. It creates a new account for the user and a root container for them.
 
 * ####  &emsp; Request
@@ -689,13 +724,13 @@ The request must be a POST request to the **/register** endpoint with a JSON pay
 
 If the request is invalid or any error occurs while processing it, the endpoint will return one of the following error messages as a JSON payload:
 
-  1. **400	Invalid request body**
-  2. **400	User already exists**
-  3. **400	Password and confirmation do not match**
-  4. **500	Failed to get max location ID**
-  5. **500	Failed to create user**
-  6. **500	Failed to create container**
-  7. **500	Failed to update user's RootLoc**
+  1. **400 Invalid request body**
+  2. **400 User already exists**
+  3. **400 Password and confirmation do not match**
+  4. **500 Failed to get max location ID**
+  5. **500 Failed to create user**
+  6. **500 Failed to create container**
+  7. **500 Failed to update user's RootLoc**
 
 * ####  &emsp; Response
 
@@ -761,7 +796,6 @@ If the token is valid, the function proceeds to retrieve all items from the **it
 Headers:
 
   1. **Authorization**: The authorization token of the user.
-
 
 * ####  &emsp; Errors
 
