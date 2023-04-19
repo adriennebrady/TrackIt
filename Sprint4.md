@@ -225,30 +225,24 @@
 * **Description**: This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
 
 * **Request**: The API expects a JSON request body with the following format:
-<pre>
-{
-"id": <integer>,
-"token": <string>
-}
-</pre>
+    <pre>
+    {
+    "id": <integer>,
+    "token": <string>
+    }
+    </pre>
 
-  where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
+    where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
 
-* **Errors**:
-
-The API may return the following HTTP error responses:
+* **Errors**: The API may return the following HTTP error responses:
 
   * 400 Bad Request: If the request body is invalid.
   * 417 Expectation Failed: If the token is invalid.
   * 500 Internal Server Error: If there is an error while querying the database.
 
-* **Response**:
+* **Response**: The API returns a response with HTTP status code 204 No Content if the item is successfully deleted.
 
-The API returns a response with HTTP status code 204 No Content if the item is successfully deleted.
-
-* **Functionality**:
-
-The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
+* **Functionality**: The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
 
 If the token is valid, the API queries the "recently_deleted_items" table in the database to retrieve the item with the specified ID and the same account ID as the user making the request. If the query fails, the API returns an HTTP 500 Internal Server Error response.
 
