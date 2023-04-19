@@ -739,6 +739,7 @@
   * Retrieves the root location of the user from the **accounts** table.
   * Calls the **GetChildren** function recursively to retrieve the hierarchical tree structure of all child containers.
   * Constructs and returns a JSON response with the root container and its children containers.
+  <p>&nbsp;</p>
 
     The **GetChildren** function performs the following steps:
 
