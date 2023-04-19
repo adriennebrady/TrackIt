@@ -204,7 +204,7 @@
   * Authorization header: A valid user token is required to access this endpoint.
   * **container_id**: An integer parameter that specifies the container ID.
 
-* **Response**: This API may return the following errors:
+* **Errors**: This API may return the following errors:
 
   * 401 Unauthorized: The user's token is invalid or has expired.
   * 400 Bad Request: The container ID parameter is missing or not an integer.
@@ -222,11 +222,9 @@
 
 ### &ndash; Delete Delete Request
 
-* ####  &emsp; Description
+* **Description**: This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
 
-This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
-
-* ####  &emsp; Request
+* **Request**:
 
 The API expects a JSON request body with the following format:
 {
@@ -236,7 +234,7 @@ The API expects a JSON request body with the following format:
 
 where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
 
-* ####  &emsp; Errors
+* **Errors**:
 
 The API may return the following HTTP error responses:
 
@@ -244,11 +242,11 @@ The API may return the following HTTP error responses:
   2. 417 Expectation Failed: If the token is invalid.
   3. 500 Internal Server Error: If there is an error while querying the database.
 
-* ####  &emsp; Response
+* **Response**:
 
 The API returns a response with HTTP status code 204 No Content if the item is successfully deleted.
 
-* ####  &emsp; Functionality
+* **Functionality**:
 
 The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
 
