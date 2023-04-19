@@ -130,13 +130,38 @@
 
 * ####  &emsp; Description
 
+This API endpoint is designed to delete an existing account. It takes in a JSON payload containing a username, password, and password confirmation. If the account exists, the password is correct, and the password confirmation matches the password, the account will be deleted. If the account doesn't exist, an error message will be returned. If the password is incorrect, an error message will also be returned. The endpoint is implemented using the Gin web framework and GORM ORM for database access.
+
 * ####  &emsp; Request
+The API endpoint is an HTTP POST request that accepts a JSON payload with the following fields:
+
+  1. username: a string representing the username of the account to be deleted.
+  2. password: a string representing the password of the account to be deleted.
+  3. password_confirmation: a string representing the confirmation password for the deletion   process.
 
 * ####  &emsp; Errors
 
+The endpoint returns the following error messages, depending on the error that occurred:
+
+  1. Invalid request body: if the request payload is invalid.
+  2. User does not exist: if the username provided does not match any existing account.
+  3. Password and password confirmation do not match: if the password and password confirmation fields in the payload do not match.
+  4. Invalid username or password: if the password provided is incorrect.
+  5. Couldn't delete account: if an error occurs during the deletion process.
+
 * ####  &emsp; Response
 
+The API endpoint returns an HTTP status code and a JSON payload:
+
+  1. HTTP 204: if the account was deleted successfully.
+  2. HTTP 400: if the request payload is invalid.
+  3. HTTP 401: if the password provided is incorrect.
+  4. HTTP 404: if the account does not exist.
+  5. HTTP 406: if an error occurs during the deletion process.
+  6. JSON payload: empty JSON object.
+
 * ####  &emsp; Functionality
+The API endpoint first validates the request payload and checks if the account exists. If the account exists, it checks if the password and password confirmation fields match and if the password provided is correct. If all checks pass, it starts a new transaction to ensure atomicity, deletes the account, and commits the transaction. If any error occurs during this process, it rolls back the transaction and returns an error message with the appropriate HTTP status code.
 
 ---------------------
 
