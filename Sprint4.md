@@ -3,49 +3,50 @@
 ## Detail work you've completed in Sprint 4
 
 ### Front-End
-  * Added new functionality to allow user to update the item count with a pop-up dialog
-  * Added new functionality & increment/decrement buttons to allow user to quickly increase/decrease an item's count by 1
-  * Added new sidebar functionality on the inventory page with a toggle button to hide/display the navigation tree
-  * Added sidebar navigation tree to all logged in pages
-  * Added new move/relocate menu to items and containers
-  * Added new recently deleted page with options to permanently delete or restore items
-  * Added buttons linked to recently deleted page and settings page for logged in users
-  * Created new account settings page with account deletion functionality
-  * Created password verification pop up dialog component for account deletion
-  * Created new move/relocate pop up dialog
-  * Created new sidebar navigation tree component w/buttons to directly navigate to any container card page
-  * Updated item component to now display actual item count
-  * Updated item HTTP POST request to send "1" as the default item count if user doesn't input a value
-  * Updated sidenav to take up entire side of screen
-  * Fixed container and item GET requests to account for new container and item GET handlers in the backend
-  * Fixed sidebar nav. so it now automatically updates when containers are added/deleted
-  * Fixed recently deleted get and delete HTTP requests
-  * Fixed display of container name
-  * Remove description from containers
-  * Remove description field from pop-up dialog
-  * Update existing Cypress tests to succeed without container description
-  * Fixed the following Jasmine unit test failures due to software updates:
-    * MoveMenuComponent—should create
-    * SidebarNavComponent—should create
-    * DeletedItemComponent—should create
-    * RecentlyDeletedComponent—should create
-    * RecountDialogComponent—should create
-    * SettingsComponent—should create
-    * DeleteAccountDialogComponent—should create
-    * AboutComponent—should display the correct content when user is logged in
-    * MoveDialogComponent—should create
-    * ContainerCardPageComponent
-    * InventoryPageComponent
-    * SearchComponent
-  * Wrote new Jasmine unit tests for the following components:
-    * DeleteAccountDialogComponent
-    * DeletedItemComponent
-    * SettingsComponent
-    * MoveMenuComponent
-    * MoveDialogComponent
-    * RecountDialogComponent
-    * RecentlyDeletedComponent
-  * Wrote restore item Cypress test
+
+* Added new functionality to allow user to update the item count with a pop-up dialog
+* Added new functionality & increment/decrement buttons to allow user to quickly increase/decrease an item's count by 1
+* Added new sidebar functionality on the inventory page with a toggle button to hide/display the navigation tree
+* Added sidebar navigation tree to all logged in pages
+* Added new move/relocate menu to items and containers
+* Added new recently deleted page with options to permanently delete or restore items
+* Added buttons linked to recently deleted page and settings page for logged in users
+* Created new account settings page with account deletion functionality
+* Created password verification pop up dialog component for account deletion
+* Created new move/relocate pop up dialog
+* Created new sidebar navigation tree component w/buttons to directly navigate to any container card page
+* Updated item component to now display actual item count
+* Updated item HTTP POST request to send "1" as the default item count if user doesn't input a value
+* Updated sidenav to take up entire side of screen
+* Fixed container and item GET requests to account for new container and item GET handlers in the backend
+* Fixed sidebar nav. so it now automatically updates when containers are added/deleted
+* Fixed recently deleted get and delete HTTP requests
+* Fixed display of container name
+* Remove description from containers
+* Remove description field from pop-up dialog
+* Update existing Cypress tests to succeed without container description
+* Fixed the following Jasmine unit test failures due to software updates:
+  * MoveMenuComponent—should create
+  * SidebarNavComponent—should create
+  * DeletedItemComponent—should create
+  * RecentlyDeletedComponent—should create
+  * RecountDialogComponent—should create
+  * SettingsComponent—should create
+  * DeleteAccountDialogComponent—should create
+  * AboutComponent—should display the correct content when user is logged in
+  * MoveDialogComponent—should create
+  * ContainerCardPageComponent
+  * InventoryPageComponent
+  * SearchComponent
+* Wrote new Jasmine unit tests for the following components:
+  * DeleteAccountDialogComponent
+  * DeletedItemComponent
+  * SettingsComponent
+  * MoveMenuComponent
+  * MoveDialogComponent
+  * RecountDialogComponent
+  * RecentlyDeletedComponent
+* Wrote restore item Cypress test
 
 ### Back-End
 
