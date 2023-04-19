@@ -475,276 +475,260 @@
 
 ### &ndash; Login Post Request
 
-* ####  &emsp; Description
+* **Description**
 
-The LoginPost function is a handler function that is used to handle the HTTP POST requests made to the login endpoint. It takes the username and password from the request body, checks if the user exists and if the password is correct, generates a token and saves it to the database, and then returns the token and the root location ID to the user.
+    The LoginPost function is a handler function that is used to handle the HTTP POST requests made to the login endpoint. It takes the username and password from the request body, checks if the user exists and if the password is correct, generates a token and saves it to the database, and then returns the token and the root location ID to the user.
 
-* ####  &emsp; Request
+* **Request**
 
-The LoginPost function receives a JSON payload with the following fields:
+    The LoginPost function receives a JSON payload with the following fields:
 
-  1. username (string): The username of the user trying to login.
-  2. password (string): The password of the user trying to login.
+  * username (string): The username of the user trying to login.
+  * password (string): The password of the user trying to login.
 
-* ####  &emsp; Errors
+* **Errors**
 
-The LoginPost function may return the following errors as HTTP status codes and JSON payloads:
+    The LoginPost function may return the following errors as HTTP status codes and JSON payloads:
 
-  1. 400 Bad Request: The request body is not a valid JSON payload.
-  2. 401 Unauthorized: The username or password is incorrect.
-  3. 500 Internal Server Error: An error occurred while generating or saving the token or deleting old recently deleted items.
+  * 400 Bad Request: The request body is not a valid JSON payload.
+  * 401 Unauthorized: The username or password is incorrect.
+  * 500 Internal Server Error: An error occurred while generating or saving the token or deleting old recently deleted items.
 
-* ####  &emsp; Response
+* **Response**
 
-The LoginPost function returns a JSON payload with the following fields:
+    The LoginPost function returns a JSON payload with the following fields:
 
-  1. token (string): The token generated for the user.
-  2. rootLoc (int): The ID of the user's root location.
+  * token (string): The token generated for the user.
+  * rootLoc (int): The ID of the user's root location.
 
-* ####  &emsp; Functionality
+* **Functionality**
 
-The LoginPost function does the following:
-
-  1. Parses the request body and extracts the username and password fields.
-  2. Queries the database to check if the user with the given username exists.
-  3. Compares the password provided by the user with the one stored in the database for the given user.
-  4. If the username and password are correct, generates a new token and saves it to the database for the user.
-  5. Deletes old recently deleted items from the database.
-  6. Returns the token and root location ID in a JSON response.
+    The LoginPost function parses the request body and extracts the username and password fields. Then, Queries the database to check if the user with the given username exists. It Compares the password provided by the user with the one stored in the database for the given user. If the username and password are correct, generates a new token and saves it to the database for the user. Then Deletes old recently deleted items from the database. Finally, it returns the token and root location ID in a JSON response.
 
 ---------------------
 
 ### &ndash; Name Get Request
 
-* ####  &emsp; Description
+* **Description**
 
-NameGet is a handler function that retrieves the name of a container identified by a Container_id query parameter, along with its parent names if any.
+    NameGet is a handler function that retrieves the name of a container identified by a Container_id query parameter, along with its parent names if any.
 
-* ####  &emsp; Request
+* **Request**
 
-HTTP Method: GET
+    The NameGet function request has the following fields:
 
-Path: /name
+  * Container_id (required): The ID of the container whose name should be retrieved.
 
-Query Parameters:
+* **Errors**
 
-  1. Container_id (required): The ID of the container whose name should be retrieved.
+  * 401 Unauthorized: If the Authorization header is missing or the token is invalid.
+  * 406 Not Acceptable: If the Container_id query parameter is missing or invalid.
+  * 404 Not Found: If the container with the specified ID and username is not found.
+  * 500 Internal Server Error: If there is an error retrieving the container from the database.
 
-* ####  &emsp; Errors
+* **Response**
 
-  1. 401 Unauthorized: If the Authorization header is missing or the token is invalid.
-  2. 406 Not Acceptable: If the Container_id query parameter is missing or invalid.
-  3. 404 Not Found: If the container with the specified ID and username is not found.
-  4. 500 Internal Server Error: If there is an error retrieving the container from the database.
+    The function will return the following json response:
 
-* ####  &emsp; Response
+  * Status Code: 200 OK
+  * Body: The name of the container identified by Container_id, along with its parent names separated by a forward slash ("/").
 
-The function will return the following json response:
+* **Functionality**
 
-  1. Status Code: 200 OK
-  2. Body: The name of the container identified by Container_id, along with its parent names separated by a forward slash ("/").
-
-* ####  &emsp; Functionality
-
-The function first retrieves the token from the **Authorization** header and checks its validity.
-
-Then, it parses the **Container_id** query parameter and retrieves the container with the specified ID and username from the database.
-
-It retrieves the name of the container and its parent names, if any, by calling the GetParent function recursively up to a maximum of 10 iterations.
-
-Finally, it returns the name of the container and its parent names as a JSON response.
+    The function first retrieves the token from the **Authorization** header and checks its validity. Then, it parses the **Container_id** query parameter and retrieves the container with the specified ID and username from the database. It retrieves the name of the container and its parent names, if any, by calling the GetParent function recursively up to a maximum of 10 iterations. Finally, it returns the name of the container and its parent names as a JSON response.
 
 ---------------------
 
 ### &ndash; Ping Get Request
 
-* ####  &emsp; Description
+* **Description**
 
-This endpoint is used to test that the server is up and running.
+    This endpoint is used to test that the server is up and running.
 
-* ####  &emsp; Request
+* **Request**
 
-This endpoint does not require any request parameters.
+    This endpoint does not require any request parameters.
 
-* ####  &emsp; Errors
+* **Errors**
 
-This endpoint does not return any errors.
+    This endpoint does not return any errors.
 
-* ####  &emsp; Response
+* **Response**
 
-If the request is successful, the response will be a JSON object containing a single key-value pair:
+    If the request is successful, the response will be a JSON object containing a single key-value pair:
 
-  1. **"hello"**: A greeting message.
+  * **"hello"**: A greeting message.
 
-* ####  &emsp; Functionality
+* **Functionality**
 
-The **PingGet** function returns a **gin.HandlerFunc** that simply returns a JSON response with a greeting message and a status code of 200 when the endpoint is called. This is useful for testing that the server is up and running.
+    The **PingGet** function returns a **gin.HandlerFunc** that simply returns a JSON response with a greeting message and a status code of 200 when the endpoint is called. This is useful for testing that the server is up and running.
 
 ---------------------
 
 ### &ndash; Register Post Request
 
-* ####  &emsp; Description
+* **Description**
 
-This endpoint receives a JSON payload containing the user's information, such as **username** and **password**. It creates a new account for the user and a root container for them.
+    This endpoint receives a JSON payload containing the user's information, such as **username** and **password**. It creates a new account for the user and a root container for them.
 
-* ####  &emsp; Request
+* **Request**
 
-The request must be a POST request to the **/register** endpoint with a JSON payload containing the following fields:
+    The request must be a POST request to the **/register** endpoint with a JSON payload containing the following fields:
 
   1. **username**: The user's username.
   2. **password**: The user's password.
   3. **password_confirmation**: The user's password confirmation
 
-* ####  &emsp; Errors
+* **Errors**
 
-If the request is invalid or any error occurs while processing it, the endpoint will return one of the following error messages as a JSON payload:
+    If the request is invalid or any error occurs while processing it, the endpoint will return one of the following error messages as a JSON payload:
 
-  1. **400 Invalid request body**
-  2. **400 User already exists**
-  3. **400 Password and confirmation do not match**
-  4. **500 Failed to get max location ID**
-  5. **500 Failed to create user**
-  6. **500 Failed to create container**
-  7. **500 Failed to update user's RootLoc**
+  * **400 Invalid request body**
+  * **400 User already exists**
+  * **400 Password and confirmation do not match**
+  * **500 Failed to get max location ID**
+  * **500 Failed to create user**
+  * **500 Failed to create container**
+  * **500 Failed to update user's RootLoc**
 
-* ####  &emsp; Response
+* **Response**
 
-If the request is successful, the endpoint returns a JSON payload containing the following fields:
+    If the request is successful, the endpoint returns a JSON payload containing the following fields:
 
-  1. **token**: The authentication token for the newly created user.
-  2. **rootLoc**: The ID of the root container created for the new user.
+  * **token**: The authentication token for the newly created user.
+  * **rootLoc**: The ID of the root container created for the new user.
 
-* ####  &emsp; Functionality
+* **Functionality**
 
-When a request is received, the endpoint first checks if the request body is valid and if the user already exists in the system. If the request is valid and the user does not already exist, it creates a new account and a new root container for the user in the database.
+    When a request is received, the endpoint first checks if the request body is valid and if the user already exists in the system. If the request is valid and the user does not already exist, it creates a new account and a new root container for the user in the database.
 
-The endpoint creates the new account by hashing and salting the user's password using the bcrypt package. It also generates a random token for the user's authentication.
+    The endpoint creates the new account by hashing and salting the user's password using the bcrypt package. It also generates a random token for the user's authentication.
 
-The endpoint then creates a new container object for the user's root container. The new container is assigned a new unique location ID. The endpoint uses a transaction to ensure that the creation of the new user and container objects is atomic.
+    The endpoint then creates a new container object for the user's root container. The new container is assigned a new unique location ID. The endpoint uses a transaction to ensure that the creation of the new user and container objects is atomic.
 
-If any error occurs during the creation of the user or container objects, the endpoint returns an error message and rolls back the transaction. If the creation is successful, the endpoint commits the transaction and returns the authentication token and the ID of the root container created for the user.
+    If any error occurs during the creation of the user or container objects, the endpoint returns an error message and rolls back the transaction. If the creation is successful, the endpoint commits the transaction and returns the authentication token and the ID of the root container created for the user.
 
 ---------------------
 
 ### &ndash; Search Get Request
 
-* ####  &emsp; Description
+* **Description**
 
-This endpoint is used to search for items that belong to a user in the database.
+    This endpoint is used to search for items that belong to a user in the database.
 
-* ####  &emsp; Request
+* **Request**
 
-The request to this endpoint must contain a JSON object with the following fields:
+    The request to this endpoint must contain a JSON object with the following fields:
 
-  1. **Authorization** (string, required): A token that verifies the identity of the user making the request.
-  2. **Item** (string, required): The name of the item that the user wants to search for.
+  * **Authorization** (string, required): A token that verifies the identity of the user making the request.
+  * **Item** (string, required): The name of the item that the user wants to search for.
 
-* ####  &emsp; Errors
+* **Errors**
 
-This endpoint may return the following error status codes and messages:
+    This endpoint may return the following error status codes and messages:
 
-  1. **401 Unauthorized**: When the token provided is invalid or has expired.
-  2. **500 Internal Server Error**: When there was a problem getting the items from the database.
+  * **401 Unauthorized**: When the token provided is invalid or has expired.
+  * **500 Internal Server Error**: When there was a problem getting the items from the database.
 
-* ####  &emsp; Response
+* **Response**
 
-If the request is successful, the response will be a JSON object containing an array of items that match the search criteria.
+    If the request is successful, the response will be a JSON object containing an array of items that match the search criteria.
 
-* ####  &emsp; Functionality
+* **Functionality**
 
-The **SearchGet** function takes in a **gorm.DB** object and returns a **gin.HandlerFunc**. When the endpoint is called, it first parses the JSON request body into a **SearchRequest** object. It then verifies that the token provided is valid by calling the **IsValidToken** function, passing in the token and the **gorm.DB** object.
+    The **SearchGet** function takes in a **gorm.DB** object and returns a **gin.HandlerFunc**. When the endpoint is called, it first parses the JSON request body into a **SearchRequest** object. It then verifies that the token provided is valid by calling the **IsValidToken** function, passing in the token and the **gorm.DB** object.
 
-If the token is valid, the function proceeds to retrieve all items from the **items** table in the database that match the **ItemName** and **username** fields provided in the request body. Finally, the function returns the retrieved items as a JSON response with a status code of 200. If there was an error, the function aborts the request and returns an appropriate error message with the corresponding HTTP status code.
+    If the token is valid, the function proceeds to retrieve all items from the **items** table in the database that match the **ItemName** and **username** fields provided in the request body. Finally, the function returns the retrieved items as a JSON response with a status code of 200. If there was an error, the function aborts the request and returns an appropriate error message with the corresponding HTTP status code.
 
 ---------------------
 
 ### &ndash; Tree Get Request
 
-* ####  &emsp; Description
+* **Description**
 
-**TreeGet** is a handler function that retrieves the hierarchical tree structure of all containers owned by a user. It returns a JSON response with the root container and its children containers. The function requires a valid authorization token in the request header.
+    **TreeGet** is a handler function that retrieves the hierarchical tree structure of all containers owned by a user. It returns a JSON response with the root container and its children containers. The function requires a valid authorization token in the request header.
 
-* ####  &emsp; Request
+* **Request**
 
-**GET /containers/tree**
+    **GET /containers/tree**
 
-Headers:
+    Headers:
 
-  1. **Authorization**: The authorization token of the user.
+  * **Authorization**: The authorization token of the user.
 
-* ####  &emsp; Errors
+* **Errors**
 
-The following error responses may be returned by the function:
+    The following error responses may be returned by the function:
 
-  1. **401 Unauthorized**: The authorization token is invalid or not provided.
-  2. **404 Not Found**: The user associated with the provided authorization token does not exist.
-Response
+  * **401 Unauthorized**: The authorization token is invalid or not provided.
+  * **404 Not Found**: The user associated with the provided authorization token does not exist.
 
-The function returns a JSON response with the following structure:
+* **Response**
 
-<pre>
-{
-  "Container": {
-    "LocID": 1,
-    "Name": "root",
-    "Description": "Root container",
-    "ParentID": null,
-    "OwnerID": 1
-  },
-  "Children": [
+    The function returns a JSON response with the following structure:
+
+    <pre>
     {
       "Container": {
-        "LocID": 2,
-        "Name": "child1",
-        "Description": "First child container",
-        "ParentID": 1,
+        "LocID": 1,
+        "Name": "root",
+        "Description": "Root container",
+        "ParentID": null,
         "OwnerID": 1
       },
       "Children": [
         {
           "Container": {
-            "LocID": 3,
-            "Name": "grandchild1",
-            "Description": "First grandchild container",
-            "ParentID": 2,
+            "LocID": 2,
+            "Name": "child1",
+            "Description": "First child container",
+            "ParentID": 1,
+            "OwnerID": 1
+          },
+          "Children": [
+            {
+              "Container": {
+                "LocID": 3,
+                "Name": "grandchild1",
+                "Description": "First grandchild container",
+                "ParentID": 2,
+                "OwnerID": 1
+              },
+              "Children": null
+            }
+          ]
+        },
+        {
+          "Container": {
+            "LocID": 4,
+            "Name": "child2",
+            "Description": "Second child container",
+            "ParentID": 1,
             "OwnerID": 1
           },
           "Children": null
         }
       ]
-    },
-    {
-      "Container": {
-        "LocID": 4,
-        "Name": "child2",
-        "Description": "Second child container",
-        "ParentID": 1,
-        "OwnerID": 1
-      },
-      "Children": null
     }
-  ]
-}
-</pre>
+    </pre>
 
-  1. **Container**: The root container of the user.
-  2. **Children**: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
+  * **Container**: The root container of the user.
+  * **Children**: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
 
-* ####  &emsp; Functionality
+* **Functionality**
 
-The function performs the following steps:
+    The function performs the following steps:
 
-  1. Retrieves the authorization token from the request header.
-  2. Validates the authorization token using the **IsValidToken** function.
-  3. Retrieves the root location of the user from the **accounts** table.
-  4. Calls the **GetChildren** function recursively to retrieve the hierarchical tree structure of all child containers.
-  5. Constructs and returns a JSON response with the root container and its children containers.
+  * Retrieves the authorization token from the request header.
+  * Validates the authorization token using the **IsValidToken** function.
+  * Retrieves the root location of the user from the **accounts** table.
+  * Calls the **GetChildren** function recursively to retrieve the hierarchical tree structure of all child containers.
+  * Constructs and returns a JSON response with the root container and its children containers.
 
-The **GetChildren** function performs the following steps:
+    The **GetChildren** function performs the following steps:
 
-  1. Retrieves all child containers of the specified parent container from the **Containers** table.
-  2. Creates a new **ContainerTree** object for each child container.
-  3. Calls the **GetChildren** function recursively for each child container to retrieve its own children containers.
-  4. Assigns the array of children containers to the **Children** field of the current **ContainerTree** object.
-  5. Returns an array of **ContainerTree** objects representing the child containers.
+  * Retrieves all child containers of the specified parent container from the **Containers** table.
+  * Creates a new **ContainerTree** object for each child container.
+  * Calls the **GetChildren** function recursively for each child container to retrieve its own children containers.
+  * Assigns the array of children containers to the **Children** field of the current **ContainerTree** object.
+  * Returns an array of **ContainerTree** objects representing the child containers.
