@@ -37,4 +37,45 @@ describe('RecountDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should display correct dialog title', () => {
+    const dialogTitle = fixture.nativeElement.querySelector('h1');
+    expect(dialogTitle.textContent).toContain('Update Item Count');
+  });
+
+  it('should disable update button if the form is invalid', () => {
+    component.data.count = '';
+    fixture.detectChanges();
+    const updateButton = fixture.nativeElement.querySelector('.recountButton');
+    expect(updateButton.disabled).toBeTruthy();
+  });
+
+  it('should enable update button if the form is valid', () => {
+    const inputField = fixture.nativeElement.querySelector('input[name="count"]');
+    expect(inputField).toBeDefined();
+
+    const updateButton = fixture.nativeElement.querySelector('.recountButton');
+    expect(updateButton).toBeDefined();
+
+    inputField.value = '3';
+    inputField.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+
+    expect(updateButton.disabled).toBeFalsy();
+  });
+
+  it('should call updateCount() if update button is clicked', () => {
+    spyOn(component, 'updateCount');
+    const button = fixture.nativeElement.querySelector('.recountButton');
+    button.click();
+    expect(component.updateCount).toHaveBeenCalled();
+  });
+
+  it('should call cancel() if cancel button is clicked', () => {
+    spyOn(component, 'cancel');
+    const button = fixture.nativeElement.querySelector('.cancelButton');
+    button.click();
+    expect(component.cancel).toHaveBeenCalled();
+  });
 });
