@@ -348,17 +348,13 @@
 
 * **Functionality**
 
-    The InventoryDelete function is the main handler function that is called when the API endpoint is hit. It takes a GORM database connection as an argument and returns a Gin handler function.
-
-    The Gin handler function first parses the JSON payload and checks for any errors. It then verifies the authentication token and retrieves the username associated with the token. If the token is invalid, the API returns a 401 Unauthorized error.
+    The InventoryDelete function is the main handler function that is called when the API endpoint is hit. It takes a GORM database connection as an argument and returns a Gin handler function. The Gin handler function first parses the JSON payload and checks for any errors. It then verifies the authentication token and retrieves the username associated with the token. If the token is invalid, the API returns a 401 Unauthorized error.
 
     The handler function then calls either the DeleteItem or DestroyContainer helper function based on the object type specified in the JSON payload. If the object type is invalid, the API returns a 400 Bad Request error.
 
     The DeleteItem helper function takes the GORM database connection, the ID of the item to be deleted, and the username of the user as arguments. It first checks if the item belongs to the user. If not, it returns an error. If the item belongs to the user, it creates a RecentlyDeletedItem object with the deleted item's ID, name, location, count, and timestamp, and saves it to the database. It then deletes the item from the database. Finally, it deletes any recently deleted items older than 30 days from the RecentlyDeletedItem table.
 
-    The DestroyContainer helper function takes the GORM database connection, the ID of the container to be deleted, and the username of the user as arguments. It looks up the container in the database and deletes all items and sub-containers associated with the container. It then deletes the container itself.
-
-    Both helper functions return an error if there is a problem deleting the object from the database. The handler function returns a 500 Internal Server Error if either helper function returns an error. If the deletion is successful, the handler function returns a 204 No Content status code.
+    The DestroyContainer helper function takes the GORM database connection, the ID of the container to be deleted, and the username of the user as arguments. It looks up the container in the database and deletes all items and sub-containers associated with the container. It then deletes the container itself. Both helper functions return an error if there is a problem deleting the object from the database. The handler function returns a 500 Internal Server Error if either helper function returns an error. If the deletion is successful, the handler function returns a 204 No Content status code.
 
 ---------------------
 
@@ -681,53 +677,53 @@
 
     The function returns a JSON response with the following structure:
 
-```
-{
-  "Container": {
-    "LocID": 1,
-    "Name": "root",
-    "Description": "Root container",
-    "ParentID": null,
-    "OwnerID": 1
-  },
-  "Children": [
-    {
-      "Container": {
-        "LocID": 2,
-        "Name": "child1",
-        "Description": "First child container",
-        "ParentID": 1,
-        "OwnerID": 1
-      },
-      "Children": [
-        {
-          "Container": {
-            "LocID": 3,
-            "Name": "grandchild1",
-            "Description": "First grandchild container",
-            "ParentID": 2,
-            "OwnerID": 1
+  * ```
+      {
+        "Container": {
+          "LocID": 1,
+          "Name": "root",
+          "Description": "Root container",
+          "ParentID": null,
+          "OwnerID": 1
+        },
+        "Children": [
+          {
+            "Container": {
+              "LocID": 2,
+              "Name": "child1",
+              "Description": "First child container",
+              "ParentID": 1,
+              "OwnerID": 1
+            },
+            "Children": [
+              {
+                "Container": {
+                  "LocID": 3,
+                  "Name": "grandchild1",
+                  "Description": "First grandchild container",
+                  "ParentID": 2,
+                  "OwnerID": 1
+                },
+                "Children": null
+              }
+            ]
           },
-          "Children": null
-        }
-      ]
-    },
-    {
-      "Container": {
-        "LocID": 4,
-        "Name": "child2",
-        "Description": "Second child container",
-        "ParentID": 1,
-        "OwnerID": 1
-      },
-      "Children": null
-    }
-  ]
-}
-```
+          {
+            "Container": {
+              "LocID": 4,
+              "Name": "child2",
+              "Description": "Second child container",
+              "ParentID": 1,
+              "OwnerID": 1
+            },
+            "Children": null
+          }
+        ]
+      }
+      ```
 
-* **Container**: The root container of the user.
-* **Children**: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
+  * **Container**: The root container of the user.
+  * **Children**: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
 
 * **Functionality**
 
