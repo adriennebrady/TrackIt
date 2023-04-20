@@ -1,7 +1,7 @@
 # TrackIt Sprint 4
 
-## Video link:
-https://drive.google.com/file/d/1D9-uzMN36SMKHZOIgu5tMal7X6o4HU2y/view?usp=sharing
+## Video link
+<https://drive.google.com/file/d/1D9-uzMN36SMKHZOIgu5tMal7X6o4HU2y/view?usp=sharing>
 
 ## Detail work you've completed in Sprint 4
 
@@ -173,12 +173,12 @@ https://drive.google.com/file/d/1D9-uzMN36SMKHZOIgu5tMal7X6o4HU2y/view?usp=shari
 
 ### &ndash; Account Delete Request
 
-* **Description** 
+* **Description**
 
     This API endpoint allows a user to delete their account. It accepts a JSON payload containing the user's username, password, and password confirmation. If the provided credentials are valid, the account is deleted. This endpoint is implemented using the Gin web framework and GORM ORM for database access.
 
-* **Request** 
-    
+* **Request**
+
     The API endpoint is an HTTP POST request that accepts a JSON payload with the following fields:
 
   * **username**(string): The username of the account to be deleted.
@@ -186,7 +186,7 @@ https://drive.google.com/file/d/1D9-uzMN36SMKHZOIgu5tMal7X6o4HU2y/view?usp=shari
   * **password_confirmation**(string): The password confirmation for the deletion process.
 
 * **Errors**
-    
+
     The API can return the following HTTP status codes and error messages:
 
   * 400 Bad Request: The request body is invalid or the password and password confirmation do not match.
@@ -196,32 +196,32 @@ https://drive.google.com/file/d/1D9-uzMN36SMKHZOIgu5tMal7X6o4HU2y/view?usp=shari
   * 500 Internal Server Error: An internal server error occurred during the process.
 
 * **Response**
-    
+
     If successful, the API endpoint returns an HTTP status code and a JSON payload:
 
   * HTTP 204: The account was deleted successfully.
   * JSON payload: Empty JSON object.
 
 * **Functionality**
-    
+
     The API endpoint first validates the request payload and checks if the account exists. If the account exists, it checks if the password and password confirmation fields match and if the password provided is correct. If all checks pass, it starts a new transaction to ensure atomicity, deletes the account, and commits the transaction. If any error occurs during this process, it rolls back the transaction and returns an error message with the appropriate HTTP status code.
 
 ---------------------
 
 ### &ndash; Container Get Request
 
-* **Description** 
-    
+* **Description**
+
     This API allows a user to retrieve all containers that belong to them and have a specified container ID as their parent. It validates the user's authorization token, the container ID, and checks if the container belongs to the user.
 
 * **Request**
-    
+
     This API requires a GET request with the following parameters:
 
   * Authorization header: A valid user token is required to access this endpoint.
   * **container_id** (integer): The container ID.
 
-* **Response**: This API may return the following errors:
+* **Errors**: This API may return the following errors:
 
   * 401 Unauthorized: The user's token is invalid or has expired.
   * 400 Bad Request: The container ID parameter is missing or not an integer.
@@ -229,7 +229,7 @@ https://drive.google.com/file/d/1D9-uzMN36SMKHZOIgu5tMal7X6o4HU2y/view?usp=shari
   * 500 Internal Server Error: The server encountered an unexpected error while processing the   request.
 
 * **Response**
-    
+
     This API returns a JSON response with the following fields:
 
   * **container_id**(integer): The ID of the container that was requested.
@@ -241,41 +241,29 @@ https://drive.google.com/file/d/1D9-uzMN36SMKHZOIgu5tMal7X6o4HU2y/view?usp=shari
 
 ### &ndash; Delete Delete Request
 
-* ####  &emsp; Description
+* **Description**: This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
 
-This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
+* **Request**: The API expects a JSON request body with the following format:
+  * {
+        "id": < integer >,
+        "token": < string >
+        }
+  * where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
 
-* ####  &emsp; Request
+* **Errors**: The API may return the following HTTP error responses:
 
-The API expects a JSON request body with the following format:
-{
-"id": <integer>,
-"token": <string>
-}
+  1. 400 Bad Request: If the request body is invalid.
+  2. 417 Expectation Failed: If the token is invalid.
+  3. 500 Internal Server Error: If there is an error while querying the database.
 
-where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
+* **Response**: The API returns an HTTP status code:
+  * HTTP 204 No Content: If the item is successfully deleted.
 
-* ####  &emsp; Errors
+* **Functionality**: The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
 
-The API may return the following HTTP error responses:
+     If the token is valid, the API queries the "recently_deleted_items" table in the database to retrieve the item with the specified ID and the same account ID as the user making the request. If the query fails, the API returns an HTTP 500 Internal Server Error response.
 
-  * 400 Bad Request: If the request body is invalid.
-  * 417 Expectation Failed: If the token is invalid.
-  * 500 Internal Server Error: If there is an error while querying the database.
-
-* ####  &emsp; Response
-
-The API returns a response with HTTP status code 204 No Content if the item is successfully deleted.
-
-* ####  &emsp; Functionality
-
-The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
-
-If the token is valid, the API queries the "recently_deleted_items" table in the database to retrieve the item with the specified ID and the same account ID as the user making the request. If the query fails, the API returns an HTTP 500 Internal Server Error response.
-
-If the item is successfully retrieved, the API deletes the item from the "recently_deleted_items" table. If the deletion fails, the API returns an HTTP 401 Unauthorized error response.
-
-If the deletion is successful, the API returns an HTTP 204 No Content response with an empty response body.
+     If the item is successfully retrieved, the API deletes the item from the "recently_deleted_items" table. If the deletion fails, the API returns an HTTP 401 Unauthorized error response. If the deletion is successful, the API returns an HTTP 204 No Content response with an empty response body.
 
 ---------------------
 
@@ -679,7 +667,7 @@ If the deletion is successful, the API returns an HTTP 204 No Content response w
 
     The function returns a JSON response with the following structure:
 
-<pre>
+```
 {
   "Container": {
     "LocID": 1,
@@ -722,10 +710,10 @@ If the deletion is successful, the API returns an HTTP 204 No Content response w
     }
   ]
 }
-</pre>
+```
 
-  * **Container**: The root container of the user.
-  * **Children**: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
+* **Container**: The root container of the user.
+* **Children**: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
 
 * **Functionality**
 
