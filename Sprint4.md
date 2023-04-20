@@ -202,9 +202,9 @@
 * **Request**: This API requires a GET request with the following parameters:
 
   * Authorization header: A valid user token is required to access this endpoint.
-  * **container_id**: An integer parameter that specifies the container ID.
+  * **container_id** (integer): The container ID.
 
-* **Response**: This API may return the following errors:
+* **Errors**: This API may return the following errors:
 
   * 401 Unauthorized: The user's token is invalid or has expired.
   * 400 Bad Request: The container ID parameter is missing or not an integer.
@@ -213,50 +213,36 @@
 
 * **Response**: This API returns a JSON response with the following fields:
 
-  * container_id: The ID of the container that was requested.
-  * containers: An array of containers that belong to the user and have the specified container ID as their parent.
+  * **container_id**(integer): The ID of the container that was requested.
+  * **containers**(array): An array of containers that belong to the user and have the specified container ID as their parent.
 
-* **Functionality**: This API starts by checking the user's token using the IsValidToken function. If the token is invalid, it returns an error. It then checks if the container ID is valid and belongs to the user. If the container does not belong to the user, it returns an error. Finally, it retrieves all the containers that have the requested container as their parent and returns them as a JSON response.
+* **Functionality**: This API starts by checking the user's token using the **IsValidToken** function. If the token is invalid, it returns an error. It then checks if the container ID is valid and belongs to the user. If the container does not belong to the user, it returns an error. Finally, it retrieves all the containers that have the requested container as their parent and returns them as a JSON response.
 
 ---------------------
 
 ### &ndash; Delete Delete Request
 
-* ####  &emsp; Description
+* **Description**: This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
 
-This API is a Go function that handles HTTP DELETE requests for deleting items from the "recently_deleted_items" table in a database. It takes a database connection object as input and returns a gin.HandlerFunc which is used by the Gin web framework to handle HTTP DELETE requests.
+* **Request**: The API expects a JSON request body with the following format:
+  * {
+        "id": < integer >,
+        "token": < string >
+        }
+  * where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
 
-* ####  &emsp; Request
-
-The API expects a JSON request body with the following format:
-{
-"id": <integer>,
-"token": <string>
-}
-
-where "id" is the ID of the item to be deleted and "token" is the authentication token for the user making the request.
-
-* ####  &emsp; Errors
-
-The API may return the following HTTP error responses:
+* **Errors**: The API may return the following HTTP error responses:
 
   1. 400 Bad Request: If the request body is invalid.
   2. 417 Expectation Failed: If the token is invalid.
   3. 500 Internal Server Error: If there is an error while querying the database.
 
-* ####  &emsp; Response
+* **Response**: The API returns an HTTP status code:
+  * HTTP 204 No Content: If the item is successfully deleted.
 
-The API returns a response with HTTP status code 204 No Content if the item is successfully deleted.
-
-* ####  &emsp; Functionality
-
-The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
-
-If the token is valid, the API queries the "recently_deleted_items" table in the database to retrieve the item with the specified ID and the same account ID as the user making the request. If the query fails, the API returns an HTTP 500 Internal Server Error response.
-
-If the item is successfully retrieved, the API deletes the item from the "recently_deleted_items" table. If the deletion fails, the API returns an HTTP 401 Unauthorized error response.
-
-If the deletion is successful, the API returns an HTTP 204 No Content response with an empty response body.
+* **Functionality**: The API first verifies the validity of the token provided in the request body by calling the IsValidToken() function with the token and the database connection object as arguments. If the token is invalid, the API returns an HTTP 417 Expectation Failed error response.
+  * If the token is valid, the API queries the "recently_deleted_items" table in the database to retrieve the item with the specified ID and the same account ID as the user making the request. If the query fails, the API returns an HTTP 500 Internal Server Error response.
+  * If the item is successfully retrieved, the API deletes the item from the "recently_deleted_items" table. If the deletion fails, the API returns an HTTP 401 Unauthorized error response. If the deletion is successful, the API returns an HTTP 204 No Content response with an empty response body.
 
 ---------------------
 
@@ -677,7 +663,7 @@ Response
 
 The function returns a JSON response with the following structure:
 
-<pre>
+```
 {
   "Container": {
     "LocID": 1,
@@ -720,7 +706,7 @@ The function returns a JSON response with the following structure:
     }
   ]
 }
-</pre>
+```
 
   1. **Container**: The root container of the user.
   2. **Children**: An array of child containers. Each child container has the same structure as the root container, and may contain its own children containers.
