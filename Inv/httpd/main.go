@@ -89,6 +89,7 @@ func main() {
 //TODO treeGet for sidebar visible by default front end
 //TODO keep sidebar state
 //TODO alternative list view front end
+//TODO give warning when username exists
 
 //TODO solve testAccountDelete and inventorypost items
 //TODO recently deleted containers
