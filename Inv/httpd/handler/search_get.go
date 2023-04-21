@@ -28,7 +28,7 @@ func SearchGet(db *gorm.DB) gin.HandlerFunc {
 		// Get all items that are in the requested container.
 		var items []Item
 		if result := db.Table("items").
-			Where("lower(ItemName) = ? AND username = ?", strings.ToLower(requestBody.Item), username).
+			Where("lower(ItemName) LIKE ? AND username = ?", "%"+strings.ToLower(requestBody.Item)+"%", username).
 			Find(&items); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
