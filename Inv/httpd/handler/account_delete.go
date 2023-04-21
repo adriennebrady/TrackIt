@@ -44,12 +44,18 @@ func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 		// Start a new transaction to ensure atomicity.
 		tx := DB.Begin()
 
-		if maxLocID := GetMaxLocID(DB); maxLocID > 0 {
-			if err := DestroyContainer(DB, existingUser.RootLoc, existingUser.Username); err != nil {
-				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-				tx.Rollback()
-				return
-			}
+		// Delete all items
+		if result := DB.Table("items").Where("username = ?", existingUser.Username).Delete(&Item{}); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+			tx.Rollback()
+			return
+		}
+
+		// Delete all containers
+		if result := DB.Table("containers").Where("username = ?", existingUser.Username).Delete(&Container{}); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+			tx.Rollback()
+			return
 		}
 
 		// Delete the account.
