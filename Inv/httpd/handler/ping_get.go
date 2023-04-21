@@ -13,14 +13,3 @@ func PingGet() gin.HandlerFunc {
 		})
 	}
 }
-
-//TODO account deletion page front end
-//TODO treeGet for sidebar front end
-//TODO alternative list view front end
-
-//TODO solve testAccountDelete and inventorypost items
-//TODO recently deleted containers
-//TODO add item tags
-//TODO import/export inventories
-//TODO possible cards
-//TODO Multi user inventories

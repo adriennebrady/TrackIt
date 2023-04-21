@@ -34,7 +34,7 @@ type Container struct {
 
 // recently delete
 type RecentlyDeletedItem struct {
-	ItemID       		int    `gorm:"primaryKey"`
+	ItemID              int `gorm:"primaryKey"`
 	AccountID           string
 	DeletedItemName     string `gorm:"column:itemName"`
 	DeletedItemLocation int    `gorm:"column:LocID"`
@@ -85,5 +85,13 @@ func main() {
 	r.Run(":8080")
 }
 
-//https://www.youtube.com/watch?v=pHRHJCYBqxw possible problem
-//https://go.dev/tour/moretypes/13 go tutorial
+//TODO account deletion page front end
+//TODO treeGet for sidebar front end
+//TODO alternative list view front end
+
+//TODO solve testAccountDelete and inventorypost items
+//TODO recently deleted containers
+//TODO add item tags
+//TODO import/export inventories
+//TODO possible cards
+//TODO Multi user inventories
