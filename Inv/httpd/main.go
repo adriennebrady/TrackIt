@@ -92,7 +92,8 @@ func main() {
 //TODO give warning when username exists
 
 //TODO solve testAccountDelete and inventorypost items
-//TODO recently deleted containers
+//TODO recently deleted containers/fix destroy container  recursion
+//TODO seem to get (nonbreaking) error when signing up
 //TODO add item tags
 //TODO import/export inventories
 //TODO image cards

@@ -16,7 +16,7 @@ type DeleteRequest struct {
 
 // recently delete
 type RecentlyDeletedItem struct {
-	ItemID       		int    `gorm:"primaryKey"`
+	ItemID              int `gorm:"primaryKey"`
 	AccountID           string
 	DeletedItemName     string `gorm:"column:itemName"`
 	DeletedItemLocation int    `gorm:"column:LocID"`
@@ -69,10 +69,9 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 		return result.Error
 	}
 
-
 	// Create a new RecentlyDeletedItem object with the deleted item's ID and the current timestamp.
 	deletedItem := RecentlyDeletedItem{
-		ItemID:       		 item.ItemID,
+		ItemID:              item.ItemID,
 		AccountID:           username,
 		DeletedItemName:     item.ItemName,
 		DeletedItemLocation: item.LocID,
@@ -84,7 +83,6 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 	if result := db.Table("items").Delete(&item); result.Error != nil {
 		return result.Error
 	}
-	
 
 	// Save the RecentlyDeletedItem object to the database.
 	if result := db.Table("recently_deleted_items").Create(&deletedItem); result.Error != nil {
@@ -98,7 +96,6 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 
 	return nil
 }
-
 
 func DestroyContainer(db *gorm.DB, locID int, username string) error {
 	// Look up the container in the database by ID.
@@ -124,7 +121,6 @@ func DestroyContainer(db *gorm.DB, locID int, username string) error {
 
 	return nil
 }
-
 
 /*
 The DestroyContainer function expects the ID of a top-level container to be passed in as an argument, but there is no validation that the container is actually a top-level container. If an ID of a non-top-level container is passed in, the function will delete all items and sub-containers associated with that container, but leave the container itself intact.
