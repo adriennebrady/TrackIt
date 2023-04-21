@@ -85,13 +85,14 @@ func main() {
 	r.Run(":8080")
 }
 
-//TODO account deletion page front end
-//TODO treeGet for sidebar front end
+//TODO account deletion not deleting containers
+//TODO treeGet for sidebar visible by default front end
+//TODO keep sidebar state
 //TODO alternative list view front end
 
 //TODO solve testAccountDelete and inventorypost items
 //TODO recently deleted containers
 //TODO add item tags
 //TODO import/export inventories
-//TODO possible cards
+//TODO image cards
 //TODO Multi user inventories
