@@ -85,12 +85,12 @@ func main() {
 	r.Run(":8080")
 }
 
-//TODO treeGet for sidebar visible by default front end
-//TODO keep sidebar state
+//TODO treeGet for sidebar visible by default/keep state when moving between containers front end
+//TODO drag and drop items/containers front end
 //TODO alternative list view front end
-//TODO give warning when username exists
+//TODO give warning when username exists front end?
 
-//TODO recently deleted containers/fix destroy container  recursion
+//TODO recently deleted containers/fix destroy container  recursion backend?
 //TODO add item tags
 //TODO import/export inventories
 //TODO image cards
