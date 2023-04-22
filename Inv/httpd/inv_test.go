@@ -64,6 +64,15 @@ func TestInventoryPost(t *testing.T) {
 		t.Errorf("Handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
+
+	// Verify that the container was added to the database.
+	var count int64
+	if err := db.Model(&Container{}).Where("LocID = ?", 1).Count(&count).Error; err != nil {
+		t.Fatalf("Failed to count containers: %v", err)
+	}
+	if count != 1 {
+		t.Errorf("Handler failed to add container to database")
+	}
 }
 
 func TestAccountDelete(t *testing.T) {
