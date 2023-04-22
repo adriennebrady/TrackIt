@@ -30,8 +30,8 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		// Check if the user exists.
-		var existingUser Account
-		if result := DB.Table("accounts").Where("username = ?", request.Username).First(&existingUser); result.Error == nil {
+		var count int64
+		if result := DB.Table("accounts").Where("username = ?", request.Username).Count(&count); result.Error == nil && count > 0 {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "User already exists"})
 			return
 		}

@@ -92,7 +92,6 @@ func main() {
 
 //TODO solve inventorypost items
 //TODO recently deleted containers/fix destroy container  recursion
-//TODO seem to get (nonbreaking) error when signing up
 //TODO add item tags
 //TODO import/export inventories
 //TODO image cards
