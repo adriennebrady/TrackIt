@@ -90,7 +90,6 @@ func main() {
 //TODO alternative list view front end
 //TODO give warning when username exists
 
-//TODO solve inventorypost items
 //TODO recently deleted containers/fix destroy container  recursion
 //TODO add item tags
 //TODO import/export inventories

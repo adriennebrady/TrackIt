@@ -20,61 +20,6 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestInventoryPost(t *testing.T) {
-	// Set up the test database and server.
-	setupTestDB()
-
-	Handler := handler.InventoryPost(db)
-	router := gin.Default()
-	router.POST("/inventory", Handler)
-
-	// Insert a test user with a valid token into the database.
-	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
-	if err := db.Create(&validTokenUser).Error; err != nil {
-		t.Fatalf("Failed to insert test user: %v", err)
-	}
-
-	// Call the API endpoint to trigger auto-delete.
-	reqBody := handler.InvRequest{
-		Authorization: "validtoken",
-		Kind:          "container",
-		ID:            1,
-		Cont:          0,
-		Name:          "cont1",
-		Type:          "",
-		Count:         0,
-	}
-
-	reqBodyBytes, err := json.Marshal(reqBody)
-	if err != nil {
-		t.Fatalf(FTM, err)
-	}
-	req, err := http.NewRequest("POST", "/inventory", bytes.NewBuffer(reqBodyBytes))
-	if err != nil {
-		t.Fatalf(FTC, err)
-	}
-	req.Header.Set(CT, "application/json")
-	w := httptest.NewRecorder()
-	router.ServeHTTP(w, req)
-
-	status := w.Code
-
-	// Check that the response has a 200 status code.
-	if status != http.StatusNoContent {
-		t.Errorf("Handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
-
-	// Verify that the container was added to the database.
-	var count int64
-	if err := db.Model(&Container{}).Where("LocID = ?", 1).Count(&count).Error; err != nil {
-		t.Fatalf("Failed to count containers: %v", err)
-	}
-	if count != 1 {
-		t.Errorf("Handler failed to add container to database")
-	}
-}
-
 func TestAccountDelete(t *testing.T) {
 	// Set up the test database and server.
 	setupTestDB()
@@ -407,6 +352,100 @@ func TestInventoryDelete(t *testing.T) {
 
 }
 
+func TestInventoryPost(t *testing.T) {
+	// Set up the test database and server.
+	setupTestDB()
+
+	Handler := handler.InventoryPost(db)
+	router := gin.Default()
+	router.POST("/inventory", Handler)
+
+	// Insert a test user with a valid token into the database.
+	validTokenUser := Account{Username: "testuser", Password: "testpassword", Token: "validtoken"}
+	if err := db.Create(&validTokenUser).Error; err != nil {
+		t.Fatalf("Failed to insert test user: %v", err)
+	}
+
+	// Call the API endpoint to trigger auto-delete.
+	reqBody := handler.InvRequest{
+		Authorization: "validtoken",
+		Kind:          "container",
+		ID:            1,
+		Cont:          0,
+		Name:          "cont1",
+		Type:          "",
+		Count:         0,
+	}
+
+	reqBodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf(FTM, err)
+	}
+	req, err := http.NewRequest("POST", "/inventory", bytes.NewBuffer(reqBodyBytes))
+	if err != nil {
+		t.Fatalf(FTC, err)
+	}
+	req.Header.Set(CT, "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	status := w.Code
+
+	// Check that the response has a 200 status code.
+	if status != http.StatusNoContent {
+		t.Errorf("Handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	// Verify that the container was added to the database.
+	var count int64
+	if err := db.Model(&Container{}).Where("LocID = ?", 1).Count(&count).Error; err != nil {
+		t.Fatalf("Failed to count containers: %v", err)
+	}
+	if count != 1 {
+		t.Errorf("Handler failed to add container to database")
+	}
+
+	// Second request - add item.
+	reqBody2 := handler.InvRequest{
+		Authorization: "validtoken",
+		Kind:          "item",
+		ID:            5,
+		Cont:          1,
+		Name:          "item1",
+		Type:          "",
+		Count:         0,
+	}
+
+	reqBodyBytes2, err := json.Marshal(reqBody2)
+	if err != nil {
+		t.Fatalf(FTM, err)
+	}
+	req2, err := http.NewRequest("POST", "/inventory", bytes.NewBuffer(reqBodyBytes2))
+	if err != nil {
+		t.Fatalf(FTC, err)
+	}
+	req2.Header.Set(CT, "application/json")
+	w2 := httptest.NewRecorder()
+	router.ServeHTTP(w2, req2)
+
+	status2 := w2.Code
+
+	// Check that the response has a 200 status code.
+	if status2 != http.StatusNoContent {
+		t.Errorf("Handler returned wrong status code: got %v want %v",
+			status2, http.StatusOK)
+	}
+
+	// Verify that the item was added to the database.
+	var count2 int64
+	if err := db.Model(&Item{}).Where("LocID = ?", 1).Count(&count2).Error; err != nil {
+		t.Fatalf("Failed to count containers: %v", err)
+	}
+	if count2 != 1 {
+		t.Errorf("Handler failed to add container to database")
+	}
+}
 func TestInventoryPut(t *testing.T) {
 	// Set up the test database.
 	setupTestDB()
