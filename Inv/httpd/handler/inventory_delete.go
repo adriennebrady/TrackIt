@@ -127,10 +127,3 @@ func DestroyContainer(db *gorm.DB, locID int, username string) error {
 
 	return nil
 }
-
-/*
-The DestroyContainer function expects the ID of a top-level container to be passed in as an argument, but there is no validation that the container is actually a top-level container. If an ID of a non-top-level container is passed in, the function will delete all items and sub-containers associated with that container, but leave the container itself intact.
-
-The DestroyContainer function deletes all items and sub-containers associated with the specified container without checking if they belong to the user. If an attacker has access to another user's token, they could use this endpoint to delete items and containers belonging to that user.
-
-*/
