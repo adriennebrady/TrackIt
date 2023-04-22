@@ -85,13 +85,12 @@ func main() {
 	r.Run(":8080")
 }
 
-//TODO account deletion not deleting containers
 //TODO treeGet for sidebar visible by default front end
 //TODO keep sidebar state
 //TODO alternative list view front end
 //TODO give warning when username exists
 
-//TODO solve testAccountDelete and inventorypost items
+//TODO solve inventorypost items
 //TODO recently deleted containers/fix destroy container  recursion
 //TODO seem to get (nonbreaking) error when signing up
 //TODO add item tags
