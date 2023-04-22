@@ -105,13 +105,13 @@ func DestroyContainer(db *gorm.DB, locID int, username string) error {
 	}
 
 	// Recursively delete all sub-containers and their contents.
-	if result := db.Table("containers").Where("ParentID = ?", locID).Find(&[]Container{}); result.Error != nil {
+	var subContainers []Container
+	if result := db.Table("containers").Where("ParentID = ?", locID).Find(&subContainers); result.Error != nil {
 		return result.Error
-	} else {
-		for _, subContainer := range *(&[]Container{}) {
-			if err := DestroyContainer(db, subContainer.LocID, username); err != nil {
-				return err
-			}
+	}
+	for _, subContainer := range subContainers {
+		if err := DestroyContainer(db, subContainer.LocID, username); err != nil {
+			return err
 		}
 	}
 
