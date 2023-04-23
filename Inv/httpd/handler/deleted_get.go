@@ -18,9 +18,16 @@ func DeletedGet(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Get all items that are in the requested container.
+		// Get all unique LocIDs from the containers table for the given accountname.
+		var locIDs []int
+		if result := db.Table("containers").Where("username = ?", username).Distinct("LocID").Pluck("LocID", &locIDs); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get LocIDs"})
+			return
+		}
+
+		// Get all recently deleted items that have one of the unique LocIDs for the given accountname.
 		var items []RecentlyDeletedItem
-		if result := db.Table("recently_deleted_items").Where("account_id = ?", username).Find(&items); result.Error != nil {
+		if result := db.Table("recently_deleted_items").Where("account_id = ? AND LocID IN (?)", username, locIDs).Find(&items); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}
