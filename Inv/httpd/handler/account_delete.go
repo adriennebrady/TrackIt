@@ -58,6 +58,13 @@ func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		// Delete all containers
+		if result := tx.Table("recently_deleted_items").Where("account_id = ?", existingUser.Username).Delete(&RecentlyDeletedItem{}); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+			tx.Rollback()
+			return
+		}
+
 		// Delete the account.
 		if result := tx.Table("accounts").Delete(&existingUser); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"error": "Couldn't delete account"})
