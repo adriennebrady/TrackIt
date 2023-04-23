@@ -97,3 +97,24 @@ func main() {
 //TODO import/export inventories
 //TODO image cards
 //TODO Multi user inventories
+
+/*
+
+CREATE TRIGGER tr_items_deleted
+AFTER DELETE ON items
+FOR EACH ROW
+BEGIN
+  INSERT INTO recently_deleted_items
+  (ItemID, account_id, DeletedItemName, DeletedItemLocation, count, Timestamp)
+  VALUES
+  (OLD.ItemID, OLD.username, OLD.ItemName, OLD.LocID, OLD.Count, DATETIME('now'));
+END;
+
+CREATE TRIGGER tr_delete_old_items
+AFTER DELETE ON items
+BEGIN
+  DELETE FROM recently_deleted_items
+  WHERE Timestamp < DATETIME('now', '-30 days');
+END;
+
+*/
