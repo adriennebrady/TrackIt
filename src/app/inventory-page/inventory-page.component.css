@@ -1,48 +1,69 @@
 .spacer {
+  background-color: var(--background-color);
+  color: var(--text-color);
   flex: 1 1 auto;
 }
 
 .signUpButton {
+  background-color: var(--background-color);
+  color: var(--text-color);
   margin-left: 5px;
 }
 
 .navbar {
-  background-color: white;
+  background-color: var(--primary-color);
+  color: var(--text-color);
   cursor: pointer;
 }
 
 .logo {
   font-weight: bold;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
 mat-sidenav {
   padding-right: 5%;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 mat-sidenav-content {
+  background-color: var(--background-color);
+  color: var(--text-color);
   height: 100vh;
 }
 
 .inventoryHeading {
   text-align: center;
   padding-top: 5%;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .inventoryHeading h1 {
   font-weight: 500;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .actionField {
   padding-top: 2%;
   justify-content: center;
   display: flex;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .actionField button {
   height: 55px;
   margin-right: 20px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
 app-inv-container {
   width: 90%;
+  background-color: var(--background-color);
+  color: var(--primary-color);
 }

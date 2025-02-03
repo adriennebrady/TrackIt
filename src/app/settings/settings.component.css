@@ -1,13 +1,18 @@
 .spacer {
   flex: 1 1 auto;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .signUpButton {
+  background-color: var(--background-color);
+  color: var(--text-color);
   margin-left: 5px;
 }
 
 .navbar {
-  background-color: white;
+  background-color: var(--primary-color);
+  color: var(--text-color);
   cursor: pointer;
 }
 
@@ -16,10 +21,14 @@
 }
 
 mat-sidenav {
+  background-color: var(--background-color);
+  color: var(--text-color);
   padding-right: 5%;
 }
 
 mat-sidenav-content {
+  background-color: var(--background-color);
+  color: var(--text-color);
   height: 100vh;
 }
 
@@ -54,6 +63,8 @@ mat-sidenav-content {
   max-width: 700px;
   margin: 0 auto;
   font-weight: 500;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .deleteTitle {
@@ -65,4 +76,6 @@ mat-sidenav-content {
 
 .deleteButton {
   float: right;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }

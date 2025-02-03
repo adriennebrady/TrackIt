@@ -1,3 +1,10 @@
 .buttonContainer {
   justify-content: flex-start;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.container {
+  background-color: var(--background-color);
+  color: var(--text-color);
 }

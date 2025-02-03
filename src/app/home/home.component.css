@@ -7,7 +7,7 @@
 }
 
 .navbar {
-  background-color: white;
+  background-color: var(--primary-color);
 }
 
 .logo {

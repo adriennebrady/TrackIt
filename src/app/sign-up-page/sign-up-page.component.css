@@ -1,18 +1,25 @@
 .spacer {
   flex: 1 1 auto;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
 .signUpButton {
   margin-left: 5px;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .navbar {
-  background-color: white;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
 .logo {
   font-weight: bold;
   cursor: pointer;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
 .card {
@@ -20,4 +27,6 @@
   text-align: center;
   margin: auto;
   width: 300px;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
