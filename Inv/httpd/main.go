@@ -91,6 +91,7 @@ func main() {
 //save to db?
 
 //TODO drag and drop items/containers
+//fix double scrollbars
 
 //Full Stack
 //TODO recently deleted containers

@@ -1,9 +1,11 @@
 .spacer {
   flex: 1 1 auto;
+  background-color: var(--background-color);
 }
 
 .inventoryButton {
   margin-left: 5px;
+  background-color: var(--background-color);
 }
 
 .navbar {
@@ -18,42 +20,51 @@
 
 mat-sidenav {
   padding-right: 5%;
+  background-color: var(--background-color);
 }
 
 mat-sidenav-content {
   height: 100vh;
+  background-color: var(--background-color);
 }
 
 .heading {
   text-align: center;
+  background-color: var(--background-color);
   padding-top: 5%;
 }
 
 .backNav {
   width: 80%;
   margin: 0 auto;
+  background-color: var(--background-color);
 }
 
 .inventoryHeading h1 {
   font-weight: 500;
+  background-color: var(--background-color);
 }
 
 .actionField {
   padding-top: 2%;
   justify-content: center;
+  background-color: var(--background-color);
   display: flex;
 }
 
 .actionField button {
   height: 55px;
   margin-right: 20px;
+  background-color: var(--primary-color);
   width: 20%;
 }
 
 .renameIcon {
   cursor: pointer;
+  background-color: var(--background-color);
 }
 
 app-container {
   width: 90%;
+  background-color: var(--background-color);
 }

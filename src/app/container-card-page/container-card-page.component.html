@@ -3,7 +3,7 @@
     <span class="logo" routerLink="/home">TRACKIT</span>
     <span class="spacer"></span>
     <button mat-button color="primary" routerLink="/about" style="color: white;">About</button>
-    <button mat-button (click)="logOut()" routerLink="/home">Sign Out</button>
+    <button mat-button (click)="logOut()" routerLink="/home" style="color: white;">Sign Out</button>
     <button
       mat-flat-button
       routerLink="/inventory"
@@ -38,22 +38,25 @@
           color="basic"
           class="backButton"
           (click)="backClicked()"
+          style="color: white;"
         >
           <mat-icon
             aria-hidden="false"
             aria-label="Back"
             fontIcon="keyboard_arrow_left"
+            style="color: white;"
           ></mat-icon>
           Back
         </button>
       </div>
 
       <div class="heading">
-        <h1>
+        <h1  style="color: rgb(255, 255, 255);">
           {{ containerName }}
           <mat-icon
             aria-hidden="false"
             aria-label="Edit"
+            color="basic"
             fontIcon="edit"
             (click)="renameTopContainerDialog()"
             class="renameIcon"
