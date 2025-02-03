@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Trackit/Inv/httpd/handler"
+	"backend/Inv/httpd/handler"
 	"time"
 
 	"gorm.io/driver/sqlite"
