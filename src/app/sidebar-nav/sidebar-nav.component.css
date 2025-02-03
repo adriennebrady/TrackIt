@@ -8,3 +8,34 @@
   background-color: var(--background-color);
   color: var(--text-color);
 }
+
+.black-sidebar {
+  background-color: var(--background-color)k;
+  color: white;
+}
+
+.black-sidebar .mat-tree-node {
+  background-color: var(--background-color);
+  color: white;
+}
+
+.black-sidebar .mat-icon {
+  color: white;
+}
+
+.black-sidebar .buttonContainer {
+  color: white;
+}
+
+.black-sidebar .mat-button {
+  color: white;
+}
+
+.black-sidebar .buttonContainer:hover {
+  background-color: #333;
+  color: white;
+}
+
+.black-sidebar .mat-icon-button:hover {
+  background-color: #333;
+}
