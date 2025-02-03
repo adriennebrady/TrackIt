@@ -11,7 +11,7 @@
 }
 
 .navbar {
-  background-color: var(--primary-color);
+  background-color: var(--color-of);
   color: var(--text-color);
   cursor: pointer;
 }

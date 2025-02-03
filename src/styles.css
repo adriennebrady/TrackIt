@@ -1,9 +1,10 @@
 /* styles.css */
 :root {
-    --primary-color: #131313;
+    --primary-color: #434383;
     --secondary-color: #ffffff;
-    --background-color: #333333;
+    --background-color: #171628;
     --text-color: #f5f5f5;
+    --color-of: #0b0a13;
   }
   
   /* [data-theme="light"] {

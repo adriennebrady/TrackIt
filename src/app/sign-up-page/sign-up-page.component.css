@@ -1,6 +1,6 @@
 .spacer {
   flex: 1 1 auto;
-  background-color: var(--primary-color);
+  background-color: var(--color-of);
   color: var(--text-color);
 }
 
@@ -11,14 +11,14 @@
 }
 
 .navbar {
-  background-color: var(--primary-color);
+  background-color: var(--color-of);
   color: var(--text-color);
 }
 
 .logo {
   font-weight: bold;
   cursor: pointer;
-  background-color: var(--primary-color);
+  background-color: var(--color-of);
   color: var(--text-color);
 }
 

@@ -1,5 +1,6 @@
 .spacer {
   flex: 1 1 auto;
+  background-color: var(--background-color);
 }
 
 .signUpButton {
@@ -7,7 +8,7 @@
 }
 
 .navbar {
-  background-color: var(--primary-color);
+  background-color: var(--color-of);
   color: var(--text-color);
   cursor: pointer;
 }
@@ -18,19 +19,23 @@
 
 mat-sidenav {
   padding-right: 5%;
+  background-color: var(--background-color);
 }
 
 mat-sidenav-content {
   height: 100vh;
+  background-color: var(--background-color);
 }
 
 .inventoryHeading {
   text-align: center;
+  color: var(--text-color);
   padding-top: 5%;
 }
 
 .inventoryHeading h1 {
   font-weight: 500;
+  color: var(--text-color);
 }
 
 .noItems {
@@ -38,15 +43,19 @@ mat-sidenav-content {
   padding-top: 10%;
   font-weight: 500;
   font-size: large;
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 .actionField {
   padding-top: 2%;
   justify-content: center;
+  color: var(--text-color);
   display: flex;
 }
 
 .actionField button {
   height: 55px;
   margin-right: 20px;
+  color: var(--text-color);
 }

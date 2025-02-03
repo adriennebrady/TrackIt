@@ -7,12 +7,13 @@
 }
 
 .navbar {
-  background-color: var(--primary-color);
+  background-color: var(--color-of);
 }
 
 .logo {
   font-weight: bold;
   cursor: pointer;
+  color: var(--text-color);
 }
 
 .homeTitle {
