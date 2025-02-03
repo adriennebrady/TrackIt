@@ -10,9 +10,10 @@ interface Item {
 }
 
 @Component({
-  selector: 'app-search-item',
-  templateUrl: './search-item.component.html',
-  styleUrls: ['./search-item.component.css'],
+    selector: 'app-search-item',
+    templateUrl: './search-item.component.html',
+    styleUrls: ['./search-item.component.css'],
+    standalone: false
 })
 export class SearchItemComponent implements OnInit {
   @Input() item: Item = {

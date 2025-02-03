@@ -28,9 +28,10 @@ interface Container {
 }
 
 @Component({
-  selector: 'app-container-card-page',
-  templateUrl: './container-card-page.component.html',
-  styleUrls: ['./container-card-page.component.css'],
+    selector: 'app-container-card-page',
+    templateUrl: './container-card-page.component.html',
+    styleUrls: ['./container-card-page.component.css'],
+    standalone: false
 })
 export class ContainerCardPageComponent implements OnInit {
   containerId: number = -1;

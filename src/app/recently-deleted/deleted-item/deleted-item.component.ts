@@ -12,9 +12,10 @@ interface Item {
 }
 
 @Component({
-  selector: 'app-deleted-item',
-  templateUrl: './deleted-item.component.html',
-  styleUrls: ['./deleted-item.component.css'],
+    selector: 'app-deleted-item',
+    templateUrl: './deleted-item.component.html',
+    styleUrls: ['./deleted-item.component.css'],
+    standalone: false
 })
 export class DeletedItemComponent {
   @Input() item: Item = {

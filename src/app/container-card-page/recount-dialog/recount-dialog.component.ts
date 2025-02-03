@@ -2,9 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-recount-dialog',
-  templateUrl: './recount-dialog.component.html',
-  styleUrls: ['./recount-dialog.component.css'],
+    selector: 'app-recount-dialog',
+    templateUrl: './recount-dialog.component.html',
+    styleUrls: ['./recount-dialog.component.css'],
+    standalone: false
 })
 export class RecountDialogComponent {
   constructor(

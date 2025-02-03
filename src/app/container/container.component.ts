@@ -9,9 +9,10 @@ interface Container {
 }
 
 @Component({
-  selector: 'app-container',
-  templateUrl: './container.component.html',
-  styleUrls: ['./container.component.css'],
+    selector: 'app-container',
+    templateUrl: './container.component.html',
+    styleUrls: ['./container.component.css'],
+    standalone: false
 })
 export class ContainerComponent {
   @Input() container: Container = { LocID: -1, Name: '', ParentID: -1 };

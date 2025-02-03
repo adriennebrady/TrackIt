@@ -15,9 +15,10 @@ interface Item {
 }
 
 @Component({
-  selector: 'app-recently-deleted',
-  templateUrl: './recently-deleted.component.html',
-  styleUrls: ['./recently-deleted.component.css'],
+    selector: 'app-recently-deleted',
+    templateUrl: './recently-deleted.component.html',
+    styleUrls: ['./recently-deleted.component.css'],
+    standalone: false
 })
 export class RecentlyDeletedComponent implements OnInit {
   items: Item[] = [];

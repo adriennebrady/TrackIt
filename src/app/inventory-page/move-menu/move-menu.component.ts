@@ -40,9 +40,10 @@ interface ContainerFlatNode {
 }
 
 @Component({
-  selector: 'app-move-menu',
-  templateUrl: './move-menu.component.html',
-  styleUrls: ['./move-menu.component.css'],
+    selector: 'app-move-menu',
+    templateUrl: './move-menu.component.html',
+    styleUrls: ['./move-menu.component.css'],
+    standalone: false
 })
 export class MoveMenuComponent implements OnChanges {
   @Input() invContainers: invContainer[] = [];

@@ -33,9 +33,10 @@ interface ContainerFlatNode {
 }
 
 @Component({
-  selector: 'app-sidebar-nav',
-  templateUrl: './sidebar-nav.component.html',
-  styleUrls: ['./sidebar-nav.component.css'],
+    selector: 'app-sidebar-nav',
+    templateUrl: './sidebar-nav.component.html',
+    styleUrls: ['./sidebar-nav.component.css'],
+    standalone: false
 })
 export class SidebarNavComponent implements OnChanges {
   @Input() invContainers: invContainer[] = [];
