@@ -35,6 +35,7 @@ TrackIt is a personal inventory tracker that allows users to create virtual furn
 * Install the required packages by running **'npm install'**
 * Update the packages by running npm update **'npm update'**
 * Run the frontend by running **'ng serve'**
+  * Or if you want to access it from other devices on your network: **'ng serve --host 0.0.0.0'**
 * If this fails to load from SecurityError, try running:
   * set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 * Open a browser and navigate to **(http://localhost:4200/)**.
