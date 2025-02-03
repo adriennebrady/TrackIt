@@ -89,7 +89,6 @@ func main() {
 //TODO treeGet for sidebar visible by default/keep state when moving between containers
 //TODO drag and drop items/containers
 //TODO alternative list view
-//TODO give warning when username exists
 
 //Full Stack
 //TODO recently deleted containers

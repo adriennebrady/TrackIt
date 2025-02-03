@@ -49,4 +49,7 @@
       <button mat-raised-button color="primary" type="submit">Sign Up</button>
     </form>
   </mat-card-content>
+  <mat-error *ngIf="signupError" style="margin-top: 10px; text-align: center;">
+    {{ signupError }}
+  </mat-error>
 </div>

@@ -12,6 +12,7 @@ export class SignUpPageComponent {
   username: string = '';
   password: string = '';
   password_confirmation: string = '';
+  signupError: string = '';
 
   constructor(private authService: AuthService, private router: Router) {
     if (this.authService.isAuthenticated()) {
@@ -20,8 +21,12 @@ export class SignUpPageComponent {
   }
 
   onSubmit() {
+    // Reset previous errors
+    this.signupError = '';
+
+    // Password match validation
     if (this.password !== this.password_confirmation) {
-      console.log('Passwords do not match.');
+      this.signupError = 'Passwords do not match.';
       return;
     }
 
@@ -38,7 +43,16 @@ export class SignUpPageComponent {
         this.router.navigate(['/inventory']);
       },
       error: (error) => {
-        console.log('Error during sign-up:', error);
+        // Handle specific error scenarios
+        if (error.error && error.error.error) {
+          if (error.error.error === 'User already exists') {
+            this.signupError = 'Username is already taken. Please choose a different username.';
+          } else {
+            this.signupError = error.error.error || 'An error occurred during sign-up';
+          }
+        } else {
+          this.signupError = 'An unexpected error occurred. Please try again.';
+        }
       },
     });
   }
