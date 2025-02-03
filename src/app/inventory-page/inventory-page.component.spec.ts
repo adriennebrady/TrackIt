@@ -6,8 +6,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -29,11 +29,8 @@ describe('InventoryPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InventoryPageComponent, ContainerComponent, SidebarNavComponent ],
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-        HttpClientModule,
+    declarations: [InventoryPageComponent, ContainerComponent, SidebarNavComponent],
+    imports: [RouterTestingModule,
         MatToolbarModule,
         MatButtonModule,
         MatInputModule,
@@ -45,13 +42,14 @@ describe('InventoryPageComponent', () => {
         FormsModule,
         BrowserAnimationsModule,
         MatSidenavModule,
-        MatTreeModule
-      ],
-      providers: [
+        MatTreeModule],
+    providers: [
         { provide: MatDialog, useValue: {} },
-        InventoryPageComponent
-      ]
-    })
+        InventoryPageComponent,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(InventoryPageComponent);

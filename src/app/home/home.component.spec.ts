@@ -5,8 +5,8 @@ import { DebugElement } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -16,15 +16,12 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
+    declarations: [HomeComponent],
+    imports: [RouterTestingModule,
         MatToolbarModule,
-        MatButtonModule,
-        HttpClientTestingModule,
-        HttpClientModule,
-      ],
-      declarations: [HomeComponent],
-    }).compileComponents();
+        MatButtonModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   });
 
   beforeEach(() => {

@@ -4,8 +4,9 @@ import { AboutComponent } from './about.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../auth.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -13,16 +14,13 @@ describe('AboutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AboutComponent],
-      imports: [
-        RouterTestingModule,
+    declarations: [AboutComponent],
+    imports: [RouterTestingModule,
         MatToolbarModule,
         MatButtonModule,
-        HttpClientTestingModule,
-        MatIconModule
-      ],
-      providers: [AuthService],
-    }).compileComponents();
+        MatIconModule],
+    providers: [AuthService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   });
 
   beforeEach(() => {

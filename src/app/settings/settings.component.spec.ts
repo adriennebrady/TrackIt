@@ -4,8 +4,8 @@ import { SettingsComponent } from './settings.component';
 import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
 
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 
@@ -22,24 +22,22 @@ describe('SettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SettingsComponent, SidebarNavComponent ],
-      imports: [
-        MatDialogModule,
-        HttpClientTestingModule,
-        HttpClientModule,
+    declarations: [SettingsComponent, SidebarNavComponent],
+    imports: [MatDialogModule,
         MatToolbarModule,
         MatIconModule,
         MatSidenavModule,
         BrowserAnimationsModule,
         MatCardModule,
         MatTreeModule,
-        RouterTestingModule
-      ],
-      providers: [
+        RouterTestingModule],
+    providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: {} }
-      ]
-    })
+        { provide: MatDialogRef, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(SettingsComponent);

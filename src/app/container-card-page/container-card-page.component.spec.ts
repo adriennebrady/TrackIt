@@ -6,8 +6,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -27,11 +27,8 @@ describe('ContainerCardPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ContainerCardPageComponent, ContainerComponent, SidebarNavComponent ],
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-        HttpClientModule,
+    declarations: [ContainerCardPageComponent, ContainerComponent, SidebarNavComponent],
+    imports: [RouterTestingModule,
         BrowserAnimationsModule,
         MatToolbarModule,
         MatButtonModule,
@@ -41,13 +38,14 @@ describe('ContainerCardPageComponent', () => {
         MatFormFieldModule,
         MatGridListModule,
         MatSidenavModule,
-        MatTreeModule
-       ],
-      providers: [
+        MatTreeModule],
+    providers: [
         { provide: MatDialog, useValue: {} },
-        ContainerCardPageComponent
-      ]
-    })
+        ContainerCardPageComponent,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ContainerCardPageComponent);

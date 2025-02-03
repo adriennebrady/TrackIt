@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InvContainerComponent } from './inv-container.component';
 import { InventoryPageComponent } from '../../inventory-page/inventory-page.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 
 import { MatDialogModule } from '@angular/material/dialog';
@@ -19,22 +19,20 @@ describe('InvContainerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        InvContainerComponent        
-      ],
-      imports: [
-        HttpClientTestingModule,
-        HttpClientModule,
-        MatDialogModule,
+    declarations: [
+        InvContainerComponent
+    ],
+    imports: [MatDialogModule,
         MatCardModule,
         MatIconModule,
         MatMenuModule,
-        MatDividerModule
-      ],
-      providers: [
-        InventoryPageComponent
-      ]
-    })
+        MatDividerModule],
+    providers: [
+        InventoryPageComponent,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(InvContainerComponent);

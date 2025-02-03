@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MoveMenuComponent } from './move-menu.component';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -15,18 +15,16 @@ describe('MoveMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MoveMenuComponent ],
-      imports: [
-        HttpClientTestingModule,
-        HttpClientModule,
-        MatButtonToggleModule,
-        MatTreeModule
-      ],
-      providers: [
+    declarations: [MoveMenuComponent],
+    imports: [MatButtonToggleModule,
+        MatTreeModule],
+    providers: [
         HttpClient,
-        HttpClientModule
-      ]
-    })
+        HttpClientModule,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(MoveMenuComponent);

@@ -11,8 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../auth.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { RouterTestingModule } from "@angular/router/testing";
 
 describe('ContainerComponent', () => {
@@ -22,25 +22,23 @@ describe('ContainerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContainerComponent],
-      imports: [
-        MatDialogModule,
+    declarations: [ContainerComponent],
+    imports: [MatDialogModule,
         MatButtonModule,
         MatCardModule,
         MatIconModule,
         MatMenuModule,
         MatDividerModule,
-        HttpClientTestingModule,
-        HttpClientModule,
-        RouterTestingModule
-      ],
-      providers: [
+        RouterTestingModule],
+    providers: [
         ContainerCardPageComponent,
         InventoryPageComponent,
         AuthService,
-        ChangeDetectorRef
-      ],
-    }).compileComponents();
+        ChangeDetectorRef,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
   });
 
   beforeEach(() => {

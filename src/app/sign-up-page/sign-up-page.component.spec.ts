@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { SignUpPageComponent } from './sign-up-page.component';
 import { AuthService } from '../auth.service';
@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SignUpPageComponent', () => {
   let component: SignUpPageComponent;
@@ -19,20 +20,17 @@ describe('SignUpPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SignUpPageComponent],
-      imports: [
-        RouterTestingModule,
+    declarations: [SignUpPageComponent],
+    imports: [RouterTestingModule,
         FormsModule,
-        HttpClientTestingModule,
         MatToolbarModule,
         MatCardModule,
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-        BrowserAnimationsModule,
-      ],
-      providers: [AuthService],
-    }).compileComponents();
+        BrowserAnimationsModule],
+    providers: [AuthService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   }));
 
   beforeEach(() => {

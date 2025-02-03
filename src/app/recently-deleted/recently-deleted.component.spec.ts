@@ -4,8 +4,8 @@ import { RecentlyDeletedComponent } from './recently-deleted.component';
 import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
 
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -21,25 +21,23 @@ describe('RecentlyDeletedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RecentlyDeletedComponent, SidebarNavComponent ],
-      imports: [
-        HttpClientTestingModule,
-        HttpClientModule,
-        MatToolbarModule,
+    declarations: [RecentlyDeletedComponent, SidebarNavComponent],
+    imports: [MatToolbarModule,
         MatIconModule,
         MatSidenavModule,
         BrowserAnimationsModule,
         MatGridListModule,
         MatTreeModule,
-        RouterTestingModule
-      ],
-      providers: [
+        RouterTestingModule],
+    providers: [
         HttpClient,
         HttpClientModule,
         SidebarNavComponent,
-        { provide: MatDialog, useValue: {} }
-      ]
-    })
+        { provide: MatDialog, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(RecentlyDeletedComponent);

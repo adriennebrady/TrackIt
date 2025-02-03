@@ -4,8 +4,8 @@ import { SearchComponent } from './search.component';
 import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
 
 import { RouterTestingModule } from "@angular/router/testing";
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 
@@ -23,11 +23,8 @@ describe('SearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SearchComponent, SidebarNavComponent ],
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-        HttpClientModule,
+    declarations: [SearchComponent, SidebarNavComponent],
+    imports: [RouterTestingModule,
         BrowserAnimationsModule,
         MatToolbarModule,
         MatIconModule,
@@ -35,9 +32,9 @@ describe('SearchComponent', () => {
         MatInputModule,
         MatGridListModule,
         MatSidenavModule,
-        MatTreeModule
-      ]
-    })
+        MatTreeModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(SearchComponent);

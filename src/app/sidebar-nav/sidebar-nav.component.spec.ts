@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidebarNavComponent } from './sidebar-nav.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MatTreeModule } from '@angular/material/tree';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
@@ -13,18 +13,15 @@ describe('SidebarNavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SidebarNavComponent ],
-      imports: [
-        HttpClientTestingModule,
-        HttpClientModule,
-        MatTreeModule
-      ],
-      providers: [
+    declarations: [SidebarNavComponent],
+    imports: [MatTreeModule],
+    providers: [
         HttpClient,
-        HttpClientModule
-      ]
-
-    })
+        HttpClientModule,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(SidebarNavComponent);

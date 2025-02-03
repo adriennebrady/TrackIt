@@ -2,8 +2,8 @@ import { ItemComponent } from './item.component';
 import { ContainerCardPageComponent } from '../container-card-page/container-card-page.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 
@@ -22,23 +22,21 @@ describe('ItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ItemComponent, ContainerCardPageComponent ],
-      imports: [
-        RouterTestingModule,
+    declarations: [ItemComponent, ContainerCardPageComponent],
+    imports: [RouterTestingModule,
         MatToolbarModule,
         MatButtonModule,
-        HttpClientTestingModule,
-        HttpClientModule,
         BrowserAnimationsModule,
         MatCardModule,
         MatIconModule,
-        MatMenuModule
-       ],
-      providers: [
+        MatMenuModule],
+    providers: [
         { provide: MatDialog, useValue: {} },
-        ItemComponent, ContainerCardPageComponent
-      ]
-    }).compileComponents();
+        ItemComponent, ContainerCardPageComponent,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(ItemComponent);
     component = fixture.componentInstance;

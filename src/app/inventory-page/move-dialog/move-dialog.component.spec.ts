@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MoveMenuComponent } from '../move-menu/move-menu.component';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MoveDialogComponent } from './move-dialog.component';
@@ -16,22 +16,20 @@ describe('MoveDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MoveDialogComponent, MoveMenuComponent ],
-      imports: [
-        MatDialogModule,
-        HttpClientTestingModule,
-        HttpClientModule,
+    declarations: [MoveDialogComponent, MoveMenuComponent],
+    imports: [MatDialogModule,
         BrowserAnimationsModule,
         MatButtonToggleModule,
-        MatTreeModule
-      ],
-      providers: [
+        MatTreeModule],
+    providers: [
         HttpClient,
         HttpClientModule,
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: {} }
-      ]
-    })
+        { provide: MatDialogRef, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(MoveDialogComponent);

@@ -4,8 +4,8 @@ import { DeletedItemComponent } from './deleted-item.component';
 import { RecentlyDeletedComponent } from '../../recently-deleted/recently-deleted.component';
 import { ItemComponent } from '../../container/item.component';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -18,20 +18,18 @@ describe('DeletedItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeletedItemComponent, RecentlyDeletedComponent, ItemComponent ],
-      imports: [
-        HttpClientTestingModule,
-        HttpClientModule,
-        MatCardModule,
-        MatIconModule
-      ],
-      providers: [
+    declarations: [DeletedItemComponent, RecentlyDeletedComponent, ItemComponent],
+    imports: [MatCardModule,
+        MatIconModule],
+    providers: [
         HttpClient,
         HttpClientModule,
         { provide: MatDialog, useValue: {} },
-        RecentlyDeletedComponent
-      ]
-    })
+        RecentlyDeletedComponent,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(DeletedItemComponent);
