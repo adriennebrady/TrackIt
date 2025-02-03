@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class LoginPageComponent {
   username: string = '';
   password: string = '';
+  loginError: string = '';
 
   constructor(private authService: AuthService, private router: Router) {
     if (this.authService.isAuthenticated()) {
@@ -19,6 +20,7 @@ export class LoginPageComponent {
   }
 
   onSubmit() {
+    this.loginError = ''; // Clear any previous errors
     const user = {
       username: this.username,
       password: this.password,
@@ -37,6 +39,7 @@ export class LoginPageComponent {
       },
       (error) => {
         // handle login error
+        this.loginError = 'Invalid username or password';
       }
     );
   }

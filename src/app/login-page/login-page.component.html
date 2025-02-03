@@ -43,4 +43,7 @@
       <button mat-raised-button color="primary" type="submit">Log In</button>
     </form>
   </mat-card-content>
+  <mat-error *ngIf="loginError" style="margin-top: 10px; text-align: center;">
+    {{ loginError }}
+  </mat-error>
 </div>
