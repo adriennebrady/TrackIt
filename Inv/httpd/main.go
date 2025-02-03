@@ -87,8 +87,10 @@ func main() {
 
 //Front End
 //TODO treeGet for sidebar visible by default/keep state when moving between containers
-//TODO drag and drop items/containers
 //TODO alternative list view
+//save to db?
+
+//TODO drag and drop items/containers
 
 //Full Stack
 //TODO recently deleted containers
