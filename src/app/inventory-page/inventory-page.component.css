@@ -4,6 +4,14 @@
   flex: 1 1 auto;
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--background-color);
+
+}
+
 .signUpButton {
   background-color: var(--background-color);
   color: var(--text-color);

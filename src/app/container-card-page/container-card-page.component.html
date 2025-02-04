@@ -24,34 +24,35 @@
       <mat-icon>settings</mat-icon>
     </button>
   </mat-toolbar>
-  <button mat-icon-button (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
+
+  <div class="sidenav-controls">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button
+      mat-stroked-button
+      color="basic"
+      class="backButton"
+      (click)="backClicked()"
+      style="color: white; margin-left: 10px;"
+    >
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Back"
+        fontIcon="keyboard_arrow_left"
+        style="color: white;"
+      ></mat-icon>
+      Back
+    </button>
+  </div>
+
   <mat-sidenav-container autosize>
     <mat-sidenav #sidenav mode="side">
       <app-sidebar-nav [invContainers]="containers"></app-sidebar-nav>
     </mat-sidenav>
     <mat-sidenav-content>
-      <div class="backNav">
-        <button
-          mat-stroked-button
-          color="basic"
-          class="backButton"
-          (click)="backClicked()"
-          style="color: white;"
-        >
-          <mat-icon
-            aria-hidden="false"
-            aria-label="Back"
-            fontIcon="keyboard_arrow_left"
-            style="color: white;"
-          ></mat-icon>
-          Back
-        </button>
-      </div>
-
       <div class="heading">
-        <h1  style="color: rgb(255, 255, 255);">
+        <h1 style="color: rgb(255, 255, 255);">
           {{ containerName }}
           <mat-icon
             aria-hidden="false"
