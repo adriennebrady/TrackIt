@@ -9,10 +9,14 @@
 }
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   background-color: var(--color-of);
   color: var(--text-color);
 }
-
 .logo {
   font-weight: bold;
   cursor: pointer;
@@ -21,28 +25,42 @@
 body, html {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  height: 100%;
   background-color: var(--background-color);
-
 }
+
 
 mat-sidenav {
   padding-right: 5%;
   background-color: var(--background-color);
+  margin-top: 0;
 }
 
 mat-sidenav-content {
-  height: 100vh;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  background-color: var(--background-color);
+  padding-bottom: 2rem;
+}
+
+
+
+mat-sidenav-container {
+  position: absolute;
+  top: 114px; /* navbar (64px) + sidenav-controls height (50px) */
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: var(--background-color);
 }
+
+
 
 .heading {
   text-align: center;
   background-color: var(--background-color);
-  padding-top: 5%;
+  padding-top: 1rem;
 }
+
 /* 
 .backNav {
   width: 80%;
@@ -50,7 +68,13 @@ mat-sidenav-content {
   background-color: var(--background-color);
 } */
 
+
 .sidenav-controls {
+  position: fixed;
+  top: 64px; /* Height of navbar */
+  left: 0;
+  right: 0;
+  z-index: 999;
   display: flex;
   align-items: center;
   padding: 10px;
@@ -63,6 +87,9 @@ mat-sidenav-content {
 }
 
 .actionField {
+  position: sticky;
+  top: 0;
+  z-index: 998;
   padding-top: 2%;
   justify-content: center;
   background-color: var(--background-color);
@@ -106,3 +133,8 @@ app-container {
     width: 100%;
   }
 }
+
+
+
+
+
