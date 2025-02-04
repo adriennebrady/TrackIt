@@ -6,9 +6,18 @@
   margin-left: 5px;
 }
 
+/* Navbar styling */
 .navbar {
   background-color: var(--color-of);
   color: var(--text-color);
+  cursor: pointer;
+  position: fixed; /* Fix the navbar at the top */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensure it stays above other content */
+  height: 64px; /* Adjust height as needed */
+  box-sizing: border-box; /* Include padding and border in the height */
 }
 
 .logo {

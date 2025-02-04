@@ -92,6 +92,7 @@ func main() {
 
 //TODO drag and drop items/containers
 //fix double scrollbars
+//handle vertical (mobile screens) better
 
 //Full Stack
 //TODO recently deleted containers
