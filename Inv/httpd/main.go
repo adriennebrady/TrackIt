@@ -91,7 +91,7 @@ func main() {
 //save to db?
 
 //TODO drag and drop items/containers
-//handle vertical (mobile screens) better
+//TODO handle vertical (mobile screens) better
 
 //Full Stack
 //TODO recently deleted containers
@@ -99,6 +99,9 @@ func main() {
 //TODO import/export inventories
 //TODO image cards
 //TODO Multi user inventories
+
+//Backend
+//TODO fix constant logout
 
 /*
 
