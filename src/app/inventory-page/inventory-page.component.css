@@ -42,10 +42,9 @@ mat-sidenav-content {
   background-color: var(--background-color);
   padding-bottom: 2rem;
 }
-
 mat-sidenav-container {
   position: absolute;
-  top: 114px; /* navbar (64px) + sidenav-controls height (50px) */
+  top: 114px; /* navbar (64px) + sidenav-controls height (50px) or set to 50 TODO*/
   left: 0;
   right: 0;
   bottom: 0;
