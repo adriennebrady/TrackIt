@@ -1,15 +1,13 @@
 .spacer {
-  background-color: var(--background-color);
-  color: var(--text-color);
   flex: 1 1 auto;
+  background-color: var(--background-color);
 }
 
 body, html {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  height: 100%;
   background-color: var(--background-color);
-
 }
 
 .signUpButton {
@@ -19,27 +17,30 @@ body, html {
 }
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   background-color: var(--color-of);
   color: var(--text-color);
-  cursor: pointer;
 }
 
 .logo {
   font-weight: bold;
-  background-color: var(--color-of);
-  color: var(--text-color);
+  cursor: pointer;
 }
 
 mat-sidenav {
   padding-right: 5%;
   background-color: var(--background-color);
-  color: var(--text-color);
+  margin-top: 0;
 }
 
 mat-sidenav-content {
+  overflow-y: auto;
   background-color: var(--background-color);
-  color: var(--text-color);
-  height: 100vh;
+  padding-bottom: 2rem;
 }
 
 .inventoryHeading {
@@ -52,22 +53,23 @@ mat-sidenav-content {
 .inventoryHeading h1 {
   font-weight: 500;
   background-color: var(--background-color);
-  color: var(--text-color);
 }
 
 .actionField {
+  position: sticky;
+  top: 0;
+  z-index: 998;
   padding-top: 2%;
   justify-content: center;
-  display: flex;
   background-color: var(--background-color);
-  color: var(--text-color);
+  display: flex;
 }
 
 .actionField button {
   height: 55px;
   margin-right: 20px;
-  background-color: var(--color-of);
-  color: var(--text-color);
+  background-color: var(--primary-color);
+  width: 20%;
 }
 
 app-inv-container {
