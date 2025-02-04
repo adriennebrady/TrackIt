@@ -17,6 +17,7 @@
   background-color: var(--color-of);
   color: var(--text-color);
 }
+
 .logo {
   font-weight: bold;
   cursor: pointer;
@@ -28,7 +29,6 @@ body, html {
   height: 100%;
   background-color: var(--background-color);
 }
-
 
 mat-sidenav {
   padding-right: 5%;
@@ -42,8 +42,6 @@ mat-sidenav-content {
   padding-bottom: 2rem;
 }
 
-
-
 mat-sidenav-container {
   position: absolute;
   top: 114px; /* navbar (64px) + sidenav-controls height (50px) */
@@ -53,21 +51,11 @@ mat-sidenav-container {
   background-color: var(--background-color);
 }
 
-
-
 .heading {
   text-align: center;
   background-color: var(--background-color);
   padding-top: 1rem;
 }
-
-/* 
-.backNav {
-  width: 80%;
-  margin: 0 auto;
-  background-color: var(--background-color);
-} */
-
 
 .sidenav-controls {
   position: fixed;
@@ -112,6 +100,7 @@ app-container {
   width: 90%;
   background-color: var(--background-color);
 }
+
 @media (max-width: 1024px) {
   .navbar button {
     display: none;
