@@ -85,3 +85,24 @@ app-container {
   width: 90%;
   background-color: var(--background-color);
 }
+@media (max-width: 1024px) {
+  .navbar button {
+    display: none;
+  }
+
+  .sidenav-controls {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .inventoryGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .actionField button {
+    width: 100%;
+  }
+}

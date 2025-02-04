@@ -145,12 +145,18 @@ export class ContainerCardPageComponent implements OnInit {
         this.getInventory();
       });
   }
+  gridCols: number = 4;
 
+  updateGridCols() {
+    this.gridCols = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+  }
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.containerId = parseInt(params['id']);
       this.getContainerName();
       this.getInventory();
+      this.updateGridCols();
+      window.addEventListener('resize', this.updateGridCols.bind(this));
     });
 
     this.router.events.subscribe((event) => {
