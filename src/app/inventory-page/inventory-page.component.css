@@ -43,6 +43,27 @@ mat-sidenav-content {
   padding-bottom: 2rem;
 }
 
+mat-sidenav-container {
+  position: absolute;
+  top: 114px; /* navbar (64px) + sidenav-controls height (50px) */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background-color);
+}
+
+.sidenav-controls {
+  position: fixed;
+  top: 64px; /* Height of navbar */
+  left: 0;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: var(--background-color);
+}
+
 .inventoryHeading {
   text-align: center;
   padding-top: 5%;
@@ -76,4 +97,26 @@ app-inv-container {
   width: 90%;
   background-color: var(--background-color);
   color: var(--color-of);
+}
+
+@media (max-width: 1024px) {
+  .navbar button {
+    display: none;
+  }
+
+  .sidenav-controls {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .inventoryGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .actionField button {
+    width: 100%;
+  }
 }

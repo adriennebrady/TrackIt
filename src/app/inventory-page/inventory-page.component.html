@@ -62,7 +62,7 @@
         </div>
 
         <div class="inventoryGrid">
-          <mat-grid-list cols="4" rowHeight="1:1">
+          <mat-grid-list [cols]="gridCols" rowHeight="2.5:1">
             <mat-grid-tile *ngFor="let container of containers; index as i">
               <app-inv-container
                 [container]="container"
