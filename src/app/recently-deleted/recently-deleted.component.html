@@ -22,10 +22,14 @@
     <mat-icon>settings</mat-icon>
   </button>
 </mat-toolbar>
+
 <div class="container">
-  <button mat-icon-button (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
+  <div class="sidenav-controls">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  
   <mat-sidenav-container autosize>
     <mat-sidenav #sidenav mode="side">
       <app-sidebar-nav [invContainers]="[]"></app-sidebar-nav>
@@ -41,7 +45,7 @@
       </div>
 
       <div class="inventoryGrid">
-        <mat-grid-list cols="4" rowHeight="1:1">
+        <mat-grid-list [cols]="gridCols" rowHeight="2.5:1">
           <mat-grid-tile *ngFor="let item of items; index as i">
             <app-deleted-item [item]="item" [index]="i"></app-deleted-item>
           </mat-grid-tile>

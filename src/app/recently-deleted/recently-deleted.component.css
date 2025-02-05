@@ -3,39 +3,76 @@
   background-color: var(--background-color);
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--background-color);
+}
+
 .signUpButton {
+  background-color: var(--background-color);
+  color: var(--text-color);
   margin-left: 5px;
 }
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   background-color: var(--color-of);
   color: var(--text-color);
-  cursor: pointer;
 }
 
 .logo {
   font-weight: bold;
+  cursor: pointer;
 }
 
 mat-sidenav {
   padding-right: 5%;
   background-color: var(--background-color);
+  margin-top: 0;
 }
 
 mat-sidenav-content {
-  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--background-color);
+  padding-bottom: 2rem;
+}
+mat-sidenav-container {
+  position: absolute;
+  top: 114px; /* navbar (64px) + sidenav-controls height (50px) or set to 50 TODO*/
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background-color);
+}
+
+.sidenav-controls {
+  position: fixed;
+  top: 64px; /* Height of navbar */
+  left: 0;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  padding: 10px;
   background-color: var(--background-color);
 }
 
 .inventoryHeading {
   text-align: center;
-  color: var(--text-color);
   padding-top: 5%;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .inventoryHeading h1 {
   font-weight: 500;
-  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 .noItems {
@@ -48,14 +85,40 @@ mat-sidenav-content {
 }
 
 .actionField {
+  position: sticky;
+  top: 0;
+  z-index: 998;
   padding-top: 2%;
   justify-content: center;
-  color: var(--text-color);
+  background-color: var(--background-color);
   display: flex;
 }
 
 .actionField button {
   height: 55px;
   margin-right: 20px;
-  color: var(--text-color);
+  background-color: var(--primary-color);
+  width: 20%;
+}
+
+@media (max-width: 1024px) {
+  .navbar button {
+    display: none;
+  }
+
+  .sidenav-controls {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .inventoryGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .actionField button {
+    width: 100%;
+  }
 }

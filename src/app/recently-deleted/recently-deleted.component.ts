@@ -29,8 +29,16 @@ export class RecentlyDeletedComponent implements OnInit {
     private authService: AuthService
   ) {}
 
+  gridCols: number = 4;
+
+  updateGridCols() {
+    this.gridCols = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+  }
+
   ngOnInit() {
     this.getItems();
+    this.updateGridCols();
+    window.addEventListener('resize', this.updateGridCols.bind(this));
   }
 
   getItems() {
