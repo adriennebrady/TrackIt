@@ -2,7 +2,7 @@
   <mat-toolbar class="navbar">
     <span class="logo" routerLink="/home">TRACKIT</span>
     <span class="spacer"></span>
-    <button mat-button (click)="logOut()" routerLink="/home">Sign Out</button>
+    <button mat-button (click)="logOut()" routerLink="/home" style="color: white;">Sign Out</button>
     <button
       mat-flat-button
       routerLink="/inventory"
@@ -30,7 +30,7 @@
       <app-sidebar-nav [invContainers]="[]"></app-sidebar-nav>
     </mat-sidenav>
     <mat-sidenav-content>
-      <div class="backNav">
+      <div class="backNav" >
         <button
           mat-stroked-button
           color="basic"
@@ -46,7 +46,7 @@
         </button>
       </div>
 
-      <div class="heading">
+      <div class="heading"  style="color: white;">
         <h1>Search Results</h1>
       </div>
 

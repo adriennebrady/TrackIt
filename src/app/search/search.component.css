@@ -1,5 +1,6 @@
 .spacer {
   flex: 1 1 auto;
+  background-color: var(--background-color);
 }
 
 .inventoryButton {
@@ -18,6 +19,7 @@
 
 mat-sidenav {
   padding-right: 5%;
+  background-color: var(--background-color);
 }
 
 .heading {
@@ -37,6 +39,7 @@ mat-sidenav {
 .actionField {
   padding-top: 2%;
   justify-content: center;
+  background-color: var(--background-color);
   display: flex;
 }
 
@@ -51,12 +54,15 @@ mat-sidenav {
   padding-top: 10%;
   font-weight: 500;
   font-size: large;
+  background-color: var(--background-color);
 }
 
 mat-sidenav-content {
   height: 100vh;
+  background-color: var(--background-color);
 }
 
 app-container {
   width: 90%;
+  background-color: var(--background-color);
 }
