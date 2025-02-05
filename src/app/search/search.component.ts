@@ -31,11 +31,19 @@ export class SearchComponent implements OnInit {
     private router: Router
   ) {}
 
+  gridCols: number = 4;
+
+  updateGridCols() {
+    this.gridCols = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+  }
+
   ngOnInit() {
     if (this.route.snapshot.queryParamMap.get('q') != null) {
       this.query = decodeURI(this.route.snapshot.queryParamMap.get('q')!);
       this.search();
       this.queryValue = this.query;
+      this.updateGridCols();
+      window.addEventListener('resize', this.updateGridCols.bind(this));
     }
   }
 

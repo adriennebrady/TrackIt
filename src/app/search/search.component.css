@@ -3,50 +3,93 @@
   background-color: var(--background-color);
 }
 
-.inventoryButton {
-  margin-left: 5px;
-}
-
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   background-color: var(--color-of);
   color: var(--text-color);
 }
+
+.sidenav-controls {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 20px;
+  background-color: var(--background-color);
+}
+
+.left-controls {
+  display: flex;
+  align-items: center;
+}
+
+.container-heading {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
 
 .logo {
   font-weight: bold;
   cursor: pointer;
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--background-color);
+
+}
+
 mat-sidenav {
   padding-right: 5%;
   background-color: var(--background-color);
+  margin-top: 0;
 }
 
-.heading {
-  text-align: center;
-  padding-top: 5%;
-}
 
-.backNav {
-  width: 80%;
-  margin: 0 auto;
-}
 
-.inventoryHeading h1 {
-  font-weight: 500;
-}
-
-.actionField {
-  padding-top: 2%;
-  justify-content: center;
+mat-sidenav-container {
+  position: absolute;
+  top: 140px; /* navbar (64px) + sidenav-controls height (50px) */
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: var(--background-color);
-  display: flex;
 }
 
-.actionField button {
-  height: 55px;
-  margin-right: 20px;
-  width: 20%;
+.large-button {
+  transform: scale(1.1); /* Increases button size */
+}
+
+.lowered-search {
+  align-self: center;
+  margin-top: 10px; /* Adjust this value as needed */
+  transform: scale(0.8); /* Increases button size */
+}
+
+.large-button {
+  transform: scale(1.1);
+}
+
+mat-sidenav-content {
+  overflow-y: auto;
+  background-color: var(--background-color);
+  padding-bottom: 1rem;
+  /* padding-top: 2rem; */
 }
 
 .noResults {
@@ -57,12 +100,37 @@ mat-sidenav {
   background-color: var(--background-color);
 }
 
-mat-sidenav-content {
-  height: 100vh;
+.inventoryGrid {
+  padding-top: 2%;
+}
+
+
+.heading {
+  display: none; /* Removed the separate heading to place inside sidenav-controls */
+}
+
+.inventoryHeading h1 {
+  font-weight: 500;
   background-color: var(--background-color);
 }
 
-app-container {
-  width: 90%;
-  background-color: var(--background-color);
+@media (max-width: 1024px) {
+  /* .navbar button {
+    display: none;
+  } */
+
+  .sidenav-controls {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .inventoryGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .actionField button {
+    width: 100%;
+  }
 }
