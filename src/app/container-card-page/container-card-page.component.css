@@ -131,9 +131,9 @@ app-container {
 }
 
 @media (max-width: 1024px) {
-  .navbar button {
+  /* .navbar button {
     display: none;
-  }
+  } */
 
   .sidenav-controls {
     justify-content: space-between;
