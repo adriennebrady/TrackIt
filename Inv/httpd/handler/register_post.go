@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -46,7 +47,6 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		newUser := Account{
 			Username: request.Username,
 			Password: HashAndSalt([]byte(request.Password)), //replaced with hash and salt password,
-			Token:    GenerateToken(),
 		}
 
 		//check if container is empty
@@ -61,6 +61,21 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 			Name:     newUser.Username + "'s container",
 			ParentID: 0, // Assuming it's a top-level container.
 			User:     newUser.Username,
+		}
+
+		var token = GenerateToken()
+		// Create a new session
+		session := DeviceSession{
+			Username: newUser.Username,
+			Token:    token,
+			LastUsed: time.Now(),
+			// Optionally add device identification here if needed
+		}
+
+		// Save the new session
+		if result := DB.Create(&session); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to create session"})
+			return
 		}
 
 		// Start a new transaction to ensure atomicity.
@@ -89,7 +104,7 @@ func RegisterPost(DB *gorm.DB) gin.HandlerFunc {
 		tx.Commit()
 
 		// Return the token to the user.
-		response := LoginResponse{Token: newUser.Token, RootLoc: newContainer.LocID}
+		response := LoginResponse{Token: token, RootLoc: newContainer.LocID}
 		c.JSON(http.StatusOK, response)
 	}
 }

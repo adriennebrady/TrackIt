@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -45,14 +46,20 @@ func ContainersGet(db *gorm.DB) gin.HandlerFunc {
 }
 
 func IsValidToken(authHeader string, db *gorm.DB) string {
-
 	token := strings.TrimPrefix(authHeader, "Bearer ")
-	// Query the database for a user with the given token.
-	var user Account
-	if err := db.Table("Accounts").Where("token = ?", token).First(&user).Error; err != nil {
-		// If no user with the token is found, return false.
+
+	// Check if the token exists in the DeviceSession table and is still valid
+	var session DeviceSession
+	if err := db.Table("device_sessions").
+		Where("token = ?", token).
+		Where("last_used > ?", time.Now().Add(-30*24*time.Hour)).
+		First(&session).Error; err != nil {
+		// Token is invalid or expired
 		return ""
 	}
 
-	return user.Username
+	// Update last used timestamp
+	db.Model(&session).Update("last_used", time.Now())
+
+	return session.Username
 }

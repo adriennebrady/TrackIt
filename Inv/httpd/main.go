@@ -10,10 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Account struct { //gorm.Model?
+type Account struct {
 	Username string `gorm:"primaryKey"`
 	Password string
-	Token    string
 	RootLoc  int `gorm:"column:rootLoc"`
 }
 
@@ -30,6 +29,14 @@ type Container struct {
 	Name     string
 	ParentID int    `gorm:"column:ParentID"`
 	User     string `gorm:"column:username"`
+}
+
+type DeviceSession struct {
+	ID       int    `gorm:"primaryKey;autoIncrement"`
+	Username string `gorm:"index"`
+	Token    string `gorm:"uniqueIndex"`
+	LastUsed time.Time
+	DeviceID string // Optional: could be used to identify different devices
 }
 
 // recently delete
@@ -52,8 +59,9 @@ func InitializeDB() {
 	}
 	db.AutoMigrate(&Account{})
 	db.AutoMigrate(&Item{})
-	db.AutoMigrate(&Container{}) // create the recently deleted items table
+	db.AutoMigrate(&Container{})
 	db.AutoMigrate(&RecentlyDeletedItem{})
+	db.AutoMigrate(&DeviceSession{})
 }
 
 func main() {
@@ -63,7 +71,7 @@ func main() {
 	api := r.Group("/api")
 
 	// Set trusted proxies
-	r.ForwardedByClientIP = true // Set the trusted proxy
+	r.ForwardedByClientIP = true
 	r.SetTrustedProxies([]string{"127.0.0.1"})
 	{
 		api.GET("/ping", handler.PingGet())
@@ -99,10 +107,6 @@ func main() {
 //TODO import/export inventories
 //TODO image cards
 //TODO Multi user inventories
-
-//Backend
-//TODO fix constant logout
-
 /*
 
 CREATE TRIGGER tr_items_deleted

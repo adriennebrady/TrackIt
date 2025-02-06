@@ -7,16 +7,13 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
-
-	//hash and salt password
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
-type Account struct { //gorm.Model?
+type Account struct {
 	Username string `gorm:"primaryKey"`
 	Password string
-	Token    string
 	RootLoc  int `gorm:"column:rootLoc"`
 }
 
@@ -35,6 +32,14 @@ type Container struct {
 	User     string `gorm:"column:username"`
 }
 
+type DeviceSession struct {
+	ID       int `gorm:"primaryKey;autoIncrement"`
+	Username string
+	Token    string `gorm:"uniqueIndex"`
+	LastUsed time.Time
+	DeviceID string // Optional: could be used to identify different devices
+}
+
 type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -47,45 +52,58 @@ type LoginResponse struct {
 
 func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Parse the request body.
 		var request LoginRequest
 		if err := c.BindJSON(&request); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 			return
 		}
 
-		// Check if the user exists.
+		// Check if the user exists
 		var user Account
 		if result := DB.Table("accounts").Where("username = ?", request.Username).First(&user); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 			return
 		}
 
-		// Check if the password is correct.
+		// Check if the password is correct
 		if !ComparePasswords(user.Password, []byte(request.Password)) {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 			return
 		}
 
-		// Generate a token and save it to the database.
-		token := GenerateToken()
-		user.Token = token
-		if result := DB.Table("accounts").Save(&user); result.Error != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to save token"})
+		// Generate a new token for this device
+		newToken := GenerateToken()
+
+		// Create a new session
+		session := DeviceSession{
+			Username: user.Username,
+			Token:    newToken,
+			LastUsed: time.Now(),
+			// Optionally add device identification here if needed
+		}
+
+		// Save the new session
+		if result := DB.Create(&session); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to create session"})
 			return
 		}
 
-		// Delete old recently deleted items.
-		if result := DB.Where("Timestamp < ?", time.Now().Add(-30*24*time.Hour)).Delete(&RecentlyDeletedItem{}); result.Error != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Error deleting items with timestamps greater than 30 days"})
+		// Clean up old sessions (optional: remove sessions not used in the last 30 days)
+		DB.Where("last_used < ? AND username = ?",
+			time.Now().Add(-30*24*time.Hour),
+			user.Username).Delete(&DeviceSession{})
+
+		// Delete old recently deleted items
+		if result := DB.Where("Timestamp < ?",
+			time.Now().Add(-30*24*time.Hour)).Delete(&RecentlyDeletedItem{}); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError,
+				gin.H{"error": "Error deleting old items"})
 			return
 		}
 
-		// Return the token to the user.
-		response := LoginResponse{Token: token, RootLoc: user.RootLoc}
+		// Return the token to the user
+		response := LoginResponse{Token: newToken, RootLoc: user.RootLoc}
 		c.JSON(http.StatusOK, response)
-
-
 	}
 }
 
@@ -98,14 +116,36 @@ func GenerateToken() string {
 }
 
 func ComparePasswords(hashedPwd string, plainPwd []byte) bool {
-	// Since we'll be getting the hashed password from the DB it
-	// will be a string so we'll need to convert it to a byte slice
 	byteHash := []byte(hashedPwd)
 	err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
 	if err != nil {
 		println(err)
 		return false
 	}
-
 	return true
+}
+
+func AuthMiddleware(DB *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.GetHeader("Authorization")
+		if token == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "No token provided"})
+			return
+		}
+
+		var session DeviceSession
+		if result := DB.Where("token = ?", token).
+			Where("last_used > ?", time.Now().Add(-30*24*time.Hour)).
+			First(&session); result.Error != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			return
+		}
+
+		// Update last used time
+		DB.Model(&session).Update("last_used", time.Now())
+
+		// Add the username to the context for use in other handlers
+		c.Set("username", session.Username)
+		c.Next()
+	}
 }
