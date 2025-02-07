@@ -2,10 +2,43 @@
     flex: 1 1 auto;
 }
 
+.header-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  min-width: 100%;
+  align-items: center;
+  gap: 8px;
+}
+
 .containerName {
     margin-top: 8%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, monospace;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
 }
 
 .example-card {
-    min-width: 300px;
+    min-width: 90%;
+    max-width: 300px;
+}
+
+.mat-mdc-card {
+  background-color: #1f2138;
+  color: white;
+  border-radius: 8px;
+}
+
+.mat-mdc-card-title {
+  color: white;
+}
+
+/* Make menu button white */
+.mat-mdc-icon-button {
+  color: white;
 }

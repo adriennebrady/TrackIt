@@ -6,6 +6,21 @@
   margin-top: 8%;
 }
 
+.mat-mdc-card {
+  background-color: #1f2138;
+  color: white;
+  border-radius: 8px;
+}
+
+.mat-mdc-card-title {
+  color: white;
+}
+
 .example-card {
-  min-height: 120px;
+  margin: 16px;
+}
+
+/* Make menu button white */
+.mat-mdc-icon-button {
+  color: white;
 }

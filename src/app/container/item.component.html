@@ -1,20 +1,19 @@
 <mat-card class="example-card">
   <mat-card-header>
-    <mat-card-title class="containerName">{{ item.ItemName }}</mat-card-title>
-    <span class="spacer"></span>
-    <button mat-icon-button (click)="incrementItem(index)">
-      <mat-icon>add</mat-icon>
-    </button>
-    <button mat-icon-button (click)="decrementItem(index)">
-      <mat-icon>horizontal_rule</mat-icon>
-    </button>
-    <button
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-      aria-label="icon-button with a menu"
-    >
-      <mat-icon>more_vert</mat-icon>
-    </button>
+    <div class="header-content">
+      <mat-card-title class="containerName">{{ item.ItemName }}</mat-card-title>
+      <div class="actions">
+        <button mat-icon-button (click)="incrementItem(index)">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button (click)="decrementItem(index)">
+          <mat-icon>horizontal_rule</mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </div>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="renameItem(index)">
         <mat-icon>border_color</mat-icon>
@@ -30,17 +29,12 @@
       </button>
     </mat-menu>
   </mat-card-header>
-  <mat-card-content>
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <span class="countAmount">Count: {{ item.Count }}</span>
-      <button
-        mat-icon-button
-        color="primary"
-        (click)="deleteItem(index)"
-        class="deleteButton"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-  </mat-card-content>
+
+  <mat-card-actions>
+    <span class="spacer"></span>
+    <span class="countAmount">Count: {{ item.Count }}</span>
+    <button mat-icon-button color="primary" (click)="deleteItem(index)" class="deleteButton">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
 </mat-card>
