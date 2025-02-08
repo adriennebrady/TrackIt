@@ -8,19 +8,25 @@
   background-color: var(--background-color);
 }
 
-.actionField .newContainerButton {
-  height: 55px;
-  /* background-color: var(--primary-color); */
-  margin-bottom: 10px;
-  margin-top: 20px;
-  width: 20%;
+.actionField {
+  position: sticky;
+  top: 0;
+  z-index: 998;
+  background-color: var(--background-color);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 10px;
 }
+
+.actionField .newContainerButton,
 .actionField .newItemButton {
   height: 55px;
-  /* background-color: var(--primary-color); */
   margin-bottom: 10px;
   margin-top: 20px;
-  width: 20%;
+  background-color: var(--primary-color);
+  width: auto;
+  flex: 0 0 auto;
 }
 
 .navbar {
@@ -55,31 +61,30 @@ mat-sidenav-content {
   overflow-y: auto;
   background-color: var(--background-color);
   padding-bottom: 1rem;
-  /* padding-top: 2rem; */
 }
 
 mat-sidenav-container {
   position: absolute;
-  top: 140px; /* navbar (64px) + sidenav-controls height (50px) */
+  top: 140px;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: var(--background-color);
 }
+
 .large-button {
-  transform: scale(1.1); /* Increases button size */
+  transform: scale(1.1);
 }
 
 .lowered-search {
   align-self: center;
-  margin-top: 10px; /* Adjust this value as needed */
-  transform: scale(0.8); /* Increases button size */
+  margin-top: 10px;
+  transform: scale(0.8);
 }
 
-/* Updated sidenav controls to include heading and search bar */
 .sidenav-controls {
   position: fixed;
-  top: 64px; /* Below navbar */
+  top: 64px;
   left: 0;
   right: 0;
   z-index: 999;
@@ -110,7 +115,7 @@ mat-sidenav-container {
 }
 
 .heading {
-  display: none; /* Removed the separate heading to place inside sidenav-controls */
+  display: none;
 }
 
 .inventoryHeading h1 {
@@ -118,36 +123,18 @@ mat-sidenav-container {
   background-color: var(--background-color);
 }
 
-.actionField {
-  position: sticky;
-  top: 0;
-  z-index: 998;
-  padding-top: 2%;
-  background-color: var(--background-color);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-}
-
-.actionField button {
-  height: 55px;
-  margin-right: 20px;
-  margin-bottom: 10px;
-  background-color: var(--primary-color);
-  width: 20%;
-}
-
 .size-controls {
   gap: 8px;
   background-color: var(--background-color);
   color: white;
+  margin-left: auto;
 }
 
 .size-controls button {
   background-color: var(--background-color);
   color: white;
 }
+
 .renameIcon {
   cursor: pointer;
   background-color: var(--background-color);
@@ -159,15 +146,10 @@ app-container {
 }
 
 @media (max-width: 1024px) {
-  /* .navbar button {
-    display: none;
-  } */
-
   .sidenav-controls {
     justify-content: space-between;
   }
 }
-
 
 @media (max-width: 768px) {
   .inventoryGrid {
@@ -176,24 +158,19 @@ app-container {
     gap: 10px;
   }
 
-  .actionField button {
-    width: 100%;
-  }
-
   .actionField {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .actionField .newContainerButton {
-    width: 100%;
-  }
-
+  .actionField .newContainerButton,
   .actionField .newItemButton {
     width: 100%;
   }
+
   .size-controls {
     justify-content: center;
     margin-bottom: 10px;
+    margin-left: 0;
   }
 }
