@@ -53,7 +53,7 @@ mat-sidenav-container {
 .lowered-search {
   align-self: center;
   margin-top: 10px;
-  transform: scale(0.8);
+  transform: scale(0.8) translateX(30%);
 }
 
 .sidenav-controls {
@@ -81,11 +81,6 @@ mat-sidenav-container {
   color: white;
   font-size: 1.5rem;
   margin: 0;
-}
-
-.search-box {
-  min-width: 200px;
-  max-width: 300px;
 }
 
 .actionField {
@@ -143,6 +138,8 @@ app-inv-container {
     align-self: center;
     margin-top: 10px;
     transform: scaleX(1) translateX(0px);
+    width: 60%;
+    order: 2;
   }
 }
 
@@ -156,11 +153,6 @@ app-inv-container {
   .left-controls {
     width: 40%;
     order: 1;
-  }
-
-  .search-box {
-    width: 60%;
-    order: 2;
   }
 
   .header-row {

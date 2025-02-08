@@ -112,11 +112,6 @@ mat-sidenav-container {
   gap: 8px;
 }
 
-.search-box {
-  min-width: 200px;
-  max-width: 300px;
-}
-
 .heading {
   display: none;
 }
@@ -176,6 +171,9 @@ app-container {
   }
 
   .search-box {
+    align-self: center;
+    margin-top: 10px;
+    transform: scaleX(0.9) translateX(0px);
     width: 60%;
     order: 2;
   }
