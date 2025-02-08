@@ -159,18 +159,31 @@ app-container {
   }
 
   .actionField {
-    flex-direction: column;
-    align-items: stretch;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 10px;
   }
 
   .actionField .newContainerButton,
   .actionField .newItemButton {
-    width: 100%;
+    width: calc(50% - 5px); /* Take up half the space minus gap */
+    min-width: 120px;
+    margin: 10px 0;
   }
 
   .size-controls {
+    width: 100%;
+    display: flex;
     justify-content: center;
     margin-bottom: 10px;
     margin-left: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .actionField .newContainerButton,
+  .actionField .newItemButton {
+    font-size: 14px; /* Slightly smaller font for very small screens */
+    padding: 0 8px;
   }
 }
