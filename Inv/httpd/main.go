@@ -100,6 +100,9 @@ func main() {
 
 //TODO drag and drop items/containers
 //TODO handle vertical (mobile screens) better
+//TODO zoom in/out
+//TODO search results letting you click to the location
+//TODO sort methods
 
 //Full Stack
 //TODO recently deleted containers

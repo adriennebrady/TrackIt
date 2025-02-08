@@ -32,6 +32,8 @@ interface Container {
 export class InventoryPageComponent implements OnInit {
   containers: Container[] = [];
   query: string = '';
+  gridCols: number = 4;
+  tileSize: number = 2.5; // Default tile size ratio
 
   constructor(
     public dialog: MatDialog,
@@ -42,7 +44,6 @@ export class InventoryPageComponent implements OnInit {
   ) {}
 
   getInventory() {
-    // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
     const rootLoc: string = localStorage.getItem('rootloc')!;
 
@@ -67,7 +68,6 @@ export class InventoryPageComponent implements OnInit {
   }
 
   createContainer(newName: string) {
-    // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
     const rootLoc: string = localStorage.getItem('rootloc')!;
 
@@ -94,10 +94,25 @@ export class InventoryPageComponent implements OnInit {
         this.getInventory();
       });
   }
-  gridCols: number = 4;
 
   updateGridCols() {
-    this.gridCols = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+    const baseColumns = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+    // Adjust columns based on tile size
+    this.gridCols = Math.max(1, Math.floor(baseColumns * (2.5 / this.tileSize)));
+  }
+
+  increaseTileSize() {
+    if (this.tileSize < 4) { // Maximum size limit
+      this.tileSize += 0.5;
+      this.updateGridCols();
+    }
+  }
+
+  decreaseTileSize() {
+    if (this.tileSize > 1.5) { // Minimum size limit
+      this.tileSize -= 0.5;
+      this.updateGridCols();
+    }
   }
 
   ngOnInit() {
@@ -136,7 +151,6 @@ export class InventoryPageComponent implements OnInit {
   }
 
   moveContainer(index: number, parentID: number) {
-    // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
 
     const updateContainer = {
@@ -164,7 +178,6 @@ export class InventoryPageComponent implements OnInit {
   }
 
   removeContainer(index: number) {
-    // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
 
     const authorization = {
@@ -219,7 +232,6 @@ export class InventoryPageComponent implements OnInit {
   }
 
   renameContainer(index: number, newName: string) {
-    // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
     const rootLoc: string = localStorage.getItem('rootloc')!;
 

@@ -42,10 +42,28 @@
         >
           Create new container
         </button>
+        <div class="size-controls">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="decreaseTileSize()"
+            matTooltip="Decrease tile size"
+          >
+            <mat-icon>zoom_out</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="increaseTileSize()"
+            matTooltip="Increase tile size"
+          >
+            <mat-icon>zoom_in</mat-icon>
+          </button>
+        </div>
       </div>
 
       <div class="inventoryGrid">
-        <mat-grid-list [cols]="gridCols" rowHeight="2.5:1">
+        <mat-grid-list [cols]="gridCols" [rowHeight]="tileSize + ':1'">
           <mat-grid-tile *ngFor="let container of containers; index as i">
             <app-inv-container [container]="container" [index]="i"></app-inv-container>
           </mat-grid-tile>

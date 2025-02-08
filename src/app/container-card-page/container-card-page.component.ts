@@ -39,6 +39,8 @@ export class ContainerCardPageComponent implements OnInit {
   containers: Container[] = [];
   containerName: string = '';
   query: string = '';
+  gridCols: number = 4;
+  tileSize: number = 2.5; // Default tile size ratio
 
   constructor(
     public dialog: MatDialog,
@@ -145,11 +147,27 @@ export class ContainerCardPageComponent implements OnInit {
         this.getInventory();
       });
   }
-  gridCols: number = 4;
 
   updateGridCols() {
-    this.gridCols = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+    const baseColumns = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+    // Adjust columns based on tile size
+    this.gridCols = Math.max(1, Math.floor(baseColumns * (2.5 / this.tileSize)));
   }
+
+  increaseTileSize() {
+    if (this.tileSize < 4) { // Maximum size limit
+      this.tileSize += 0.5;
+      this.updateGridCols();
+    }
+  }
+
+  decreaseTileSize() {
+    if (this.tileSize > 1.5) { // Minimum size limit
+      this.tileSize -= 0.5;
+      this.updateGridCols();
+    }
+  }
+
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.containerId = parseInt(params['id']);

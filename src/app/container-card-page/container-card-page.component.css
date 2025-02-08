@@ -8,6 +8,21 @@
   background-color: var(--background-color);
 }
 
+.actionField .newContainerButton {
+  height: 55px;
+  /* background-color: var(--primary-color); */
+  margin-bottom: 10px;
+  margin-top: 20px;
+  width: 20%;
+}
+.actionField .newItemButton {
+  height: 55px;
+  /* background-color: var(--primary-color); */
+  margin-bottom: 10px;
+  margin-top: 20px;
+  width: 20%;
+}
+
 .navbar {
   position: fixed;
   top: 0;
@@ -108,9 +123,11 @@ mat-sidenav-container {
   top: 0;
   z-index: 998;
   padding-top: 2%;
-  justify-content: center;
   background-color: var(--background-color);
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
 }
 
 .actionField button {
@@ -121,6 +138,16 @@ mat-sidenav-container {
   width: 20%;
 }
 
+.size-controls {
+  gap: 8px;
+  background-color: var(--background-color);
+  color: white;
+}
+
+.size-controls button {
+  background-color: var(--background-color);
+  color: white;
+}
 .renameIcon {
   cursor: pointer;
   background-color: var(--background-color);
@@ -141,6 +168,7 @@ app-container {
   }
 }
 
+
 @media (max-width: 768px) {
   .inventoryGrid {
     display: flex;
@@ -150,5 +178,22 @@ app-container {
 
   .actionField button {
     width: 100%;
+  }
+
+  .actionField {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actionField .newContainerButton {
+    width: 100%;
+  }
+
+  .actionField .newItemButton {
+    width: 100%;
+  }
+  .size-controls {
+    justify-content: center;
+    margin-bottom: 10px;
   }
 }
