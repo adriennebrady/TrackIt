@@ -3,21 +3,6 @@
   background-color: var(--background-color);
 }
 
-.actionField .newContainerButton {
-  height: 55px;
-  /* background-color: var(--primary-color); */
-  margin-bottom: 10px;
-  margin-top: 20px;
-  width: 20%;
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background-color: var(--background-color);
-}
-
 .navbar {
   position: fixed;
   top: 0;
@@ -33,6 +18,13 @@ body, html {
   cursor: pointer;
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--background-color);
+}
+
 mat-sidenav {
   padding-right: 5%;
   background-color: var(--background-color);
@@ -43,11 +35,11 @@ mat-sidenav-content {
   overflow-y: auto;
   background-color: var(--background-color);
   padding-bottom: 1rem;
-  /* padding-top: 2rem; */
 }
+
 mat-sidenav-container {
   position: absolute;
-  top: 140px; /* navbar (64px) + sidenav-controls height (50px) or set to 50 TODO*/
+  top: 140px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -55,18 +47,18 @@ mat-sidenav-container {
 }
 
 .large-button {
-  transform: scale(1.1); /* Increases button size */
+  transform: scale(1.1);
 }
 
 .lowered-search {
   align-self: center;
-  margin-top: 10px; /* Adjust this value as needed */
-  transform: scale(0.8); /* Increases button size */
+  margin-top: 10px;
+  transform: scale(0.8);
 }
 
 .sidenav-controls {
   position: fixed;
-  top: 64px; /* Below navbar */
+  top: 64px;
   left: 0;
   right: 0;
   z-index: 999;
@@ -90,17 +82,16 @@ mat-sidenav-container {
   font-size: 1.5rem;
   margin: 0;
 }
+
 .search-box {
   min-width: 200px;
   max-width: 300px;
 }
 
-
 .actionField {
   position: sticky;
   top: 0;
   z-index: 998;
-  padding-top: 2%;
   background-color: var(--background-color);
   display: flex;
   align-items: center;
@@ -108,11 +99,11 @@ mat-sidenav-container {
   padding: 0 20px;
 }
 
-.actionField button {
+.actionField .newContainerButton {
   height: 55px;
-  margin-right: 20px;
   background-color: var(--primary-color);
   margin-bottom: 10px;
+  margin-top: 20px;
   width: 20%;
 }
 
@@ -120,11 +111,21 @@ mat-sidenav-container {
   gap: 8px;
   background-color: var(--background-color);
   color: white;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 
 .size-controls button {
   background-color: var(--background-color);
   color: white;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 app-inv-container {
@@ -134,27 +135,58 @@ app-inv-container {
 }
 
 @media (max-width: 1024px) {
-
   .sidenav-controls {
     justify-content: space-between;
   }
+  
   .lowered-search {
     align-self: center;
-    margin-top: 10px; /* Adjust this value as needed */
-    transform: scaleX(0.3)
-    translateX(160px)
+    margin-top: 10px;
+    transform: scaleX(1) translateX(0px);
   }
 }
 
 @media (max-width: 768px) {
+  .sidenav-controls {
+    flex-wrap: wrap;
+    padding: 10px 20px;
+    height: auto;
+  }
+
+  .left-controls {
+    width: 40%;
+    order: 1;
+  }
+
+  .search-box {
+    width: 60%;
+    order: 2;
+  }
+
+  .header-row {
+    width: 100%;
+    order: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container-heading {
+    position: static;
+    transform: none;
+    margin: 0;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .size-controls {
+    margin: 0 0 0 16px;
+  }
+
   .inventoryGrid {
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
-
-  .actionField button {
-    width: 100%;
   }
 
   .actionField {
@@ -164,10 +196,17 @@ app-inv-container {
 
   .actionField .newContainerButton {
     width: 100%;
+    margin-top: 10%;
   }
 
-  .size-controls {
-    justify-content: center;
-    margin-bottom: 10px;
+  mat-sidenav-container {
+    top: 180px;
+  }
+}
+
+@media (max-width: 400px) {
+  .actionField .newContainerButton {
+    font-size: 14px;
+    padding: 0 8px;
   }
 }

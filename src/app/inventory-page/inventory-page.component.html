@@ -10,65 +10,51 @@
   </button>
 </mat-toolbar>
 
-<div class="container">
-  <div class="sidenav-controls">
-    <div class="left-controls">
-      <button mat-icon-button class="large-button" (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </div>
-    
-    <h1 class="container-heading">Your Inventory</h1>
-
-    <form class="search-box lowered-search" (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input type="search" matInput placeholder="Ex. iPhone Charger" [(ngModel)]="query" name="q" class="searchItemInput" />
-      </mat-form-field>
-    </form>
+<div class="sidenav-controls">
+  <div class="left-controls">
+    <button mat-icon-button class="large-button" (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
   </div>
 
-  <mat-sidenav-container autosize>
-    <mat-sidenav #sidenav mode="side">
-      <app-sidebar-nav [invContainers]="containers"></app-sidebar-nav>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <div class="actionField">
-        <button
-          class="newContainerButton"
-          mat-flat-button
-          color="primary"
-          (click)="openDialog()"
-        >
-          Create new container
-        </button>
-        <div class="size-controls">
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="decreaseTileSize()"
-            matTooltip="Decrease tile size"
-          >
-            <mat-icon>zoom_out</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="increaseTileSize()"
-            matTooltip="Increase tile size"
-          >
-            <mat-icon>zoom_in</mat-icon>
-          </button>
-        </div>
-      </div>
+  <form class="search-box lowered-search" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input type="search" matInput placeholder="Ex. iPhone Charger" [(ngModel)]="query" name="q" class="searchItemInput" />
+    </mat-form-field>
+  </form>
 
-      <div class="inventoryGrid">
-        <mat-grid-list [cols]="gridCols" [rowHeight]="tileSize + ':1'">
-          <mat-grid-tile *ngFor="let container of containers; index as i">
-            <app-inv-container [container]="container" [index]="i"></app-inv-container>
-          </mat-grid-tile>
-        </mat-grid-list>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+  <div class="header-row">
+    <h1 class="container-heading">Your Inventory</h1>
+    <div class="size-controls">
+      <button mat-icon-button color="primary" (click)="decreaseTileSize()" matTooltip="Decrease tile size">
+        <mat-icon>zoom_out</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" (click)="increaseTileSize()" matTooltip="Increase tile size">
+        <mat-icon>zoom_in</mat-icon>
+      </button>
+    </div>
+  </div>
 </div>
+
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="side">
+    <app-sidebar-nav [invContainers]="containers"></app-sidebar-nav>
+  </mat-sidenav>
+  
+  <mat-sidenav-content>
+    <div class="actionField">
+      <button mat-flat-button color="primary" class="newContainerButton" (click)="openDialog()">
+        Create new container
+      </button>
+    </div>
+
+    <div class="inventoryGrid">
+      <mat-grid-list [cols]="gridCols" [rowHeight]="tileSize + ':1'">
+        <mat-grid-tile *ngFor="let container of containers; index as i">
+          <app-inv-container [container]="container" [index]="i"></app-inv-container>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
