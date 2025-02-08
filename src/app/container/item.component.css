@@ -1,13 +1,5 @@
 .spacer {
-    flex: 1 1 auto;
-}
-
-.header-content {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  min-width: 100%;
-  align-items: center;
-  gap: 8px;
+  flex: 1 1 auto;
 }
 
 .containerName {
@@ -18,24 +10,20 @@
     overflow: hidden;
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-}
-
-.example-card {
-    min-width: 90%;
-    max-width: 300px;
-}
-
 .mat-mdc-card {
   background-color: #0b0a13;
   color: white;
   border-radius: 8px;
+  /* width: 300px; */
 }
 
 .mat-mdc-card-title {
   color: white;
+}
+
+.example-card {
+  margin: 16px;
+  /* transform: scale(1.05); */
 }
 
 /* Make menu button white */

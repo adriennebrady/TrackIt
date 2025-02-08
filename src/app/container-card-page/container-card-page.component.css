@@ -144,6 +144,10 @@ app-container {
   width: 90%;
   background-color: var(--background-color);
 }
+app-item{
+  width: 90%;
+  background-color: var(--background-color);
+}
 
 .header-row {
   display: flex;
