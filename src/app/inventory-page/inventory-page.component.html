@@ -52,7 +52,11 @@
     <div class="inventoryGrid">
       <mat-grid-list [cols]="gridCols" [rowHeight]="tileSize + ':1'">
         <mat-grid-tile *ngFor="let container of containers; index as i">
-          <app-inv-container [container]="container" [index]="i"></app-inv-container>
+          <app-inv-container 
+            [container]="container" 
+            [index]="i"
+            [maxNameLength]="maxNameLength"
+          ></app-inv-container>
         </mat-grid-tile>
       </mat-grid-list>
     </div>

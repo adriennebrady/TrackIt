@@ -34,6 +34,7 @@ export class InventoryPageComponent implements OnInit {
   query: string = '';
   gridCols: number = 4;
   tileSize: number = 2.5; // Default tile size ratio
+  maxNameLength: number = 20; // Default value
 
   constructor(
     public dialog: MatDialog,
@@ -100,11 +101,19 @@ export class InventoryPageComponent implements OnInit {
     // Adjust columns based on tile size
     this.gridCols = Math.max(1, Math.floor(baseColumns * (2.5 / this.tileSize)));
   }
+  updateMaxNameLength() {
+    // Calculate based on tile size - as tiles get smaller, names should be shorter
+    const baseLength = 20; // Base character length at default tile size (2.5)
+    this.maxNameLength = Math.floor(baseLength * (this.tileSize / 3));
+    // Ensure we have reasonable minimum and maximum values
+    this.maxNameLength = Math.max(5, Math.min(80, this.maxNameLength));
+  }
 
   increaseTileSize() {
     if (this.tileSize < 4) { // Maximum size limit
       this.tileSize += 0.5;
       this.updateGridCols();
+      this.updateMaxNameLength(); // Update name length when tile size changes
     }
   }
 
@@ -112,6 +121,7 @@ export class InventoryPageComponent implements OnInit {
     if (this.tileSize > 1.5) { // Minimum size limit
       this.tileSize -= 0.5;
       this.updateGridCols();
+      this.updateMaxNameLength(); // Update name length when tile size changes
     }
   }
 
