@@ -1,6 +1,6 @@
 <mat-card class="example-card">
   <mat-card-header>
-    <mat-card-title class="containerName">{{ item.ItemName }}</mat-card-title>
+    <mat-card-title class="containerName" [matTooltip]="item.ItemName">{{ truncatedName }}</mat-card-title>
     <span class="spacer"></span>
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="icon-button with a menu">
         <mat-icon>more_vert</mat-icon>

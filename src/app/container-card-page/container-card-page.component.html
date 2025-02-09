@@ -64,10 +64,18 @@
     <div class="inventoryGrid">
       <mat-grid-list [cols]="gridCols" [rowHeight]="tileSize + ':1'">
         <mat-grid-tile *ngFor="let container of containers; index as i">
-          <app-container [container]="container" [index]="i"></app-container>
+          <app-container 
+            [container]="container" 
+            [index]="i"
+            [maxNameLength]="maxNameLength">
+          </app-container>
         </mat-grid-tile>
         <mat-grid-tile *ngFor="let item of items; index as i">
-          <app-item [item]="item" [index]="i"></app-item>
+          <app-item 
+            [item]="item" 
+            [index]="i"
+            [maxNameLength]="maxNameLength"
+          ></app-item>
         </mat-grid-tile>
       </mat-grid-list>
     </div>

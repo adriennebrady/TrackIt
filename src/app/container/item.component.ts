@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ContainerCardPageComponent } from '../container-card-page/container-card-page.component';
+import { MatTooltip } from '@angular/material/tooltip';
 
 interface Item {
   ItemID: number;
@@ -25,9 +26,17 @@ export class ItemComponent {
   };
 
   @Input() index: number = -1;
+  @Input() maxNameLength: number = 20; // Default value if not provided
 
   constructor(private ContainerCardPage: ContainerCardPageComponent) {}
 
+  get truncatedName(): string {
+    if (this.item.ItemName.length > this.maxNameLength) {
+      return this.item.ItemName.substring(0, this.maxNameLength) + '...';
+    }
+    return this.item.ItemName;
+  }
+  
   deleteItem(index: number) {
     this.ContainerCardPage.openConfirmDialog(index, 'item');
   }

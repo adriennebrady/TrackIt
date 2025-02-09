@@ -1,6 +1,7 @@
 import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { ContainerCardPageComponent } from '../container-card-page/container-card-page.component';
 import { Router } from '@angular/router';
+import { MatTooltip } from '@angular/material/tooltip';
 
 interface Container {
   LocID: number;
@@ -18,12 +19,20 @@ export class ContainerComponent {
   @Input() container: Container = { LocID: -1, Name: '', ParentID: -1 };
 
   @Input() index: number = -1;
+  @Input() maxNameLength: number = 20; // Default value if not provided
 
   constructor(
     private containerPage: ContainerCardPageComponent,
     private router: Router,
     private cd: ChangeDetectorRef
   ) {}
+
+  get truncatedName(): string {
+    if (this.container.Name.length > this.maxNameLength) {
+      return this.container.Name.substring(0, this.maxNameLength) + '...';
+    }
+    return this.container.Name;
+  }
 
   deleteContainer(index: number) {
     this.containerPage.openConfirmDialog(index, 'container');

@@ -1,6 +1,6 @@
 <mat-card class="example-card">
   <mat-card-header>
-    <mat-card-title class="containerName">{{ container.Name }}</mat-card-title>
+    <mat-card-title class="containerName" [matTooltip]="container.Name">{{ truncatedName }}</mat-card-title>
     <span class="spacer"></span>
     <button
       mat-icon-button
