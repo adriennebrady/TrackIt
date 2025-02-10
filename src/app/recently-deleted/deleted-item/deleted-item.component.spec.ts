@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DeletedItemComponent } from './deleted-item.component';
 import { RecentlyDeletedComponent } from '../../recently-deleted/recently-deleted.component';
-import { ItemComponent } from '../../container/item.component';
+import { ItemComponent } from '../../container-card-page/item/item.component';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

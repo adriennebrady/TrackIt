@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Location } from '@angular/common';
-import { ItemDialogComponent } from '../inventory-page/item-dialog/item-dialog.component';
+import { ItemDialogComponent } from './item-dialog/item-dialog.component';
 import { NavigationEnd } from '@angular/router';
 import { RecountDialogComponent } from './recount-dialog/recount-dialog.component';
 import { MoveDialogComponent } from '../inventory-page/move-dialog/move-dialog.component';
@@ -235,12 +235,10 @@ export class ContainerCardPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // if user doesn't set a count, default is 1
-        if (result.count == undefined) {
-          this.createItem(result.name, 1);
-        } else {
-          this.createItem(result.name, result.count);
-        }
+        // Handle multiple items that were added
+        result.forEach((item: any) => {
+          this.createItem(item.name, item.count || 1);
+        });
       }
     });
   }

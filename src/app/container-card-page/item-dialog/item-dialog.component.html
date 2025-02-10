@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Add Items</h1>
+<div mat-dialog-content>
+  <mat-form-field class="nameField">
+    <input matInput 
+           [(ngModel)]="data.name" 
+           placeholder="Name" 
+           (keyup.enter)="onKeyEnter($event)"
+           #nameInput />
+  </mat-form-field>
+  <br />
+  <mat-form-field class="countField">
+    <input matInput 
+           [(ngModel)]="data.count" 
+           placeholder="Count (default 1)" 
+           (keyup.enter)="onKeyEnter($event)"
+           type="number" />
+  </mat-form-field>
+  
+  <div *ngIf="lastAddedItem" class="last-added-indicator">
+    Last added: {{ lastAddedItem.name }} ({{ lastAddedItem.count }})
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onAddClick()" [disabled]="!data.name">Add</button>
+  <button mat-button (click)="onDoneClick()" cdkFocusInitial>Done</button>
+</div>

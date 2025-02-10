@@ -45,15 +45,19 @@ describe('ItemDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display add item dialog title', () => {
-    expect(fixture.nativeElement.querySelector('h1').textContent).toContain('Add Item');
+  it('should default count to 1 when not specified', () => {
+    component.data.name = 'Test Item';
+    component.onAddClick();
+    expect(component.lastAddedItem.count).toBe(1);
   });
-  
-  it('should call cancel() when cancel button is clicked', () => {
+
+  it('should enable Add button only when name is filled', () => {
+    const addButton = fixture.debugElement.query(By.css('button:contains("Add")'));
+    expect(addButton.nativeElement.disabled).toBeTruthy();
+
+    component.data.name = 'Test';
     fixture.detectChanges();
-    spyOn(component, 'onNoClick');
-    const cancelButton = fixture.debugElement.query(By.css('.cancelButton')).nativeElement;
-    cancelButton.click();
-    expect(component.onNoClick).toHaveBeenCalled();
+
+    expect(addButton.nativeElement.disabled).toBeFalsy();
   });
 });

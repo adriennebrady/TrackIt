@@ -1,5 +1,5 @@
 import { ContainerCardPageComponent } from './container-card-page.component';
-import { ContainerComponent } from '../container/container.component';
+import { ContainerComponent } from './container/container.component';
 import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';

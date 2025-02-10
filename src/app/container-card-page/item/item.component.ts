@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ContainerCardPageComponent } from '../container-card-page/container-card-page.component';
+import { ContainerCardPageComponent } from '../container-card-page.component';
 import { MatTooltip } from '@angular/material/tooltip';
 
 interface Item {

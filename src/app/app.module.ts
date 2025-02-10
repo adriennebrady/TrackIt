@@ -20,10 +20,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-import { ItemComponent } from './container/item.component';
+import { ItemComponent } from './container-card-page/item/item.component';
 import { ContainerCardPageComponent } from './container-card-page/container-card-page.component';
 import { InventoryPageComponent } from './inventory-page/inventory-page.component';
-import { ContainerComponent } from './container/container.component';
+import { ContainerComponent } from './container-card-page/container/container.component';
 import { DialogComponent } from './inventory-page/dialog/dialog.component';
 import { ConfirmDialogComponent } from './inventory-page/confirm-dialog/confirm-dialog.component';
 import { HomeComponent } from './home/home.component';
@@ -34,7 +34,7 @@ import { RenameDialogComponent } from './inventory-page/rename-dialog/rename-dia
 
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
-import { ItemDialogComponent } from './inventory-page/item-dialog/item-dialog.component';
+import { ItemDialogComponent } from './container-card-page/item-dialog/item-dialog.component';
 import { InvContainerComponent } from './inventory-page/inv-container/inv-container.component';
 import { SearchComponent } from './search/search.component';
 import { SearchItemComponent } from './search/search-item/search-item.component';

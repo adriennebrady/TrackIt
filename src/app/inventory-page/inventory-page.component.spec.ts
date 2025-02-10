@@ -1,5 +1,5 @@
 import { InventoryPageComponent } from './inventory-page.component';
-import { ContainerComponent } from '../container/container.component';
+import { ContainerComponent } from '../container-card-page/container/container.component';
 import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
