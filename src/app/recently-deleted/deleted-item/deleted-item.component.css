@@ -3,10 +3,30 @@
 }
 
 .containerName {
-  margin-top: 8%;
+    margin-top: 8%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, monospace;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.mat-mdc-card {
+  background-color: #0b0a13;
+  color: white;
+  border-radius: 8px;
+  /* width: 300px; */
+}
+
+.mat-mdc-card-title {
+  color: white;
 }
 
 .example-card {
-  min-width: 250px;
-  min-height: 120px;
+  margin: 16px;
+  /* transform: scale(1.05); */
+}
+
+/* Make menu button white */
+.mat-mdc-icon-button {
+  color: white;
 }
