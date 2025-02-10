@@ -486,9 +486,8 @@ export class ContainerCardPageComponent implements OnInit {
   }
 
   decrementItemCount(index: number) {
-    // first check if decrementing will make count < 1, if so, decrementing deletes item
+    // first check if decrementing will make count < 1, if so, ignore
     if (this.items[index].Count == 1) {
-      this.removeItem(index);
       return;
     }
 
@@ -522,6 +521,7 @@ export class ContainerCardPageComponent implements OnInit {
   }
 
   updateItemCount(index: number, newCount: string) {
+    const newerCount = Math.max(1, parseInt(newCount))
     // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
 
@@ -542,7 +542,7 @@ export class ContainerCardPageComponent implements OnInit {
       kind: 'Item',
       ID: this.items[index].ItemID,
       Cont: this.items[index].LocID,
-      Count: parseInt(newCount),
+      Count: newerCount,
     };
 
     this.http.put('/api/inventory', newItem, options).subscribe((response) => {
