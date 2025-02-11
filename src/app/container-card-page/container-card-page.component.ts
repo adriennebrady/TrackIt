@@ -61,6 +61,21 @@ export class ContainerCardPageComponent implements OnInit {
     this.authService.logout();
   }
 
+  // New method to sort containers alphabetically
+  private sortContainers() {
+    this.containers.sort((a, b) => 
+      a.Name.toLowerCase().localeCompare(b.Name.toLowerCase())
+    );
+  }
+
+  // New method to sort items alphabetically
+  private sortItems() {
+    this.items.sort((a, b) => 
+      a.ItemName.toLowerCase().localeCompare(b.ItemName.toLowerCase())
+    );
+  }
+
+
   getInventory() {
     // Set the HTTP headers with the authorization token
     const authToken: string = localStorage.getItem('token')!;
@@ -80,6 +95,7 @@ export class ContainerCardPageComponent implements OnInit {
       .get<any>(`/api/containers?container_id=${this.containerId}`, httpOptions)
       .subscribe((response) => {
         this.containers = response as Container[];
+        this.sortContainers(); // Sort containers after receiving them
         this.cdRef.detectChanges();
       });
 
@@ -87,6 +103,7 @@ export class ContainerCardPageComponent implements OnInit {
       .get<any>(`/api/items?container_id=${this.containerId}`, httpOptions)
       .subscribe((response) => {
         this.items = response as Item[];
+        this.sortItems(); // Sort items after receiving them
         this.cdRef.detectChanges();
       });
   }

@@ -20,6 +20,6 @@
   </div>
 </div>
 <div mat-dialog-actions>
+  <button mat-button (click)="onDoneClick()" cdkFocusInitial>Exit</button>
   <button mat-button (click)="onAddClick()" [disabled]="!data.name">Add</button>
-  <button mat-button (click)="onDoneClick()" cdkFocusInitial>Done</button>
 </div>
