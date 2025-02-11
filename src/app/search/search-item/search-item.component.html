@@ -5,6 +5,14 @@
   </mat-card-header>
   <mat-card-content>
     <br />
-    <p class="locationName">Location: {{ locationName }}</p>
+    <div class="location-container">
+      <p class="locationName">Location: {{ locationName }}</p>
+      <button mat-icon-button 
+              [routerLink]="['/containers', item.LocID]" 
+              matTooltip="Go to container"
+              class="location-button">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
   </mat-card-content>
 </mat-card>

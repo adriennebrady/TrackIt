@@ -31,3 +31,17 @@
 .mat-mdc-icon-button {
   color: white;
 }
+
+.location-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.locationName {
+  margin: 0;
+}
+
+.location-button {
+  transform: scale(0.9);
+}
