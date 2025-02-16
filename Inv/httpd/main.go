@@ -100,7 +100,6 @@ func main() {
 
 //TODO drag and drop items/containers
 //TODO zoom in/out
-//TODO search results letting you click to the location
 //TODO sort methods
 
 //Full Stack
