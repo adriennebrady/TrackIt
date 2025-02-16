@@ -12,6 +12,7 @@ import { ItemDialogComponent } from './item-dialog/item-dialog.component';
 import { NavigationEnd } from '@angular/router';
 import { RecountDialogComponent } from './recount-dialog/recount-dialog.component';
 import { MoveDialogComponent } from '../inventory-page/move-dialog/move-dialog.component';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 interface Item {
   ItemID: number;
@@ -57,6 +58,10 @@ export class ContainerCardPageComponent implements OnInit {
     this.location.back();
   }
 
+  get combinedItems() {
+    return [...this.containers, ...this.items];
+  }
+  
   logOut() {
     this.authService.logout();
   }
@@ -166,6 +171,27 @@ export class ContainerCardPageComponent implements OnInit {
       });
   }
 
+  onDrop(event: CdkDragDrop<any[]>) {
+    if (event.previousContainer === event.container) {
+      // Reordering within the same container
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      // Moving to a different container
+      const item = event.previousContainer.data[event.previousIndex];
+      const targetContainerId = event.container.id === 'sidenavList' 
+        ? this.containers[event.currentIndex]?.LocID 
+        : parseInt(event.container.id);
+  
+      if ('ItemID' in item) {
+        // It's an item
+        this.moveItem(event.previousIndex - this.containers.length, targetContainerId);
+      } else {
+        // It's a container
+        this.moveContainer(event.previousIndex, targetContainerId);
+      }
+    }
+  }
+  
   updateGridCols() {
     const baseColumns = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
     // Adjust columns based on tile size

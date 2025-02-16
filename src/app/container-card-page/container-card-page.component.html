@@ -48,7 +48,14 @@
 
 <mat-sidenav-container autosize>
   <mat-sidenav #sidenav mode="side">
-    <app-sidebar-nav [invContainers]="containers"></app-sidebar-nav>
+    <div id="sidenavList" 
+         cdkDropList
+         [cdkDropListData]="containers"
+         (cdkDropListDropped)="onDrop($event)"
+         [cdkDropListConnectedTo]="['mainGridList']"
+         class="sidenav-drop-zone">
+      <app-sidebar-nav [invContainers]="containers"></app-sidebar-nav>
+    </div>
   </mat-sidenav>
   
   <mat-sidenav-content>
@@ -62,22 +69,54 @@
     </div>
 
     <div class="inventoryGrid">
-      <mat-grid-list [cols]="gridCols" [rowHeight]="tileSize + ':1'">
-        <mat-grid-tile *ngFor="let container of containers; index as i">
-          <app-container 
-            [container]="container" 
-            [index]="i"
-            [maxNameLength]="maxNameLength">
-          </app-container>
-        </mat-grid-tile>
-        <mat-grid-tile *ngFor="let item of items; index as i">
-          <app-item 
-            [item]="item" 
-            [index]="i"
-            [maxNameLength]="maxNameLength"
-          ></app-item>
-        </mat-grid-tile>
-      </mat-grid-list>
+      <div id="mainGridList"
+        cdkDropList
+        [cdkDropListData]="combinedItems"
+        (cdkDropListDropped)="onDrop($event)"
+        [cdkDropListConnectedTo]="['sidenavList']"
+        class="grid-drop-zone">
+        <mat-grid-list [cols]="gridCols" [rowHeight]="tileSize + ':1'">
+          <!-- Containers -->
+          <mat-grid-tile *ngFor="let container of containers; index as i">
+            <div class="tile-content" cdkDrag [cdkDragData]="container">
+              <!-- Drag Preview -->
+              <div class="drag-preview" *cdkDragPreview>
+                <mat-card class="preview-card">
+                  <mat-card-header>
+                    <mat-card-title>{{ container.Name }}</mat-card-title>
+                  </mat-card-header>
+                </mat-card>
+              </div>
+              <!-- Actual Container -->
+              <app-container 
+                [container]="container" 
+                [index]="i"
+                [maxNameLength]="maxNameLength">
+              </app-container>
+            </div>
+          </mat-grid-tile>
+
+          <!-- Items -->
+          <mat-grid-tile *ngFor="let item of items; index as i">
+            <div class="tile-content" cdkDrag [cdkDragData]="item">
+              <!-- Drag Preview -->
+              <div class="drag-preview" *cdkDragPreview>
+                <mat-card class="preview-card">
+                  <mat-card-header>
+                    <mat-card-title>{{ item.ItemName }}</mat-card-title>
+                  </mat-card-header>
+                </mat-card>
+              </div>
+              <!-- Actual Item -->
+              <app-item 
+                [item]="item" 
+                [index]="i"
+                [maxNameLength]="maxNameLength">
+              </app-item>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
