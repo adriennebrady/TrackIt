@@ -140,11 +140,8 @@ mat-sidenav-container {
   background-color: var(--background-color);
 }
 
-app-container {
-  width: 90%;
-  background-color: var(--background-color);
-}
-app-item{
+app-container,
+app-item {
   width: 90%;
   background-color: var(--background-color);
 }
@@ -181,6 +178,18 @@ app-item{
     width: 60%;
     order: 2;
   }
+
+  app-container,
+  app-item {
+    width: 98%;
+    height: 98%;
+    margin: auto;
+  }
+  
+  /* Adjust the container spacing for better mobile display */
+  /* mat-grid-tile {
+    padding: 5px !important;
+  } */
 
   .header-row {
     width: 100%;
@@ -224,6 +233,9 @@ app-item{
     display: flex;
     flex-direction: column;
     gap: 10px;
+    /* padding: 0 10px;
+    margin-top: 10px; */
+    /* padding: 0 5px; */
   }
 }
 
