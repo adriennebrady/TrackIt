@@ -46,6 +46,7 @@ import { MoveDialogComponent } from './inventory-page/move-dialog/move-dialog.co
 import { MoveMenuComponent } from './inventory-page/move-menu/move-menu.component';
 import { SettingsComponent } from './settings/settings.component';
 import { DeleteAccountDialogComponent } from './settings/delete-account-dialog/delete-account-dialog.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -86,6 +87,7 @@ import { DeleteAccountDialogComponent } from './settings/delete-account-dialog/d
         MatMenuModule,
         FormsModule,
         MatDialogModule,
+        DragDropModule,
         ReactiveFormsModule,
         MatTreeModule,
         MatSidenavModule,
