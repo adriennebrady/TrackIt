@@ -10,15 +10,11 @@ import (
 
 func InventoryDelete(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		username := c.MustGet("username").(string)
+
 		requestBody := DeleteRequest{}
 		if err := c.BindJSON(&requestBody); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
-			return
-		}
-
-		var username string
-		if username = IsValidToken(requestBody.Token, db); username == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
 
@@ -50,9 +46,7 @@ func DeleteItem(db *gorm.DB, id int, username string) error {
 	if result := db.Table("items").Delete(&item); result.Error != nil {
 		return result.Error
 	}
-	if result := db.Where("Timestamp < ?", time.Now().Add(-30*24*time.Hour)).Delete(&RecentlyDeletedItem{}); result.Error != nil {
-		return result.Error
-	}
+	db.Where("Timestamp < ?", time.Now().Add(-30*24*time.Hour)).Delete(&RecentlyDeletedItem{})
 	return nil
 }
 
@@ -72,9 +66,17 @@ func DestroyContainer(db *gorm.DB, locID int, username string) error {
 		}
 	}
 
-	if result := db.Table("items").Where("LocID = ?", locID).Delete(&Item{}); result.Error != nil {
+	// Use DeleteItem so each item is logged to recently_deleted_items
+	var items []Item
+	if result := db.Table("items").Where("LocID = ?", locID).Find(&items); result.Error != nil {
 		return result.Error
 	}
+	for _, item := range items {
+		if err := DeleteItem(db, item.ItemID, username); err != nil {
+			return err
+		}
+	}
+
 	if result := db.Table("containers").Delete(&container); result.Error != nil {
 		return result.Error
 	}

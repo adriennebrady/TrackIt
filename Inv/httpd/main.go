@@ -28,27 +28,33 @@ func main() {
 	InitializeDB()
 
 	r := gin.Default()
-	api := r.Group("/api")
-
 	r.ForwardedByClientIP = true
 	r.SetTrustedProxies([]string{"127.0.0.1"})
+
+	api := r.Group("/api")
+
+	// Public routes — no token required
+	api.GET("/ping", handler.PingGet())
+	api.POST("/login", handler.LoginPost(db))
+	api.POST("/register", handler.RegisterPost(db))
+
+	// Protected routes — AuthMiddleware validates token and sets "username" in context
+	auth := api.Group("/")
+	auth.Use(handler.AuthMiddleware(db))
 	{
-		api.GET("/ping", handler.PingGet())
-		api.GET("/name", handler.NameGet(db))
-		api.GET("/items", handler.ItemsGet(db))
-		api.GET("/containers", handler.ContainersGet(db))
-		api.GET("/deleted", handler.DeletedGet(db))
-		api.GET("/tree", handler.TreeGet(db))
-		api.GET("/export", handler.ExportGet(db))
-		api.GET("/lowstock", handler.LowStockGet(db))
-		api.POST("/login", handler.LoginPost(db))
-		api.POST("/search", handler.SearchGet(db))
-		api.POST("/register", handler.RegisterPost(db))
-		api.POST("/inventory", handler.InventoryPost(db))
-		api.PUT("/inventory", handler.InventoryPut(db))
-		api.DELETE("/inventory", handler.InventoryDelete(db))
-		api.DELETE("/account", handler.AccountDelete(db))
-		api.DELETE("/deleted", handler.DeleteDelete(db))
+		auth.GET("/name", handler.NameGet(db))
+		auth.GET("/items", handler.ItemsGet(db))
+		auth.GET("/containers", handler.ContainersGet(db))
+		auth.GET("/deleted", handler.DeletedGet(db))
+		auth.GET("/tree", handler.TreeGet(db))
+		auth.GET("/export", handler.ExportGet(db))
+		auth.GET("/lowstock", handler.LowStockGet(db))
+		auth.POST("/search", handler.SearchGet(db))
+		auth.POST("/inventory", handler.InventoryPost(db))
+		auth.PUT("/inventory", handler.InventoryPut(db))
+		auth.DELETE("/inventory", handler.InventoryDelete(db))
+		auth.DELETE("/account", handler.AccountDelete(db))
+		auth.DELETE("/deleted", handler.DeleteDelete(db))
 	}
 
 	r.Run(":8080")

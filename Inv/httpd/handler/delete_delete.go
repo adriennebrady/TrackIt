@@ -9,6 +9,7 @@ import (
 
 func DeleteDelete(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		username := c.MustGet("username").(string)
 
 		requestBody := DeleteRequest{}
 		if err := c.BindJSON(&requestBody); err != nil {
@@ -16,32 +17,17 @@ func DeleteDelete(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Verify that the token is valid.
-		var username string
-		if username = IsValidToken(requestBody.Token, db); username == "" {
-			c.AbortWithStatusJSON(http.StatusExpectationFailed, gin.H{"error": "Invalid token"})
-			return
-		}
-
-		/*
-		if result := db.Table("recently_deleted_items").Where("deleted_item_id = ? AND account_id = ?", requestBody.ID, username); result.Error != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
-			return
-		}*/
-
 		var recentlyDeletedItem RecentlyDeletedItem
 		if result := db.Table("recently_deleted_items").Where("item_id = ? AND account_id = ?", requestBody.ID, username).First(&recentlyDeletedItem); result.Error != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get item"})
 			return
 		}
 
-		// Delete the item.
 		if result := db.Table("recently_deleted_items").Delete(&recentlyDeletedItem); result.Error != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Couldn't delete item"})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Couldn't delete item"})
 			return
 		}
 
 		c.Status(http.StatusNoContent)
-
 	}
 }

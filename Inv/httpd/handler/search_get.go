@@ -15,15 +15,11 @@ type SearchRequest struct {
 
 func SearchGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		requestBody := SearchRequest{}
-		if err := c.ShouldBindJSON(&requestBody); err != nil { // was c.Bind, no error check
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
-			return
-		}
+		username := c.MustGet("username").(string)
 
-		var username string
-		if username = IsValidToken(requestBody.Authorization, db); username == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+		requestBody := SearchRequest{}
+		if err := c.ShouldBindJSON(&requestBody); err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 			return
 		}
 

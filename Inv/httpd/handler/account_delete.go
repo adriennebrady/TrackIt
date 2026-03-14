@@ -9,14 +9,17 @@ import (
 
 func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		username := c.MustGet("username").(string)
+
 		var request RegisterRequest
 		if err := c.BindJSON(&request); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 			return
 		}
 
+		// Still verify the password as a second factor before deleting the account
 		var existingUser Account
-		if result := DB.Table("accounts").Where("username = ?", request.Username).First(&existingUser); result.Error != nil {
+		if result := DB.Table("accounts").Where("username = ?", username).First(&existingUser); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "User does not exist"})
 			return
 		}
@@ -33,17 +36,17 @@ func AccountDelete(DB *gorm.DB) gin.HandlerFunc {
 
 		tx := DB.Begin()
 
-		if result := tx.Table("items").Where("username = ?", existingUser.Username).Delete(&Item{}); result.Error != nil {
+		if result := tx.Table("items").Where("username = ?", username).Delete(&Item{}); result.Error != nil {
 			tx.Rollback()
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 			return
 		}
-		if result := tx.Table("containers").Where("username = ?", existingUser.Username).Delete(&Container{}); result.Error != nil {
+		if result := tx.Table("containers").Where("username = ?", username).Delete(&Container{}); result.Error != nil {
 			tx.Rollback()
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 			return
 		}
-		if result := tx.Table("recently_deleted_items").Where("account_id = ?", existingUser.Username).Delete(&RecentlyDeletedItem{}); result.Error != nil {
+		if result := tx.Table("recently_deleted_items").Where("account_id = ?", username).Delete(&RecentlyDeletedItem{}); result.Error != nil {
 			tx.Rollback()
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 			return

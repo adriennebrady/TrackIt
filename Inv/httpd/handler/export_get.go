@@ -14,12 +14,7 @@ type ExportResponse struct {
 
 func ExportGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
-		var username string
-		if username = IsValidToken(token, db); username == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-			return
-		}
+		username := c.MustGet("username").(string)
 
 		var containers []Container
 		if result := db.Table("containers").Where("username = ?", username).Find(&containers); result.Error != nil {
@@ -33,9 +28,6 @@ func ExportGet(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, ExportResponse{
-			Containers: containers,
-			Items:      items,
-		})
+		c.JSON(http.StatusOK, ExportResponse{Containers: containers, Items: items})
 	}
 }

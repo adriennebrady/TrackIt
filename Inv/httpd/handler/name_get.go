@@ -10,18 +10,7 @@ import (
 
 func NameGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
-		if token == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
-			return
-		}
-
-		// Verify that the token is valid.
-		var username string
-		if username = IsValidToken(token, db); username == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-			return
-		}
+		username := c.MustGet("username").(string)
 
 		containerID, err := strconv.Atoi(c.Query("Container_id"))
 		if err != nil {
@@ -29,21 +18,18 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Retrieve the container with the specified ID and username.
 		var container Container
 		if result := db.Table("Containers").Where("LocID = ? AND username = ?", containerID, username).First(&container); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get container"})
 			return
 		}
 
-		// Add the name of the current container to the response.
 		names := container.Name
 		var name string
-		ParentID := container.ParentID
+		parentID := container.ParentID
 
-		maxIterations := 10 // Set a maximum number of iterations
-		for i := 0; ParentID != 0 && i < maxIterations; i++ {
-			if name, ParentID = GetParent(db, ParentID); name == "" {
+		for i := 0; parentID != 0 && i < 10; i++ {
+			if name, parentID = GetParent(db, parentID); name == "" {
 				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Container not found"})
 				return
 			}
@@ -54,13 +40,10 @@ func NameGet(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func GetParent(db *gorm.DB, LocID int) (string, int) {
-	// Look up the container in the database by ID.
+func GetParent(db *gorm.DB, locID int) (string, int) {
 	var container Container
-	query := db.Table("Containers").Where("LocID = ?", LocID)
-	if err := query.First(&container).Error; err != nil {
+	if err := db.Table("Containers").Where("LocID = ?", locID).First(&container).Error; err != nil {
 		return "", 0
 	}
-
 	return container.Name, container.ParentID
 }

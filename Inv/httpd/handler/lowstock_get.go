@@ -10,12 +10,7 @@ import (
 
 func LowStockGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
-		var username string
-		if username = IsValidToken(token, db); username == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-			return
-		}
+		username := c.MustGet("username").(string)
 
 		threshold, err := strconv.Atoi(c.Query("threshold"))
 		if err != nil || threshold < 0 {

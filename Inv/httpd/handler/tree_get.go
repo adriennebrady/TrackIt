@@ -14,22 +14,14 @@ type ContainerTree struct {
 
 func TreeGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
-		// Verify that the token is valid.
-		var username string
-		if username = IsValidToken(token, db); username == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-			return
-		}
+		username := c.MustGet("username").(string)
 
-		// Get the root location of the user.
 		var existingUser Account
 		if result := db.Table("accounts").Where("username = ?", username).First(&existingUser); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "User does not exist"})
 			return
 		}
 
-		// Recursively add children containers with their path to the result.
 		containerTree := &ContainerTree{
 			Container: Container{LocID: existingUser.RootLoc},
 			Children:  GetChildren(existingUser.RootLoc, "", db),
@@ -50,14 +42,9 @@ func GetChildren(parentID int, parentPath string, db *gorm.DB) []*ContainerTree 
 		childPath := parentPath + "/" + container.Name
 		childTree := &ContainerTree{
 			Container: container,
-			Children:  nil, // initialize to nil in case there are no children
-		}
-		children := GetChildren(container.LocID, childPath, db)
-		if children != nil {
-			childTree.Children = children
+			Children:  GetChildren(container.LocID, childPath, db),
 		}
 		containerTree = append(containerTree, childTree)
 	}
-
 	return containerTree
 }
