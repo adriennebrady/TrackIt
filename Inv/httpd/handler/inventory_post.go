@@ -7,16 +7,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type InvRequest struct {
-	Authorization string `json:"Authorization"`
-	Kind          string `json:"Kind"` // container or item?
-	ID            int    `json:"ID"`
-	Cont          int    `json:"Cont"`
-	Name          string `json:"Name"`
-	Type          string `json:"Type"`
-	Count         int    `json:"Count"` //for items
-}
-
 func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestBody := InvRequest{}

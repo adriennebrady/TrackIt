@@ -16,16 +16,17 @@ type SearchRequest struct {
 func SearchGet(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestBody := SearchRequest{}
-		c.Bind(&requestBody)
+		if err := c.ShouldBindJSON(&requestBody); err != nil { // was c.Bind, no error check
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+			return
+		}
 
-		// Verify that the token is valid.
 		var username string
 		if username = IsValidToken(requestBody.Authorization, db); username == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
 
-		// Get all items that are in the requested container.
 		var items []Item
 		if result := db.Table("items").
 			Where("lower(ItemName) LIKE ? AND username = ?", "%"+strings.ToLower(requestBody.Item)+"%", username).
