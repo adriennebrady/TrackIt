@@ -1,15 +1,11 @@
-import { Component, Input } from '@angular/core';
-import { ContainerCardPageComponent } from '../container-card-page.component';
-
-// item.component.ts
-import { Item } from '../../models';
-
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Item } from '../../models'; // adjust path if your models file is elsewhere
 
 @Component({
-    selector: 'app-item',
-    templateUrl: './item.component.html',
-    styleUrls: ['./item.component.css'],
-    standalone: false
+  selector: 'app-item',
+  templateUrl: './item.component.html',
+  styleUrls: ['./item.component.css'],
+  standalone: false,
 })
 export class ItemComponent {
   @Input() item: Item = {
@@ -18,13 +14,19 @@ export class ItemComponent {
     ItemName: '',
     LocID: -1,
     Count: -1,
-    Notes: '', // new
+    Notes: '',
   };
 
   @Input() index: number = -1;
   @Input() maxNameLength: number = 20;
 
-  constructor(private ContainerCardPage: ContainerCardPageComponent) {}
+  @Output() delete = new EventEmitter<number>();
+  @Output() rename = new EventEmitter<number>();
+  @Output() increment = new EventEmitter<number>();
+  @Output() decrement = new EventEmitter<number>();
+  @Output() recount = new EventEmitter<number>();
+  @Output() move = new EventEmitter<number>();
+  @Output() editNotes = new EventEmitter<number>();
 
   get truncatedName(): string {
     if (this.item.ItemName.length > this.maxNameLength) {
@@ -33,31 +35,31 @@ export class ItemComponent {
     return this.item.ItemName;
   }
 
-  deleteItem(index: number) {
-    this.ContainerCardPage.openConfirmDialog(index, 'item');
+  deleteItem() {
+    this.delete.emit(this.index);
   }
 
-  renameItem(index: number) {
-    this.ContainerCardPage.openRenameDialog(index, 'item');
+  renameItem() {
+    this.rename.emit(this.index);
   }
 
-  incrementItem(index: number) {
-    this.ContainerCardPage.incrementItemCount(index);
+  incrementItem() {
+    this.increment.emit(this.index);
   }
 
-  decrementItem(index: number) {
-    this.ContainerCardPage.decrementItemCount(index);
+  decrementItem() {
+    this.decrement.emit(this.index);
   }
 
-  updateCount(index: number) {
-    this.ContainerCardPage.openRecountDialog(index);
+  updateCount() {
+    this.recount.emit(this.index);
   }
 
-  moveContainer(index: number) {
-    this.ContainerCardPage.openMoveDialog(index, 'item');
+  moveItem() {
+    this.move.emit(this.index);
   }
 
-  editNotes(index: number) { // new
-    this.ContainerCardPage.openNotesDialog(index);
+  editItemNotes() {
+    this.editNotes.emit(this.index);
   }
 }

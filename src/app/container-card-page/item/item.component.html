@@ -6,19 +6,19 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="renameItem(index)">
+      <button mat-menu-item (click)="renameItem()">
         <mat-icon>border_color</mat-icon>
         <span>Rename</span>
       </button>
-      <button mat-menu-item (click)="updateCount(index)">
+      <button mat-menu-item (click)="updateCount()">
         <mat-icon>numbers</mat-icon>
         <span>Update Count</span>
       </button>
-      <button mat-menu-item (click)="moveContainer(index)">
+      <button mat-menu-item (click)="moveItem()">
         <mat-icon>open_with</mat-icon>
         <span>Move</span>
       </button>
-      <button mat-menu-item (click)="editNotes(index)">
+      <button mat-menu-item (click)="editItemNotes()">
         <mat-icon>notes</mat-icon>
         <span>Edit Notes</span>
       </button>
@@ -32,14 +32,14 @@
 
   <mat-card-actions>
     <span class="spacer"></span>
-    <button mat-icon-button (click)="incrementItem(index)">
+    <button mat-icon-button (click)="incrementItem()">
       <mat-icon>add</mat-icon>
     </button>
-    <button mat-icon-button (click)="decrementItem(index)">
+    <button mat-icon-button (click)="decrementItem()">
       <mat-icon>horizontal_rule</mat-icon>
     </button>
     <span class="countAmount">Count: {{ item.Count }}</span>
-    <button mat-icon-button color="primary" (click)="deleteItem(index)" class="deleteButton">
+    <button mat-icon-button color="primary" (click)="deleteItem()" class="deleteButton">
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-actions>

@@ -1,29 +1,23 @@
-import { Component, Input, ChangeDetectorRef } from '@angular/core';
-import { ContainerCardPageComponent } from '../container-card-page.component';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Container } from '../../models'; // adjust path to your shared models
 import { Router } from '@angular/router';
-import { MatTooltip } from '@angular/material/tooltip';
-
-// container.component.ts
-import { Container } from '../../models';
-
 
 @Component({
-    selector: 'app-container',
-    templateUrl: './container.component.html',
-    styleUrls: ['./container.component.css'],
-    standalone: false
+  selector: 'app-container',
+  templateUrl: './container.component.html',
+  styleUrls: ['./container.component.css'],
+  standalone: false,
 })
 export class ContainerComponent {
   @Input() container: Container = { LocID: -1, Name: '', ParentID: -1 };
-
   @Input() index: number = -1;
-  @Input() maxNameLength: number = 20; // Default value if not provided
+  @Input() maxNameLength: number = 20;
 
-  constructor(
-    private containerPage: ContainerCardPageComponent,
-    private router: Router,
-    private cd: ChangeDetectorRef
-  ) {}
+  @Output() delete = new EventEmitter<number>();
+  @Output() rename = new EventEmitter<number>();
+  @Output() move = new EventEmitter<number>();
+
+  constructor(private router: Router) {}
 
   get truncatedName(): string {
     if (this.container.Name.length > this.maxNameLength) {
@@ -32,21 +26,20 @@ export class ContainerComponent {
     return this.container.Name;
   }
 
-  deleteContainer(index: number) {
-    this.containerPage.openConfirmDialog(index, 'container');
+  deleteContainer() {
+    this.delete.emit(this.index);
   }
 
-  seeInside(id: number) {
+  seeInside() {
     sessionStorage.setItem('containerName', this.container.Name);
     this.router.navigate(['/containers', this.container.LocID]);
-    this.cd.detectChanges();
   }
 
-  renameContainer(index: number) {
-    this.containerPage.openRenameDialog(index, 'container');
+  renameContainer() {
+    this.rename.emit(this.index);
   }
 
-  moveContainer(index: number) {
-    this.containerPage.openMoveDialog(index, 'container');
+  moveContainer() {
+    this.move.emit(this.index);
   }
 }
