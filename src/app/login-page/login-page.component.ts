@@ -3,10 +3,10 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-login-page',
-    templateUrl: './login-page.component.html',
-    styleUrls: ['./login-page.component.css'],
-    standalone: false
+  selector: 'app-login-page',
+  templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.css'],
+  standalone: false,
 })
 export class LoginPageComponent {
   username: string = '';
@@ -14,13 +14,13 @@ export class LoginPageComponent {
   loginError: string = '';
 
   constructor(private authService: AuthService, private router: Router) {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/inventory']);
-    }
+    // Centralized redirect if already authenticated
+    this.authService.redirectIfAuthenticated();
   }
 
   onSubmit() {
     this.loginError = ''; // Clear any previous errors
+
     const user = {
       username: this.username,
       password: this.password,
@@ -30,7 +30,8 @@ export class LoginPageComponent {
       (result) => {
         // handle successful login
         this.authService.loginSuccess();
-        if (this.authService.redirectUrl != '') {
+
+        if (this.authService.redirectUrl !== '') {
           this.router.navigate([this.authService.redirectUrl]);
           this.authService.redirectUrl = '';
         } else {

@@ -4,13 +4,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-interface newUser {
+interface NewUser {
   username: string;
   password: string;
   password_confirmation: string;
 }
 
-interface user {
+interface User {
   username: string;
   password: string;
 }
@@ -29,55 +29,82 @@ export class AuthService {
   rootloc: number = -1;
   public redirectUrl: string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    const storedToken = localStorage.getItem('token');
+    const storedRootLoc = localStorage.getItem('rootloc');
 
-  signup(user: newUser): Observable<boolean> {
+    if (storedToken) {
+      this.token = storedToken;
+      this.isLoggedIn = true;
+    }
+
+    if (storedRootLoc) {
+      this.rootloc = parseInt(storedRootLoc, 10);
+    }
+  }
+
+  signup(user: NewUser): Observable<boolean> {
     return this.http.post<LoginResponse>('/api/register', user).pipe(
-      map((response) => {
+      map((response: LoginResponse) => {
         this.token = response.token;
         localStorage.setItem('token', this.token);
+
         this.rootloc = response.LocID;
         localStorage.setItem('rootloc', this.rootloc.toString());
+
         localStorage.setItem('user', user.username);
+
         return true;
       })
     );
   }
 
-  login(user: user) {
+  login(user: User): Observable<boolean> {
     return this.http.post<LoginResponse>('/api/login', user).pipe(
-      map((response) => {
+      map((response: LoginResponse) => {
         this.token = response.token;
         localStorage.setItem('token', this.token);
+
         this.rootloc = response.LocID;
         localStorage.setItem('rootloc', this.rootloc.toString());
+
         localStorage.setItem('user', user.username);
+
         if (this.redirectUrl) {
           this.router.navigate([this.redirectUrl]);
         }
+
         return true;
       })
     );
   }
 
-  loginSuccess() {
+  loginSuccess(): void {
     this.isLoggedIn = true;
   }
 
-  logout() {
+  logout(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('token');
     localStorage.removeItem('rootloc');
     localStorage.removeItem('user');
     this.token = '';
     this.rootloc = -1;
+
+    this.router.navigate(['/login']);
   }
 
-  isAuthenticated() {
-    return this.isLoggedIn;
+  isAuthenticated(): boolean {
+    return !!this.token && this.isLoggedIn;
   }
 
   getToken(): string {
     return this.token;
+  }
+
+  redirectIfAuthenticated(): void {
+    if (this.isAuthenticated()) {
+      this.router.navigate(['/inventory']);
+    }
   }
 }

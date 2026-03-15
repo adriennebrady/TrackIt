@@ -3,10 +3,10 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-sign-up-page',
-    templateUrl: './sign-up-page.component.html',
-    styleUrls: ['./sign-up-page.component.css'],
-    standalone: false
+  selector: 'app-sign-up-page',
+  templateUrl: './sign-up-page.component.html',
+  styleUrls: ['./sign-up-page.component.css'],
+  standalone: false,
 })
 export class SignUpPageComponent {
   username: string = '';
@@ -15,9 +15,8 @@ export class SignUpPageComponent {
   signupError: string = '';
 
   constructor(private authService: AuthService, private router: Router) {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/inventory']);
-    }
+    // Centralized redirect if already authenticated
+    this.authService.redirectIfAuthenticated();
   }
 
   onSubmit() {
@@ -46,12 +45,15 @@ export class SignUpPageComponent {
         // Handle specific error scenarios
         if (error.error && error.error.error) {
           if (error.error.error === 'User already exists') {
-            this.signupError = 'Username is already taken. Please choose a different username.';
+            this.signupError =
+              'Username is already taken. Please choose a different username.';
           } else {
-            this.signupError = error.error.error || 'An error occurred during sign-up';
+            this.signupError =
+              error.error.error || 'An error occurred during sign-up';
           }
         } else {
-          this.signupError = 'An unexpected error occurred. Please try again.';
+          this.signupError =
+            'An unexpected error occurred. Please try again.';
         }
       },
     });

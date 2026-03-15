@@ -20,12 +20,21 @@ func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 		switch requestBody.Kind {
 		case "Container":
 			if message := ContainerPut(requestBody, db, username); message != nil {
-				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": message})
+				// Container not found or DB error is not an auth problem
+				status := http.StatusBadRequest
+				if *message == "Container not found" {
+					status = http.StatusNotFound
+				}
+				c.AbortWithStatusJSON(status, gin.H{"error": *message})
 				return
 			}
 		case "Item":
 			if message := ItemPut(requestBody, db, username); message != nil {
-				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": message})
+				status := http.StatusBadRequest
+				if *message == "Item not found" {
+					status = http.StatusNotFound
+				}
+				c.AbortWithStatusJSON(status, gin.H{"error": *message})
 				return
 			}
 		default:
