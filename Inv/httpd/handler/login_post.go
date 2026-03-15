@@ -1,3 +1,4 @@
+// login_post.go
 package handler
 
 import (
@@ -32,6 +33,11 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 		}
 
 		newToken := GenerateToken()
+		if newToken == "" {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+			return
+		}
+
 		session := DeviceSession{
 			Username: user.Username,
 			Token:    newToken,
@@ -43,12 +49,8 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		DB.Where("last_used < ? AND username = ?", time.Now().Add(-30*24*time.Hour), user.Username).Delete(&DeviceSession{})
-
-		if result := DB.Where("Timestamp < ?", time.Now().Add(-30*24*time.Hour)).Delete(&RecentlyDeletedItem{}); result.Error != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Error deleting old items"})
-			return
-		}
+		// Single centralized pruning call
+		PruneExpiredData(DB, user.Username)
 
 		response := LoginResponse{Token: newToken, RootLoc: user.RootLoc}
 		c.JSON(http.StatusOK, response)

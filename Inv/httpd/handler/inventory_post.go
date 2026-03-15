@@ -1,3 +1,4 @@
+// inventory_post.go
 package handler
 
 import (
@@ -8,8 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// inventory_post.go
-
+// normalizeKind ensures consistent casing for POST requests
 func normalizeKind(kind string) string {
 	switch strings.ToLower(kind) {
 	case "container":
@@ -31,6 +31,7 @@ func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		// Normalize Kind casing
 		requestBody.Kind = normalizeKind(requestBody.Kind)
 
 		switch requestBody.Kind {
@@ -58,7 +59,7 @@ func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 				return
 			}
 		default:
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid Kind"})
 			return
 		}
 
