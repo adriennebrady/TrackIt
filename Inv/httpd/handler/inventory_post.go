@@ -2,10 +2,24 @@ package handler
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
+
+// inventory_post.go
+
+func normalizeKind(kind string) string {
+	switch strings.ToLower(kind) {
+	case "container":
+		return "container"
+	case "item":
+		return "item"
+	default:
+		return kind
+	}
+}
 
 func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -16,6 +30,8 @@ func InventoryPost(db *gorm.DB) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 			return
 		}
+
+		requestBody.Kind = normalizeKind(requestBody.Kind)
 
 		switch requestBody.Kind {
 		case "container":

@@ -2,10 +2,22 @@ package handler
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
+
+func normalizeKindTitle(kind string) string {
+	switch strings.ToLower(kind) {
+	case "container":
+		return "Container"
+	case "item":
+		return "Item"
+	default:
+		return kind
+	}
+}
 
 func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -17,6 +29,7 @@ func InventoryPut(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		requestBody.Kind = normalizeKindTitle(requestBody.Kind)
 		switch requestBody.Kind {
 		case "Container":
 			if message := ContainerPut(requestBody, db, username); message != nil {
