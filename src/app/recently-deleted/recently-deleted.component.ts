@@ -1,64 +1,47 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+// recently-deleted.component.ts
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../auth.service';
 import { ConfirmDialogComponent } from '../inventory-page/confirm-dialog/confirm-dialog.component';
-import { Time } from '@angular/common';
-
-interface Item {
-  ItemID: number;
-  AccountID: string;
-  DeletedItemName: string;
-  DeletedItemLocation: number;
-  DeletedItemCount: number;
-  TimeStamp: String;
-}
+import { InventoryService } from '../inventory.service';
+import { RecentlyDeletedItem } from '../models';
 
 @Component({
-    selector: 'app-recently-deleted',
-    templateUrl: './recently-deleted.component.html',
-    styleUrls: ['./recently-deleted.component.css'],
-    standalone: false
+  selector: 'app-recently-deleted',
+  templateUrl: './recently-deleted.component.html',
+  styleUrls: ['./recently-deleted.component.css'],
+  standalone: false,
 })
-export class RecentlyDeletedComponent implements OnInit {
-  items: Item[] = [];
+export class RecentlyDeletedComponent implements OnInit, OnDestroy {
+  items: RecentlyDeletedItem[] = [];
+  gridCols: number = 4;
+
+  private boundUpdateGridCols = this.updateGridCols.bind(this);
 
   constructor(
     public dialog: MatDialog,
-    private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private inventoryService: InventoryService
   ) {}
 
-  gridCols: number = 4;
-
   updateGridCols() {
-    this.gridCols = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+    this.gridCols =
+      window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
   }
 
   ngOnInit() {
     this.getItems();
     this.updateGridCols();
-    window.addEventListener('resize', this.updateGridCols.bind(this));
+    window.addEventListener('resize', this.boundUpdateGridCols);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.boundUpdateGridCols);
   }
 
   getItems() {
-    // Set the HTTP headers with the authorization token
-    const authToken: string = localStorage.getItem('token')!;
-
-    const authorization = {
-      Authorization: authToken,
-    };
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: authorization.Authorization,
-      }),
-    };
-
-    this.http.get<Item[]>('/api/deleted', httpOptions).subscribe((response) => {
-      this.items = response as Item[];
-      console.log(this.items);
+    this.inventoryService.getDeletedItems().subscribe((res) => {
+      this.items = res;
     });
   }
 
@@ -67,47 +50,26 @@ export class RecentlyDeletedComponent implements OnInit {
       width: '250px',
       data: { name: this.items[index].DeletedItemName },
     });
-
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.removeItem(index);
-      }
+      if (result) this.removeItem(index);
     });
   }
 
   removeItem(index: number) {
-    // Set the HTTP headers with the authorization token
-    const authToken: string = localStorage.getItem('token')!;
-
-    const authorization = {
-      Authorization: authToken,
-    };
-
-    const itemName = {
+    const authToken = localStorage.getItem('token')!;
+    this.inventoryService.deleteDeletedItem({
       token: authToken,
       type: 'item',
       id: +this.items[index].ItemID,
-    };
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: authorization.Authorization,
-      }),
-      body: itemName,
-    };
-
-    this.http.delete('/api/deleted', httpOptions).subscribe((response) => {
+    }).subscribe(() => {
       this.items.splice(index, 1);
       this.getItems();
     });
   }
 
   restoreItem(index: number) {
-    // Set the HTTP headers with the authorization token
-    const authToken: string = localStorage.getItem('token')!;
-
-    const newItem = {
+    const authToken = localStorage.getItem('token')!;
+    this.inventoryService.createInventory({
       Authorization: authToken,
       Kind: 'item',
       Name: this.items[index].DeletedItemName,
@@ -115,21 +77,7 @@ export class RecentlyDeletedComponent implements OnInit {
       Type: 'Add',
       Cont: this.items[index].DeletedItemLocation,
       Count: this.items[index].DeletedItemCount,
-    };
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: newItem.Authorization,
-      }),
-    };
-
-    this.http
-      .post('/api/inventory', newItem, httpOptions)
-      .subscribe((response) => {
-        console.log(response);
-        this.removeItem(index);
-      });
+    }).subscribe(() => this.removeItem(index));
   }
 
   logOut() {

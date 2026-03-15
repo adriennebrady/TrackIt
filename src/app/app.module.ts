@@ -49,6 +49,8 @@ import { MoveMenuComponent } from './inventory-page/move-menu/move-menu.componen
 import { SettingsComponent } from './settings/settings.component';
 import { DeleteAccountDialogComponent } from './settings/delete-account-dialog/delete-account-dialog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -95,5 +97,14 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         MatTreeModule,
         MatSidenavModule,
         MatTooltipModule,
-        MatButtonToggleModule], providers: [AuthService, AuthGuard, provideHttpClient(withInterceptorsFromDi())] })
+        MatButtonToggleModule], providers: [
+  AuthService,
+  AuthGuard,
+  provideHttpClient(withInterceptorsFromDi()),
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  },
+], })
 export class AppModule {}

@@ -33,3 +33,9 @@ export interface InventoryRequest {
   Type: 'Add' | 'Rename' | 'Relocate' | 'Recount' | 'UpdateNotes';
   Count?: number;
 }
+// src/app/models.ts (add this)
+export interface DeleteRequest {
+  token: string;
+  type: 'item' | 'container';
+  id: number;
+}
