@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -56,7 +57,7 @@ func LoginPost(DB *gorm.DB) gin.HandlerFunc {
 
 // GenerateToken creates a cryptographically secure 32-byte (64 hex char) token.
 func GenerateToken() string {
-	b := make([]byte, 32) // bumped from 16 to 32 bytes
+	b := make([]byte, 32)
 	if _, err := rand.Read(b); err != nil {
 		return ""
 	}
@@ -70,11 +71,13 @@ func ComparePasswords(hashedPwd string, plainPwd []byte) bool {
 
 func AuthMiddleware(DB *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
-		if token == "" {
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "No token provided"})
 			return
 		}
+
+		token := strings.TrimPrefix(authHeader, "Bearer ")
 
 		var session DeviceSession
 		if result := DB.Where("token = ?", token).

@@ -14,6 +14,7 @@ type Item struct {
 	ItemName string `gorm:"column:itemName"`
 	LocID    int    `gorm:"column:LocID"`
 	Count    int    `gorm:"column:count"`
+	Notes    string `gorm:"column:notes"` // new
 }
 
 type Container struct {

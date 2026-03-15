@@ -59,3 +59,19 @@ func main() {
 
 	r.Run(":8080")
 }
+
+//Front End
+//TODO treeGet for sidebar visible by default/keep state when moving between containers
+//TODO alternative list view
+//save to db?
+
+//TODO drag and drop items/containers
+//TODO zoom in/out
+//TODO sort methods
+
+//Full Stack
+//TODO recently deleted containers
+//TODO add item tags
+//TODO import/export inventories
+//TODO image cards
+//TODO Multi user inventories

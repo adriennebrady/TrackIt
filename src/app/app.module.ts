@@ -14,6 +14,8 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { NotesDialogComponent } from './container-card-page/notes-dialog/notes-dialog.component'; // new
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -73,6 +75,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         MoveMenuComponent,
         SettingsComponent,
         DeleteAccountDialogComponent,
+        NotesDialogComponent,
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

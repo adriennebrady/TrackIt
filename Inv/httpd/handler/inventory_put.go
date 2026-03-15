@@ -70,6 +70,8 @@ func ItemPut(requestBody InvRequest, db *gorm.DB, username string) *string {
 		item.LocID = requestBody.Cont
 	case "Recount":
 		item.Count = requestBody.Count
+	case "UpdateNotes": // new
+		item.Notes = requestBody.Name
 	}
 
 	if result := db.Save(&item); result.Error != nil {

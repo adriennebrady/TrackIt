@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { ContainerCardPageComponent } from '../container-card-page.component';
-import { MatTooltip } from '@angular/material/tooltip';
 
 interface Item {
   ItemID: number;
@@ -8,6 +7,7 @@ interface Item {
   ItemName: string;
   LocID: number;
   Count: number;
+  Notes: string; // new
 }
 
 @Component({
@@ -23,10 +23,11 @@ export class ItemComponent {
     ItemName: '',
     LocID: -1,
     Count: -1,
+    Notes: '', // new
   };
 
   @Input() index: number = -1;
-  @Input() maxNameLength: number = 20; // Default value if not provided
+  @Input() maxNameLength: number = 20;
 
   constructor(private ContainerCardPage: ContainerCardPageComponent) {}
 
@@ -36,7 +37,7 @@ export class ItemComponent {
     }
     return this.item.ItemName;
   }
-  
+
   deleteItem(index: number) {
     this.ContainerCardPage.openConfirmDialog(index, 'item');
   }
@@ -59,5 +60,9 @@ export class ItemComponent {
 
   moveContainer(index: number) {
     this.ContainerCardPage.openMoveDialog(index, 'item');
+  }
+
+  editNotes(index: number) { // new
+    this.ContainerCardPage.openNotesDialog(index);
   }
 }

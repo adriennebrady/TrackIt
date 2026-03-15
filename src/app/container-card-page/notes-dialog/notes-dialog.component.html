@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Edit Notes</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>Notes</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="notes"
+      rows="5"
+      placeholder="Add notes about this item..."
+    ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>

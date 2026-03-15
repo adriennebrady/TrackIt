@@ -2,9 +2,9 @@
   <mat-card-header>
     <mat-card-title class="containerName" [matTooltip]="item.ItemName">{{ truncatedName }}</mat-card-title>
     <span class="spacer"></span>
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="icon-button with a menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="renameItem(index)">
         <mat-icon>border_color</mat-icon>
@@ -18,8 +18,17 @@
         <mat-icon>open_with</mat-icon>
         <span>Move</span>
       </button>
+      <button mat-menu-item (click)="editNotes(index)">
+        <mat-icon>notes</mat-icon>
+        <span>Edit Notes</span>
+      </button>
     </mat-menu>
   </mat-card-header>
+
+  <!-- Notes display — only shown if notes exist -->
+  <mat-card-content *ngIf="item.Notes">
+    <p class="item-notes">{{ item.Notes }}</p>
+  </mat-card-content>
 
   <mat-card-actions>
     <span class="spacer"></span>
