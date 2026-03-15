@@ -4,13 +4,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { AuthService } from '../auth.service';
 
-interface Item {
-  ItemID: number;
-  User: string;
-  ItemName: string;
-  LocID: number;
-  Count: number;
-}
+// item.component.ts
+import { Item } from '../models';
+
 
 @Component({
     selector: 'app-search',

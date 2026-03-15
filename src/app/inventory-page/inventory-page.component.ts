@@ -9,19 +9,9 @@ import { Router } from '@angular/router';
 import { SidebarNavComponent } from '../sidebar-nav/sidebar-nav.component';
 import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 
-interface Item {
-  ItemID: number;
-  User: string;
-  ItemName: string;
-  LocID: number;
-  Count: number;
-}
+// inventory-page.component.ts
+import { Container, InventoryRequest } from '../models';
 
-interface Container {
-  LocID: number;
-  Name: string;
-  ParentID: number;
-}
 
 @Component({
     selector: 'app-inventory-page',
@@ -63,7 +53,6 @@ export class InventoryPageComponent implements OnInit {
       .get<any>('/api/containers?container_id=' + rootLoc, httpOptions)
       .subscribe((response) => {
         this.containers = response as Container[];
-        this.cdRef.detectChanges();
         console.log(this.containers);
       });
   }

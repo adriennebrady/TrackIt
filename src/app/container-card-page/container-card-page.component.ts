@@ -16,21 +16,8 @@ import { NotesDialogComponent } from './notes-dialog/notes-dialog.component'; //
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 
-interface Item {
-  ItemID: number;
-  User: string;
-  ItemName: string;
-  LocID: number;
-  Count: number;
-  Notes: string; // new
-}
-
-
-interface Container {
-  LocID: number;
-  Name: string;
-  ParentID: number;
-}
+// container-card-page.component.ts
+import { Container, Item, InventoryRequest } from '../models';
 
 
 @Component({
@@ -103,7 +90,6 @@ export class ContainerCardPageComponent implements OnInit {
       .subscribe((response) => {
         this.containers = response as Container[];
         this.sortContainers();
-        this.cdRef.detectChanges();
       });
 
     this.http
@@ -111,7 +97,6 @@ export class ContainerCardPageComponent implements OnInit {
       .subscribe((response) => {
         this.items = response as Item[];
         this.sortItems();
-        this.cdRef.detectChanges();
       });
   }
 
@@ -243,7 +228,6 @@ export class ContainerCardPageComponent implements OnInit {
         let arr = response.split('/');
         arr.shift();
         this.containerName = arr.join('/');
-        this.cdRef.detectChanges();
       });
   }
 

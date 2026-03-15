@@ -14,12 +14,9 @@ import {
 } from '@angular/material/tree';
 import { Observable } from 'rxjs';
 
-interface Container {
-  LocID: number;
-  Name: string;
-  ParentID: number;
-  User: string;
-}
+// container.component.ts
+import { Container } from '../../models';
+
 
 interface invContainer {
   LocID: number;

@@ -3,11 +3,9 @@ import { InventoryPageComponent } from '../inventory-page.component';
 import { Router } from '@angular/router';
 import { MatTooltip } from '@angular/material/tooltip';
 
-interface Container {
-  LocID: number;
-  Name: string;
-  ParentID: number;
-}
+// container.component.ts
+import { Container } from '../../models';
+
 
 @Component({
     selector: 'app-inv-container',

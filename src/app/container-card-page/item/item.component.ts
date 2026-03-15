@@ -1,14 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ContainerCardPageComponent } from '../container-card-page.component';
 
-interface Item {
-  ItemID: number;
-  User: string;
-  ItemName: string;
-  LocID: number;
-  Count: number;
-  Notes: string; // new
-}
+// item.component.ts
+import { Item } from '../../models';
+
 
 @Component({
     selector: 'app-item',
